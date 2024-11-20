@@ -1,3 +1,7 @@
-@for (date of dateRange; track date.getDate) {
-<div>date</div>
-}
+<mat-tab-group dynamicHeight>
+	@for (date of dateRange; track date) {
+	<mat-tab>
+		<ng-template mat-tab-label>{{ date | date : 'EEEE, dd/MM' }}</ng-template>
+	</mat-tab>
+	}
+</mat-tab-group>
