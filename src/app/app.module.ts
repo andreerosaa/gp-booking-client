@@ -10,13 +10,16 @@ import { DateTabsComponent } from './components/date-tabs/date-tabs.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import localePt from '@angular/common/locales/pt-PT';
 import { registerLocaleData } from '@angular/common';
+import { DayPanelComponent } from './components/day-panel/day-panel.component';
+import { provideHttpClient } from '@angular/common/http';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 registerLocaleData(localePt);
 
 @NgModule({
-	declarations: [AppComponent, MainComponent, HeaderComponent, DateTabsComponent],
-	imports: [BrowserModule, AppRoutingModule, MatTabsModule],
-	providers: [{ provide: LOCALE_ID, useValue: 'pt-PT' }, provideAnimationsAsync()],
+	declarations: [AppComponent, MainComponent, HeaderComponent, DateTabsComponent, DayPanelComponent],
+	imports: [BrowserModule, AppRoutingModule, MatTabsModule, MatProgressSpinnerModule],
+	providers: [{ provide: LOCALE_ID, useValue: 'pt-PT' }, provideAnimationsAsync(), provideHttpClient()],
 	bootstrap: [AppComponent]
 })
 export class AppModule {}

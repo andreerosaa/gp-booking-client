@@ -2,6 +2,9 @@
 	@for (date of dateRange; track date) {
 	<mat-tab>
 		<ng-template mat-tab-label>{{ date | date : 'EEEE, dd/MM' }}</ng-template>
+		<ng-template matTabContent>
+			<app-day-panel [date]="date"></app-day-panel>
+		</ng-template>
 	</mat-tab>
 	}
 </mat-tab-group>
