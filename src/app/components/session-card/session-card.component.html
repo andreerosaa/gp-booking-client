@@ -1,0 +1,19 @@
+<mat-card class="max-w-96" appearance="outlined">
+  <mat-card-header>
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
+    <mat-card-title>{{session.date | date: 'HH:mm'}}</mat-card-title>
+    <mat-card-subtitle>Terapeuta: {{session.therapistId}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>Duração: {{session.durationInMinutes}}m</p>
+    <p>Vagas: {{session.vacancies}}</p>
+    <p>Estado: {{SessionStatusMessages[this.session.status]}}</p>
+  </mat-card-content>
+  <mat-card-actions class="justify-end">
+    <button mat-fab extended (click)="openSessionBookingDialog()">
+      <mat-icon>queue</mat-icon>
+      Reservar
+    </button>
+  </mat-card-actions>
+</mat-card>
+  

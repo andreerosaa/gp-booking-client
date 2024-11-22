@@ -1,4 +1,9 @@
-<mat-tab-group dynamicHeight>
+
+<button mat-fab extended (click)="resetSelectedTab()">
+	<mat-icon>today</mat-icon>
+	Hoje
+</button>
+<mat-tab-group #tabGroup dynamicHeight>
 	@for (date of dateRange; track date) {
 	<mat-tab>
 		<ng-template mat-tab-label>{{ date | date : 'EEEE, dd/MM' }}</ng-template>

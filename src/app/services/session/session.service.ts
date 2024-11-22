@@ -1,21 +1,30 @@
-import { Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { SessionModel } from '../../models/session.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { BookSessionRequestModel } from '../../models/bookSessionRequest.model';
 import { SessionByDateRequestModel } from '../../models/sessionByDateRequest.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class SessionService {
-	private _apiUrl = `${environment.API_BASE_URL}/session`;
+	readonly destroyRef = inject(DestroyRef);
+	readonly _apiUrl = `${environment.API_BASE_URL}/session`;
 
-	constructor(private http: HttpClient) {}
+	constructor(readonly http: HttpClient) {}
 
 	getSessionsByDate(selectedDate: Date): Observable<SessionModel[]> {
 		const request: SessionByDateRequestModel = { date: selectedDate };
 
-		return this.http.post<SessionModel[]>(`${this._apiUrl}/date`, request);
+		return this.http.post<SessionModel[]>(`${this._apiUrl}/date`, request).pipe(takeUntilDestroyed(this.destroyRef));
+	}
+
+	bookSession(sessionId: string, name: string, email: string): Observable<SessionModel> {
+		const request: BookSessionRequestModel = { name: name , email: email};
+
+		return this.http.post<SessionModel>(`${this._apiUrl}/book/${sessionId}`, request).pipe(takeUntilDestroyed(this.destroyRef));
 	}
 }

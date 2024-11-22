@@ -1,0 +1,29 @@
+<form [formGroup]="sessionForm" (ngSubmit)="bookSession()">
+	<h2 mat-dialog-title>Reservar sessão</h2>
+	<mat-dialog-content>
+		<p>{{ data.session.date | date : 'EEEE, dd/MM' }}</p>
+		<p>{{ data.session.date | date : 'HH:mm' }}</p>
+		<p>
+			<mat-form-field>
+				<mat-label>Nome</mat-label>
+				<input matInput cdkFocusInitial placeholder="João Silva" [maxlength]="_maxLength" [formControl]="getNameControl" />
+				@if (getNameControl.invalid) {
+				<mat-error>{{ nameErrorMessage() }}</mat-error>
+				}
+			</mat-form-field>
+		</p>
+		<p>
+			<mat-form-field>
+				<mat-label>Email</mat-label>
+				<input matInput placeholder="johndoe@example.com" [maxlength]="_maxLength" [formControl]="getEmailControl" />
+				@if (getEmailControl.invalid) {
+				<mat-error>{{ emailErrorMessage() }}</mat-error>
+				}
+			</mat-form-field>
+		</p>
+	</mat-dialog-content>
+	<mat-dialog-actions>
+		<button mat-button mat-dialog-close (click)="onNoClick()">Cancelar</button>
+		<button mat-button mat-dialog-close type="submit" [disabled]="!sessionForm.valid">Reservar</button>
+	</mat-dialog-actions>
+</form>

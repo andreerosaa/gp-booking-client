@@ -16,7 +16,7 @@ export class DayPanelComponent implements OnInit {
 	searching = true;
 	daySessions: SessionModel[] = [];
 
-	constructor(private _sessionService: SessionService) {}
+	constructor(readonly _sessionService: SessionService) {}
 
 	ngOnInit(): void {
 		this._sessionService.getSessionsByDate(this.date).subscribe({

@@ -13,12 +13,39 @@ import { registerLocaleData } from '@angular/common';
 import { DayPanelComponent } from './components/day-panel/day-panel.component';
 import { provideHttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SessionCardComponent } from './components/session-card/session-card.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { SessionBookingDialogComponent } from './components/session-booking-dialog/session-booking-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 
 registerLocaleData(localePt);
 
 @NgModule({
-	declarations: [AppComponent, MainComponent, HeaderComponent, DateTabsComponent, DayPanelComponent],
-	imports: [BrowserModule, AppRoutingModule, MatTabsModule, MatProgressSpinnerModule],
+	declarations: [AppComponent, MainComponent, HeaderComponent, DateTabsComponent, DayPanelComponent, SessionCardComponent, SessionBookingDialogComponent],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		MatTabsModule,
+		MatProgressSpinnerModule,
+		MatCardModule,
+		MatButtonModule,
+		MatIconModule,
+		MatFormFieldModule,
+		MatInputModule, 
+		FormsModule,
+		MatFormFieldModule,
+		MatInputModule,
+		FormsModule,
+		MatDialogTitle,
+		MatDialogContent,
+		MatDialogActions,
+		MatDialogClose,
+		ReactiveFormsModule],
 	providers: [{ provide: LOCALE_ID, useValue: 'pt-PT' }, provideAnimationsAsync(), provideHttpClient()],
 	bootstrap: [AppComponent]
 })
