@@ -1,29 +1,60 @@
-<form [formGroup]="sessionForm" (ngSubmit)="bookSession()">
-	<h2 mat-dialog-title>Reservar sessão</h2>
-	<mat-dialog-content>
-		<p>{{ data.session.date | date : 'EEEE, dd/MM' }}</p>
-		<p>{{ data.session.date | date : 'HH:mm' }}</p>
-		<p>
-			<mat-form-field>
-				<mat-label>Nome</mat-label>
-				<input matInput cdkFocusInitial placeholder="João Silva" [maxlength]="_maxLength" [formControl]="getNameControl" />
-				@if (getNameControl.invalid) {
-				<mat-error>{{ nameErrorMessage() }}</mat-error>
-				}
-			</mat-form-field>
-		</p>
-		<p>
-			<mat-form-field>
-				<mat-label>Email</mat-label>
-				<input matInput placeholder="johndoe@example.com" [maxlength]="_maxLength" [formControl]="getEmailControl" />
-				@if (getEmailControl.invalid) {
-				<mat-error>{{ emailErrorMessage() }}</mat-error>
-				}
-			</mat-form-field>
-		</p>
+<h2 mat-dialog-title>Reservar sessão</h2>
+<mat-dialog-content>
+	@if(!bookingSession) {
+		@if(!newPatient) {
+				<form id="sessionForm" [formGroup]="sessionForm" (ngSubmit)="bookSession()">
+					<p>{{ data.session.date | date : 'EEEE, dd/MM' }}</p>
+					<p>{{ data.session.date | date : 'HH:mm' }}</p>
+					<p>
+						<mat-form-field>
+							<mat-label>Nome</mat-label>
+							<input matInput cdkFocusInitial placeholder="João Silva" [maxlength]="_maxLength" [formControl]="getNameControl" />
+							@if (getNameControl.invalid) {
+							<mat-error>{{ nameErrorMessage() }}</mat-error>
+							}
+						</mat-form-field>
+					</p>
+					<p>
+						<mat-form-field>
+							<mat-label>Email</mat-label>
+							<input matInput placeholder="johndoe@example.com" [maxlength]="_maxLength" [formControl]="getEmailControl" />
+							@if (getEmailControl.invalid) {
+								<mat-error>{{ emailErrorMessage() }}</mat-error>
+							}
+						</mat-form-field>
+					</p>
+				</form>
+			} @else {
+				<form id="verificationForm" [formGroup]="verificationForm" (ngSubmit)="verifyCode()">
+					<p>Introduza o código de confirmação enviado para o {{getEmailControl.value}}</p>
+					<p>
+						<mat-form-field>
+							<input #codeInput matInput cdkFocusInitial placeholder="*" [maxlength]="1" [formControl]="getFirstNumberControl" />
+						</mat-form-field>
+						<mat-form-field>
+							<input #codeInput matInput placeholder="*" [maxlength]="1" [formControl]="getSecondNumberControl" />
+						</mat-form-field>
+						<mat-form-field>
+							<input #codeInput matInput placeholder="*" [maxlength]="1" [formControl]="getThirdNumberControl" />
+						</mat-form-field>
+						<mat-form-field>
+							<input #codeInput matInput placeholder="*" [maxlength]="1" [formControl]="getFourthNumberControl" />
+						</mat-form-field>
+					</p>
+					<p><a class="cursor-pointer" (click)="resendVerificationCode()">Reenviar código</a></p>
+				</form>
+			}
+		}  @else {
+			<div class="flex flex-col items-center content-center">
+				<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+			</div>
+		}
 	</mat-dialog-content>
 	<mat-dialog-actions>
 		<button mat-button mat-dialog-close (click)="onNoClick()">Cancelar</button>
-		<button mat-button mat-dialog-close type="submit" [disabled]="!sessionForm.valid">Reservar</button>
+		@if (!newPatient) {
+			<button mat-button type="submit" form="sessionForm" [disabled]="!sessionForm.valid">Reservar</button>
+		} @else {
+			<button mat-button type="submit" form="verificationForm" [disabled]="!verificationForm.valid">Verificar</button>
+		}
 	</mat-dialog-actions>
-</form>

@@ -22,11 +22,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
+import { MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel } from '@angular/material/snack-bar';
 
 registerLocaleData(localePt);
 
 @NgModule({
-	declarations: [AppComponent, MainComponent, HeaderComponent, DateTabsComponent, DayPanelComponent, SessionCardComponent, SessionBookingDialogComponent],
+	declarations: [AppComponent, MainComponent, HeaderComponent, DateTabsComponent, DayPanelComponent, SessionCardComponent, SessionBookingDialogComponent, SnackBarComponent],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
@@ -45,7 +47,10 @@ registerLocaleData(localePt);
 		MatDialogContent,
 		MatDialogActions,
 		MatDialogClose,
-		ReactiveFormsModule],
+		ReactiveFormsModule,
+		MatSnackBarLabel,
+		MatSnackBarActions,
+		MatSnackBarAction],
 	providers: [{ provide: LOCALE_ID, useValue: 'pt-PT' }, provideAnimationsAsync(), provideHttpClient()],
 	bootstrap: [AppComponent]
 })

@@ -18,12 +18,12 @@ export enum SessionStatusEnum {
 }
 
 export const SessionStatusMessages: { [key in SessionStatusEnum]: string } = {
-    [SessionStatusEnum.PENDING]: 'Pendente',
-    [SessionStatusEnum.CONFIRMED]: 'Confirmada',
-    [SessionStatusEnum.COMPLETED]: 'Concluída',
-    [SessionStatusEnum.CANCELED]: 'Cancelada',
+	[SessionStatusEnum.PENDING]: 'Pendente',
+	[SessionStatusEnum.CONFIRMED]: 'Confirmada',
+	[SessionStatusEnum.COMPLETED]: 'Concluída',
+	[SessionStatusEnum.CANCELED]: 'Cancelada'
 };
 
 export interface SessionBookingDialogData {
 	session: SessionModel;
-  }
+}

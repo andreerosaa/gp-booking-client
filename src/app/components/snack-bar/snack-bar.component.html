@@ -1,0 +1,9 @@
+
+<div class="flex w-full content-between">
+    <span matSnackBarLabel> {{ data.message}} </span>
+    <span matSnackBarActions>
+        <button mat-button matSnackBarAction class="p-0" (click)="snackBarRef.dismissWithAction()">
+            <mat-icon>{{data.iconName}}</mat-icon>
+        </button>
+    </span>
+</div>

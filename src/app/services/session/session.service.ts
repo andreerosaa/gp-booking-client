@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment.development';
 import { SessionModel } from '../../models/session.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { BookSessionRequestModel } from '../../models/bookSessionRequest.model';
+import { BookSessionRequestModel, BookSessionResponse } from '../../models/bookSessionRequest.model';
 import { SessionByDateRequestModel } from '../../models/sessionByDateRequest.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -22,9 +22,9 @@ export class SessionService {
 		return this.http.post<SessionModel[]>(`${this._apiUrl}/date`, request).pipe(takeUntilDestroyed(this.destroyRef));
 	}
 
-	bookSession(sessionId: string, name: string, email: string): Observable<SessionModel> {
-		const request: BookSessionRequestModel = { name: name , email: email};
+	bookSession(sessionId: string, name: string, email: string): Observable<BookSessionResponse> {
+		const request: BookSessionRequestModel = { patientName: name , email: email};
 
-		return this.http.post<SessionModel>(`${this._apiUrl}/book/${sessionId}`, request).pipe(takeUntilDestroyed(this.destroyRef));
+		return this.http.post<BookSessionResponse>(`${this._apiUrl}/book/${sessionId}`, request).pipe(takeUntilDestroyed(this.destroyRef));
 	}
 }
