@@ -3,30 +3,29 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../components/snack-bar/snack-bar.component';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class SnackBarService {
+	private readonly _durationInSeconds = 5;
+	private readonly _snackBar = inject(MatSnackBar);
 
-  readonly _durationInSeconds = 50;
-  readonly _snackBar = inject(MatSnackBar);
+	openSuccessSnackBar(message: string, durationInSeconds = this._durationInSeconds) {
+		this._snackBar.openFromComponent(SnackBarComponent, {
+			duration: durationInSeconds * 1000,
+			data: {
+				iconName: 'done',
+				message: message
+			}
+		});
+	}
 
-  openSuccessSnackBar(message: string, durationInSeconds = this._durationInSeconds) {
-    this._snackBar.openFromComponent( SnackBarComponent, {
-      duration: durationInSeconds * 1000,
-      data: {
-        iconName: 'done',
-        message: message
-      }
-    });
-  }
-
-  openErrorSnackBar(message: string, durationInSeconds = this._durationInSeconds) {
-    this._snackBar.openFromComponent( SnackBarComponent, {
-      duration: durationInSeconds * 1000,
-      data: {
-        iconName: 'error',
-        message: message
-      }
-    });
-  }
+	openErrorSnackBar(message: string, durationInSeconds = this._durationInSeconds) {
+		this._snackBar.openFromComponent(SnackBarComponent, {
+			duration: durationInSeconds * 1000,
+			data: {
+				iconName: 'error',
+				message: message
+			}
+		});
+	}
 }

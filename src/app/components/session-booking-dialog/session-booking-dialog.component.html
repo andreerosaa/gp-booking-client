@@ -1,54 +1,53 @@
 <h2 mat-dialog-title>Reservar sessão</h2>
 <mat-dialog-content>
-	@if(!bookingSession) {
+	@if(!loading) {
 		@if(!newPatient) {
-				<form id="sessionForm" [formGroup]="sessionForm" (ngSubmit)="bookSession()">
+			<form class="flex flex-col gap-3"  id="sessionForm" [formGroup]="sessionForm" (ngSubmit)="bookSession()">
+				<div>
 					<p>{{ data.session.date | date : 'EEEE, dd/MM' }}</p>
 					<p>{{ data.session.date | date : 'HH:mm' }}</p>
-					<p>
-						<mat-form-field>
-							<mat-label>Nome</mat-label>
-							<input matInput cdkFocusInitial placeholder="João Silva" [maxlength]="_maxLength" [formControl]="getNameControl" />
-							@if (getNameControl.invalid) {
+				</div>
+				<div>
+					<mat-form-field class="flex w-full">
+						<mat-label>Nome</mat-label>
+						<input [focus]="!newPatient" matInput placeholder="João Silva" [maxlength]="_maxLength" [formControl]="getNameControl" />
+						@if (getNameControl.invalid) {
 							<mat-error>{{ nameErrorMessage() }}</mat-error>
-							}
-						</mat-form-field>
-					</p>
-					<p>
-						<mat-form-field>
-							<mat-label>Email</mat-label>
-							<input matInput placeholder="johndoe@example.com" [maxlength]="_maxLength" [formControl]="getEmailControl" />
-							@if (getEmailControl.invalid) {
-								<mat-error>{{ emailErrorMessage() }}</mat-error>
-							}
-						</mat-form-field>
-					</p>
-				</form>
-			} @else {
-				<form id="verificationForm" [formGroup]="verificationForm" (ngSubmit)="verifyCode()">
-					<p>Introduza o código de confirmação enviado para o {{getEmailControl.value}}</p>
-					<p>
-						<mat-form-field>
-							<input #codeInput matInput cdkFocusInitial placeholder="*" [maxlength]="1" [formControl]="getFirstNumberControl" />
-						</mat-form-field>
-						<mat-form-field>
-							<input #codeInput matInput placeholder="*" [maxlength]="1" [formControl]="getSecondNumberControl" />
-						</mat-form-field>
-						<mat-form-field>
-							<input #codeInput matInput placeholder="*" [maxlength]="1" [formControl]="getThirdNumberControl" />
-						</mat-form-field>
-						<mat-form-field>
-							<input #codeInput matInput placeholder="*" [maxlength]="1" [formControl]="getFourthNumberControl" />
-						</mat-form-field>
-					</p>
-					<p><a class="cursor-pointer" (click)="resendVerificationCode()">Reenviar código</a></p>
-				</form>
-			}
-		}  @else {
-			<div class="flex flex-col items-center content-center">
-				<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-			</div>
+						}
+					</mat-form-field>
+					<mat-form-field class="flex w-full">
+						<mat-label>Email</mat-label>
+						<input matInput placeholder="johndoe@example.com" [maxlength]="_maxLength" [formControl]="getEmailControl" />
+						@if (getEmailControl.invalid) {
+							<mat-error>{{ emailErrorMessage() }}</mat-error>
+						}
+					</mat-form-field>
+				</div>
+			</form>
+		} @else {
+			<form class="flex flex-col gap-3" id="verificationForm" [formGroup]="verificationForm" (ngSubmit)="verifyPatient()">
+				<div>
+					<p>Introduza o código de confirmação enviado para o:</p>
+					<p> {{ getEmailControl.value | hide }}</p>
+				</div>
+				<mat-form-field class="flex w-full">
+					<input matInput #codeInput placeholder="****" [maxlength]="4" [formControl]="getCodeControl" [focus]="newPatient"/>
+				</mat-form-field>
+				<div class="flex w-full items-start gap-2">
+					<a class="cursor-pointer" (click)="resendVerificationCode()">Reenviar código</a>
+					@if (gettingNewCode) {
+						<span class="flex">
+							<mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+						</span>
+					}
+				</div>
+			</form>
 		}
+	}  @else {
+		<div class="flex flex-col items-center content-center">
+			<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+		</div>
+	}
 	</mat-dialog-content>
 	<mat-dialog-actions>
 		<button mat-button mat-dialog-close (click)="onNoClick()">Cancelar</button>

@@ -24,11 +24,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel } from '@angular/material/snack-bar';
+import { FocusDirective } from './directives/focus/focus.directive';
+import { HidePipe } from './pipes/hide/hide.pipe';
 
 registerLocaleData(localePt);
 
 @NgModule({
-	declarations: [AppComponent, MainComponent, HeaderComponent, DateTabsComponent, DayPanelComponent, SessionCardComponent, SessionBookingDialogComponent, SnackBarComponent],
+	declarations: [AppComponent, MainComponent, HeaderComponent, DateTabsComponent, DayPanelComponent, SessionCardComponent, SessionBookingDialogComponent, SnackBarComponent, FocusDirective, HidePipe],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
