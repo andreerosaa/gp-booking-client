@@ -11,6 +11,7 @@ export interface SessionModel extends BaseModel {
 }
 
 export enum SessionStatusEnum {
+	AVAILABLE,
 	PENDING,
 	CONFIRMED,
 	COMPLETED,
@@ -18,6 +19,7 @@ export enum SessionStatusEnum {
 }
 
 export const SessionStatusMessages: { [key in SessionStatusEnum]: string } = {
+	[SessionStatusEnum.AVAILABLE]: 'Disponível',
 	[SessionStatusEnum.PENDING]: 'Pendente',
 	[SessionStatusEnum.CONFIRMED]: 'Confirmada',
 	[SessionStatusEnum.COMPLETED]: 'Concluída',
