@@ -1,6 +1,6 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { SessionModel } from '../../models/session.model';
+import { SessionByDateModel } from '../../models/session.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BookSessionRequestModel, BookSessionResponse } from '../../models/bookSessionRequest.model';
@@ -15,10 +15,10 @@ export class SessionService {
 	private readonly _http = inject(HttpClient);
 	private readonly _apiUrl = `${environment.API_BASE_URL}/session`;
 
-	getSessionsByDate(selectedDate: Date): Observable<SessionModel[]> {
+	getSessionsByDate(selectedDate: Date): Observable<SessionByDateModel[]> {
 		const request: SessionByDateRequestModel = { date: selectedDate };
 
-		return this._http.post<SessionModel[]>(`${this._apiUrl}/date`, request).pipe(takeUntilDestroyed(this._destroyRef));
+		return this._http.post<SessionByDateModel[]>(`${this._apiUrl}/date`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
 	bookSession(sessionId: string, name: string, email: string): Observable<BookSessionResponse> {

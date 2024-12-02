@@ -96,7 +96,8 @@ export class SessionBookingDialogComponent implements OnInit {
 					this.newPatient = true;
 					this.patientId = bookSessionResponse.session.patientId;
 				} else {
-					this._snackBarService.openSuccessSnackBar('Sessão reservada, aguarda confirmação 24 horas antes');
+					this.onNoClick();
+					this._snackBarService.openSuccessSnackBar('Sessão reservada, aguarda confirmação até 24 horas antes');
 				}
 			},
 			complete: () => {
@@ -138,7 +139,7 @@ export class SessionBookingDialogComponent implements OnInit {
 			complete: () => {
 				this.loading = false;
 				this.onNoClick();
-				this._snackBarService.openSuccessSnackBar('Sessão reservada, aguarda confirmação 24 horas antes');
+				this._snackBarService.openSuccessSnackBar('Sessão reservada, aguarda confirmação até 24 horas antes');
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;

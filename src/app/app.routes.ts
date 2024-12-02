@@ -12,6 +12,16 @@ export const appRoutes: Route[] = [
 		loadChildren: () => import('./modules/login/login.module').then((m) => m.LoginModule)
 	},
 	{
+		path: 'confirmed',
+		pathMatch: 'full',
+		loadChildren: () => import('./modules/confirmed/confirmed.module').then((m) => m.ConfirmedModule)
+	},
+	{
+		path: 'canceled',
+		pathMatch: 'full',
+		loadChildren: () => import('./modules/canceled/canceled.module').then((m) => m.CanceledModule)
+	},
+	{
 		path: '**',
 		loadChildren: () => import('./modules/not-found/not-found.module').then((m) => m.NotFoundModule)
 	}

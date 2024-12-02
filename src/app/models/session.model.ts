@@ -8,6 +8,18 @@ export interface SessionModel extends BaseModel {
 	vacancies: number;
 	status: SessionStatusEnum;
 	confirmationToken: string;
+	cancelationToken: string;
+}
+
+export interface SessionByDateModel extends BaseModel {
+	date: Date;
+	therapist: { id: string; name: string };
+	patientId: string;
+	durationInMinutes: number;
+	vacancies: number;
+	status: SessionStatusEnum;
+	confirmationToken: string;
+	cancelationToken: string;
 }
 
 export enum SessionStatusEnum {
