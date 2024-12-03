@@ -9,6 +9,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { BookSessionResponse } from '../../models/bookSessionRequest.model';
 import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 import { PatientService } from '../../services/patient/patient.service';
+import { PatientModel } from '../../models/patient.model';
 
 @Component({
 	selector: 'app-session-booking-dialog',
@@ -85,8 +86,74 @@ export class SessionBookingDialogComponent implements OnInit {
 		}
 	}
 
-	onNoClick(): void {
-		this.dialogRef.close();
+	onNoClick(refresh?: boolean): void {
+		this.dialogRef.close(refresh);
+	}
+
+	checkPatientExists() {
+		this.loading = true;
+		this._patientService.getPatientByEmail(this.getEmailControl.value).subscribe({
+			next: (patient: PatientModel) => {
+				if(patient.verified) {
+					this.bookSession();
+				} else {
+					this.updatePatientName(patient._id);
+				}
+			},
+			error: (error: HttpErrorResponse) => {
+				this.loading = false;
+				console.log(error);
+				switch (error.status) {
+					case HttpStatusCode.BadRequest:
+						this._snackBarService.openErrorSnackBar('Email ou nome incorretos');
+						break;
+					case HttpStatusCode.NotFound:
+						this.createPatient();
+						break;
+					default:
+						this._snackBarService.openErrorSnackBar('Erro ao verificar dados');
+						break;
+				}
+			}
+		})
+	}
+	
+	updatePatientName(patientId: string) {
+		this.loading = true;
+		this._patientService.updatePatientName(patientId, this.getEmailControl.value, this.getNameControl.value).subscribe({
+			next: (patient: PatientModel) =>  {
+				this.patientId = patient._id;
+			},
+			complete: () => {
+				this.loading = false;
+				this.newPatient = true;
+				this.sendVerificationCode();
+			},
+			error: (error: HttpErrorResponse) => {
+				this.loading = false;
+				console.log(error)
+				this._snackBarService.openErrorSnackBar('Erro ao criar utilizador');
+			}
+		})
+	}
+
+	createPatient() {
+		this.loading = true;
+		this._patientService.createPatient(this.getEmailControl.value, this.getNameControl.value).subscribe({
+			next: (patient: PatientModel) =>  {
+				this.patientId = patient._id;
+			},
+			complete: () => {
+				this.loading = false;
+				this.newPatient = true;
+				this.sendVerificationCode();
+			},
+			error: (error: HttpErrorResponse) => {
+				this.loading = false;
+				console.log(error)
+				this._snackBarService.openErrorSnackBar('Erro ao criar utilizador');
+			}
+		})
 	}
 
 	bookSession() {
@@ -97,7 +164,7 @@ export class SessionBookingDialogComponent implements OnInit {
 					this.newPatient = true;
 					this.patientId = bookSessionResponse.session.patientId;
 				} else {
-					this.onNoClick();
+					this.onNoClick(true);
 					this._snackBarService.openSuccessSnackBar('Sessão reservada, aguarda confirmação até 24 horas antes');
 				}
 			},
@@ -139,8 +206,7 @@ export class SessionBookingDialogComponent implements OnInit {
 		this._patientService.verifyPatient(this.patientId, inputCode).subscribe({
 			complete: () => {
 				this.loading = false;
-				this.onNoClick();
-				this._snackBarService.openSuccessSnackBar('Sessão reservada, aguarda confirmação até 24 horas antes');
+				this.bookSession();
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
@@ -162,13 +228,16 @@ export class SessionBookingDialogComponent implements OnInit {
 		});
 	}
 
-	resendVerificationCode() {
-		this.gettingNewCode = true;
+	sendVerificationCode(resend = false) {
+		this.gettingNewCode = resend;
 		this._patientService.getVerificationCode(this.patientId).subscribe({
 			complete: () => {
 				this.gettingNewCode = false;
 				this.codeInput.nativeElement.focus();
-				this._snackBarService.openSuccessSnackBar('Novo código de confirmação enviado');
+				this.newPatient = true;
+				if(resend) {
+					this._snackBarService.openSuccessSnackBar('Novo código de confirmação enviado');
+				}
 			},
 			error: (error: HttpErrorResponse) => {
 				this.gettingNewCode = false;

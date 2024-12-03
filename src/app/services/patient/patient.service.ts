@@ -1,7 +1,7 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { GetPatientByEmailRequest, PatientModel, VerifyPatientRequest } from '../../models/patient.model';
+import { CreatePatientRequest, GetPatientByEmailRequest, PatientModel, UpdatePatientNameRequest, VerifyPatientRequest } from '../../models/patient.model';
 import { Observable } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -27,6 +27,18 @@ export class PatientService {
 	getPatientByEmail(patiendEmail: string): Observable<PatientModel> {
 		const request: GetPatientByEmailRequest = { email: patiendEmail };
 
-		return this._http.get<PatientModel>(`${this._apiUrl}/email`).pipe(takeUntilDestroyed(this._destroyRef));
+		return this._http.post<PatientModel>(`${this._apiUrl}/email`, request).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
+	createPatient(patiendEmail: string, patientName: string): Observable<PatientModel> {
+		const request: CreatePatientRequest = { email: patiendEmail, name: patientName, verified: false };
+
+		return this._http.post<PatientModel>(`${this._apiUrl}`, request).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
+	updatePatientName(patientId: string, patientEmail: string, patientName: string): Observable<PatientModel> {
+		const request: UpdatePatientNameRequest = { name: patientName, email: patientEmail };
+
+		return this._http.post<PatientModel>(`${this._apiUrl}/name/${patientId}`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 }

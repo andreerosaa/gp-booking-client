@@ -2,7 +2,7 @@
 <mat-dialog-content>
 	@if(!loading) {
 		@if(!newPatient) {
-			<form class="flex flex-col gap-3"  id="sessionForm" [formGroup]="sessionForm" (ngSubmit)="bookSession()">
+			<form class="flex flex-col gap-3"  id="sessionForm" [formGroup]="sessionForm" (ngSubmit)="checkPatientExists()">
 				<div>
 					<p>{{ data.session.date | date : 'EEEE, dd/MM' }}</p>
 					<p>{{ data.session.date | date : 'HH:mm' }}</p>
@@ -35,7 +35,7 @@
 					<input matInput #codeInput placeholder="****" [maxlength]="4" [formControl]="getCodeControl" [focus]="newPatient"/>
 				</mat-form-field>
 				<div class="flex w-full items-start gap-2">
-					<a class="cursor-pointer" (click)="resendVerificationCode()">Reenviar código</a>
+					<a class="cursor-pointer" (click)="sendVerificationCode(true)">Reenviar código</a>
 					@if (gettingNewCode) {
 						<span class="flex">
 							<mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>

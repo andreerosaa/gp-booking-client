@@ -1,5 +1,5 @@
-import { Component, inject, Input } from '@angular/core';
-import { SessionByDateModel, SessionModel, SessionStatusEnum, SessionStatusMessages } from '../../models/session.model';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { SessionByDateModel, SessionStatusEnum, SessionStatusMessages } from '../../models/session.model';
 import { MatDialog } from '@angular/material/dialog';
 import { SessionBookingDialogComponent } from '../session-booking-dialog/session-booking-dialog.component';
 
@@ -8,9 +8,10 @@ import { SessionBookingDialogComponent } from '../session-booking-dialog/session
   standalone: false,
   templateUrl: './session-card.component.html',
   styleUrl: './session-card.component.scss',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionCardComponent {
+
+  @Output() refreshTabEmitter = new EventEmitter();
 
   @Input() session!: SessionByDateModel;
 
@@ -25,10 +26,9 @@ export class SessionCardComponent {
         session: this.session
       }
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // do something
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result) {
+        this.refreshTabEmitter.emit();
       }
     });
   }  
