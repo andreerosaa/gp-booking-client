@@ -8,3 +8,7 @@ export interface PatientModel extends BaseModel {
 export interface VerifyPatientRequest {
 	verificationCode: number;
 }
+
+export interface GetPatientByEmailRequest {
+	email: string;
+}

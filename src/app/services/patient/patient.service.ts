@@ -1,7 +1,7 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { PatientModel, VerifyPatientRequest } from '../../models/patient.model';
+import { GetPatientByEmailRequest, PatientModel, VerifyPatientRequest } from '../../models/patient.model';
 import { Observable } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -22,5 +22,11 @@ export class PatientService {
 	getVerificationCode(patiendId: string): Observable<PatientModel> {
 
 		return this._http.get<PatientModel>(`${this._apiUrl}/code/${patiendId}`).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
+	getPatientByEmail(patiendEmail: string): Observable<PatientModel> {
+		const request: GetPatientByEmailRequest = { email: patiendEmail };
+
+		return this._http.get<PatientModel>(`${this._apiUrl}/email`).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 }
