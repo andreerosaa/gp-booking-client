@@ -1,7 +1,7 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-@import './app/styles/theme-colors';
+@use './app/styles/_theme-colors.scss' as theme;
 
 // Tailwind imports
 @tailwind base;
@@ -13,8 +13,8 @@ html {
 		(
 			color: (
 				// theme-type: light,
-				primary: $primary-palette,
-				tertiary: $tertiary-palette
+				primary: theme.$primary-palette,
+				tertiary: theme.$tertiary-palette
 			),
 			typography: (
 				plain-family: Roboto,
