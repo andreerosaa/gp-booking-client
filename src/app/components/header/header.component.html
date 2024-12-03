@@ -1,8 +1,15 @@
-<header class="flex w-full items-start justify-between">
+<header class="flex w-full items-center justify-between">
 	<a href="https://www.gpalmeiras.com/" target="_blank" rel="noreferrer">
 		<img src="assets/gp-logo.png" alt="gym logo" class="w-10" />
 	</a>
-	<div class="flex w-full justify-end">
+	<div class="flex w-full justify-end items-center gap-6">
 		<a [routerLink]="['login']">Área reservada</a>
+		<div>
+			<mat-slide-toggle [checked]="darkMode()" (change)="toggleDarkMode($event)">
+				<div class="flex flex-col">
+					<mat-icon>{{ darkMode() ? 'bedtime' : 'wb_sunny' }}</mat-icon>
+				</div>
+			</mat-slide-toggle>
+		</div>
 	</div>
 </header>

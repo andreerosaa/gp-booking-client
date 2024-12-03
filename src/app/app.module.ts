@@ -27,6 +27,7 @@ import { MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel } from '@angula
 import { FocusDirective } from './directives/focus/focus.directive';
 import { HidePipe } from './pipes/hide/hide.pipe';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 registerLocaleData(localePt);
 
@@ -54,7 +55,8 @@ registerLocaleData(localePt);
 		MatSnackBarLabel,
 		MatSnackBarActions,
 		MatSnackBarAction,
-		MatCheckboxModule],
+		MatCheckboxModule,
+		MatSlideToggleModule],
 	providers: [{ provide: LOCALE_ID, useValue: 'pt-PT' }, provideAnimationsAsync(), provideHttpClient()],
 	bootstrap: [AppComponent]
 })
