@@ -37,10 +37,20 @@ body {
 body {
 	color-scheme: dark;
 	background: #0F0501;
+
+	::selection {
+		color: rgba($color: #0F0501, $alpha: 1.0);
+		background-color: rgba($color: #FFE6D9, $alpha: 1.0);
+	}
 }
 body.light-mode {
 	color-scheme: light;
 	background: #FFE6D9;
+
+	::selection {
+		color: rgba($color: #FFE6D9, $alpha: 1.0);
+		background-color: rgba($color: #0F0501, $alpha: 1.0);
+	}
 }
 
 a {
