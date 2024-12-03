@@ -26,7 +26,8 @@ export class SessionBookingDialogComponent implements OnInit {
 
 	readonly sessionForm = new FormGroup({
 		name: new FormControl('', [Validators.required, Validators.maxLength(this._maxLength)]),
-		email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(this._maxLength)])
+		email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(this._maxLength)]),
+		terms: new FormControl(false, [Validators.requiredTrue])
 	});
 
 	readonly verificationForm = new FormGroup({code: new FormControl(null, [Validators.required, Validators.maxLength(4), Validators.minLength(4)])});
@@ -190,6 +191,9 @@ export class SessionBookingDialogComponent implements OnInit {
 	}
 	get getEmailControl(): FormControl {
 		return this.sessionForm.get('email') as FormControl;
+	}
+	get getTermsControl(): FormControl {
+		return this.sessionForm.get('terms') as FormControl;
 	}
 	get getCodeControl(): FormControl {
 		return this.verificationForm.get('code') as FormControl;

@@ -26,6 +26,7 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel } from '@angular/material/snack-bar';
 import { FocusDirective } from './directives/focus/focus.directive';
 import { HidePipe } from './pipes/hide/hide.pipe';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 registerLocaleData(localePt);
 
@@ -52,7 +53,8 @@ registerLocaleData(localePt);
 		ReactiveFormsModule,
 		MatSnackBarLabel,
 		MatSnackBarActions,
-		MatSnackBarAction],
+		MatSnackBarAction,
+		MatCheckboxModule],
 	providers: [{ provide: LOCALE_ID, useValue: 'pt-PT' }, provideAnimationsAsync(), provideHttpClient()],
 	bootstrap: [AppComponent]
 })

@@ -22,6 +22,7 @@
 							<mat-error>{{ emailErrorMessage() }}</mat-error>
 						}
 					</mat-form-field>
+					<mat-checkbox [formControl]="getTermsControl">Aceito os <a mat-dialog-close [routerLink]="['terms']">Termos e condições</a></mat-checkbox>
 				</div>
 			</form>
 		} @else {

@@ -22,6 +22,11 @@ export const appRoutes: Route[] = [
 		loadChildren: () => import('./modules/canceled/canceled.module').then((m) => m.CanceledModule)
 	},
 	{
+		path: 'terms',
+		pathMatch: 'full',
+		loadChildren: () => import('./modules/terms/terms.module').then((m) => m.TermsModule)
+	},
+	{
 		path: '**',
 		loadChildren: () => import('./modules/not-found/not-found.module').then((m) => m.NotFoundModule)
 	}
