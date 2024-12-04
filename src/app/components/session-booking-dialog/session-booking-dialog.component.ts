@@ -211,7 +211,6 @@ export class SessionBookingDialogComponent implements OnInit {
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
 				this.verificationForm.reset();
-				this.codeInput.nativeElement.focus();
 				console.log(error);
 				switch (error.status) {
 					case HttpStatusCode.BadRequest:

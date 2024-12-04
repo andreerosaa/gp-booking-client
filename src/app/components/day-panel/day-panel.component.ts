@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import { SessionByDateModel } from '../../models/session.model';
 import { SessionService } from '../../services/session/session.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -6,12 +6,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
 	selector: 'app-day-panel',
 	standalone: false,
-
 	templateUrl: './day-panel.component.html',
 	styleUrl: './day-panel.component.scss'
 })
 export class DayPanelComponent implements OnInit {
-	@Input() date!: Date;
+	date = input.required<Date>();
 
 	searching = true;
 	daySessions: SessionByDateModel[] = [];
@@ -23,7 +22,7 @@ export class DayPanelComponent implements OnInit {
 	}
 
 	getDaySessions() {
-		this._sessionService.getSessionsByDate(this.date).subscribe({
+		this._sessionService.getSessionsByDate(this.date()).subscribe({
 			next: (sessions: SessionByDateModel[]) => {
 				this.daySessions = sessions;
 			},

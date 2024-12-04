@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { SessionByDateModel, SessionStatusEnum, SessionStatusMessages } from '../../models/session.model';
 import { MatDialog } from '@angular/material/dialog';
 import { SessionBookingDialogComponent } from '../session-booking-dialog/session-booking-dialog.component';
@@ -11,9 +11,8 @@ import { SessionBookingDialogComponent } from '../session-booking-dialog/session
 })
 export class SessionCardComponent {
 
-  @Output() refreshTabEmitter = new EventEmitter();
-
-  @Input() session!: SessionByDateModel;
+  refreshTabEmitter = output();
+  session = input.required<SessionByDateModel>();
 
   readonly dialog = inject(MatDialog);
 
@@ -23,7 +22,7 @@ export class SessionCardComponent {
   openSessionBookingDialog() {
     const dialogRef = this.dialog.open(SessionBookingDialogComponent, {
       data:{
-        session: this.session
+        session: this.session()
       }
     });
     dialogRef.afterClosed().subscribe((result) => {
