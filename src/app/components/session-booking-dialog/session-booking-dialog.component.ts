@@ -1,7 +1,7 @@
-import { Component, DestroyRef, ElementRef, inject, OnInit, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SessionBookingDialogData } from '../../models/session.model';
-import { FormControl, FormControlStatus, FormGroup, StatusChangeEvent, Validators } from '@angular/forms';
+import { FormControl, FormControlStatus, FormGroup, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SessionService } from '../../services/session/session.service';
