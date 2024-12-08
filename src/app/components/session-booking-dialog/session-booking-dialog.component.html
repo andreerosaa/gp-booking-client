@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Reservar sessão</h2>
-<mat-dialog-content>
+<mat-dialog-content class="min-w-96">
 	@if(!loading) {
 		@if(!newPatient) {
 			<form class="flex flex-col gap-3"  id="sessionForm" [formGroup]="sessionForm" (ngSubmit)="checkPatientExists()">
@@ -45,7 +45,7 @@
 			</form>
 		}
 	}  @else {
-		<div class="flex flex-col items-center content-center">
+		<div class="flex flex-col py-3 items-center content-center">
 			<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 		</div>
 	}
