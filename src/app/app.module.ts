@@ -29,6 +29,7 @@ import { HidePipe } from './pipes/hide/hide.pipe';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 
 registerLocaleData(localePt);
 
@@ -58,7 +59,8 @@ registerLocaleData(localePt);
 		MatSnackBarAction,
 		MatCheckboxModule,
 		MatSlideToggleModule,
-		MatTooltipModule],
+		MatTooltipModule,
+		MatMenuModule],
 	providers: [{ provide: LOCALE_ID, useValue: 'pt-PT' }, provideAnimationsAsync(), provideHttpClient()],
 	bootstrap: [AppComponent]
 })

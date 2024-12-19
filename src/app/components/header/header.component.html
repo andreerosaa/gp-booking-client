@@ -1,20 +1,34 @@
 <header class="flex w-full items-center justify-between">
-	<a
-		href="https://www.gpalmeiras.com/"
-		target="_blank"
-		rel="noreferrer"
-		matTooltip="Ir para Ginásio Palmeiras"
-		matTooltipPosition="left">
+	<a href="https://www.gpalmeiras.com/" target="_blank" rel="noreferrer" matTooltip="Ir para Ginásio Palmeiras" matTooltipPosition="left">
 		<img src="assets/gp-logo.png" alt="gym logo" class="w-10" />
 	</a>
 	<div class="flex w-full justify-end items-center gap-6">
-		<a [routerLink]="['login']">Área reservada</a>
-		<div>
-			<mat-slide-toggle [matTooltip]="darkMode() ? 'Desligar modo noturno' : 'Ligar modo noturno'" [checked]="darkMode()" (change)="toggleDarkMode($event)">
-				<div class="flex flex-col">
-					<mat-icon>{{ darkMode() ? 'bedtime' : 'wb_sunny' }}</mat-icon>
-				</div>
-			</mat-slide-toggle>
-		</div>
+		<mat-slide-toggle
+			[matTooltip]="darkMode() ? 'Desligar modo noturno' : 'Ligar modo noturno'"
+			[checked]="darkMode()"
+			(change)="toggleDarkMode($event)">
+			<div class="flex flex-col">
+				<mat-icon>{{ darkMode() ? 'bedtime' : 'wb_sunny' }}</mat-icon>
+			</div>
+		</mat-slide-toggle>
+		<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu" matTooltip="Abrir menu">
+			<div class="flex flex-col">
+				<mat-icon>menu</mat-icon>
+			</div>
+		</button>
+		<mat-menu #menu="matMenu" xPosition="before">
+			<button mat-menu-item>
+				<mat-icon>euro_symbol</mat-icon>
+				<span [routerLink]="['pricing']">Preçário</span>
+			</button>
+			<button mat-menu-item>
+				<mat-icon class="material-symbols-outlined">description</mat-icon>
+				<span [routerLink]="['terms']">Termos e condições</span>
+			</button>
+			<button mat-menu-item>
+				<mat-icon class="material-symbols-outlined">shield_person</mat-icon>
+				<span [routerLink]="['login']">Área reservada</span>
+			</button>
+		</mat-menu>
 	</div>
 </header>

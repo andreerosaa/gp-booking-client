@@ -27,6 +27,11 @@ export const appRoutes: Route[] = [
 		loadChildren: () => import('./modules/terms/terms.module').then((m) => m.TermsModule)
 	},
 	{
+		path: 'pricing',
+		pathMatch: 'full',
+		loadChildren: () => import('./modules/pricing/pricing.module').then((m) => m.PricingModule)
+	},
+	{
 		path: '**',
 		loadChildren: () => import('./modules/not-found/not-found.module').then((m) => m.NotFoundModule)
 	}
