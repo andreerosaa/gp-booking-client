@@ -1,5 +1,5 @@
 <header class="flex w-full items-center justify-between">
-	<a href="https://www.gpalmeiras.com/" target="_blank" rel="noreferrer" matTooltip="Ir para Ginásio Palmeiras" matTooltipPosition="left">
+	<a [routerLink]="['']" matTooltip="Voltar à página inicial" matTooltipPosition="left">
 		<img src="assets/gp-logo.png" alt="gym logo" class="w-10" />
 	</a>
 	<div class="flex w-full justify-end items-center gap-6">
@@ -17,17 +17,17 @@
 			</div>
 		</button>
 		<mat-menu #menu="matMenu" xPosition="before">
-			<button mat-menu-item>
+			<button mat-menu-item [routerLink]="['pricing']">
 				<mat-icon>euro_symbol</mat-icon>
-				<span [routerLink]="['pricing']">Preçário</span>
+				<span>Preçário</span>
 			</button>
-			<button mat-menu-item>
+			<button mat-menu-item [routerLink]="['terms']">
 				<mat-icon class="material-symbols-outlined">description</mat-icon>
-				<span [routerLink]="['terms']">Termos e condições</span>
+				<span>Termos e condições</span>
 			</button>
-			<button mat-menu-item>
+			<button mat-menu-item [routerLink]="['login']">
 				<mat-icon class="material-symbols-outlined">shield_person</mat-icon>
-				<span [routerLink]="['login']">Área reservada</span>
+				<span>Área reservada</span>
 			</button>
 		</mat-menu>
 	</div>
