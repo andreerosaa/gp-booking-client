@@ -2,7 +2,7 @@
 <mat-dialog-content class="min-w-96">
 	@if(!loading) {
 		@if(!newPatient) {
-			<form class="flex flex-col gap-3"  id="sessionForm" [formGroup]="sessionForm" (ngSubmit)="checkPatientExists()">
+			<form class="flex flex-col gap-3" id="sessionForm" [formGroup]="sessionForm" (ngSubmit)="checkPatientExists()">
 				<div>
 					<p>{{ data.session.date | date : 'EEEE, dd/MM' }}</p>
 					<p>{{ data.session.date | date : 'HH:mm' }}</p>
