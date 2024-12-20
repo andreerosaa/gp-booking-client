@@ -9,6 +9,9 @@
                     <mat-form-field>
                         <mat-label>Nome de utilizador</mat-label>
                         <input matInput placeholder="João Silva" [maxlength]="_maxLength" [formControl]="getUsernameControl" />
+                        @if (getUsernameControl.invalid) {
+							<mat-error>{{ usernameErrorMessage() }}</mat-error>
+						}
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Palavra-passe</mat-label>
@@ -16,6 +19,9 @@
                         <button mat-icon-button type="button" matSuffix (click)="togglePasswordVisibility($event)">
                             <mat-icon class="mr-2">{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
                         </button>
+                        @if (getPasswordControl.invalid) {
+							<mat-error>{{ passwordErrorMessage() }}</mat-error>
+						}
                     </mat-form-field>
                 </form>
             } @else {
