@@ -7,3 +7,8 @@ export interface BaseModel {
 export interface BaseResponse {
 	message: string;
 }
+
+export interface ConfirmationDialogData {
+	title: string;
+	message: string;
+}

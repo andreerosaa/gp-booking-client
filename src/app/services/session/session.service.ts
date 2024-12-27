@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { BookSessionRequestModel, BookSessionResponse } from '../../models/bookSessionRequest.model';
 import { SessionByDateRequestModel } from '../../models/sessionByDateRequest.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BaseResponse } from '../../models/base.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -31,5 +32,10 @@ export class SessionService {
 		const request: BookSessionRequestModel = { patientName: name, email: email };
 
 		return this._http.post<BookSessionResponse>(`${this._apiUrl}/book/${sessionId}`, request).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
+	deleteSession(sessionId: string): Observable<BaseResponse> {
+
+		return this._http.delete<BaseResponse>(`${this._apiUrl}/delete/${sessionId}`).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 }

@@ -18,7 +18,7 @@ export class DayPanelComponent implements OnInit {
 
 	constructor(
 		private readonly _sessionService: SessionService,
-		private readonly _authService: AuthService,
+		readonly _authService: AuthService,
 	) {}
 
 	ngOnInit(): void {
@@ -58,4 +58,6 @@ export class DayPanelComponent implements OnInit {
 			}
 		});
 	}
+
+	addSession() {}
 }

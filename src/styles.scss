@@ -21,8 +21,8 @@ html {
 				brand-family: Open Sans,
 				bold-weight: 700,
 				medium-weight: 500,
-				regular-weight: 400,
-			  ),
+				regular-weight: 400
+			),
 			density: 0
 		)
 	);
@@ -36,23 +36,30 @@ body {
 }
 body {
 	color-scheme: dark;
-	background: #0F0501;
+	background: #0f0501;
 
 	::selection {
-		color: rgba($color: #0F0501, $alpha: 1.0);
-		background-color: rgba($color: #FFE6D9, $alpha: 1.0);
+		color: rgba($color: #0f0501, $alpha: 1);
+		background-color: rgba($color: #ffe6d9, $alpha: 1);
 	}
 }
 body.light-mode {
 	color-scheme: light;
-	background: #FFE6D9;
+	background: #ffe6d9;
 
 	::selection {
-		color: rgba($color: #FFE6D9, $alpha: 1.0);
-		background-color: rgba($color: #0F0501, $alpha: 1.0);
+		color: rgba($color: #ffe6d9, $alpha: 1);
+		background-color: rgba($color: #0f0501, $alpha: 1);
 	}
 }
 
 a {
 	text-decoration: underline;
 }
+
+.mat-mdc-icon-button {
+	display: inline-block!important;
+	vertical-align: middle!important;
+	line-height: 1!important;
+}
+  

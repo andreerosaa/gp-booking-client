@@ -1,7 +1,23 @@
 <mat-card class="min-w-96" appearance="outlined">
   <mat-card-header>
-    <mat-card-title>{{session().date | date: 'HH:mm'}}</mat-card-title>
-    <mat-card-subtitle>Terapeuta: {{session().therapist.name}}</mat-card-subtitle>
+    <mat-card-title-group>
+      <mat-card-title>{{session().date | date: 'HH:mm'}}</mat-card-title>
+      <mat-card-subtitle>Terapeuta: {{session().therapist.name}}</mat-card-subtitle>
+      @if (authService.isLoggedIn()) {
+        <div>
+          <button mat-icon-button
+            matTooltip="Eliminar"
+            (click)="openDeleteSessionDialog()">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button
+            matTooltip="Editar"
+            (click)="openEditSessionDialog()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      }
+    </mat-card-title-group>
   </mat-card-header>
   <mat-card-content>
     <p>Duração: {{session().durationInMinutes}} minutos</p>
@@ -12,14 +28,33 @@
       <p>Email: {{session().patient?.email}}</p>
     }
   </mat-card-content>
-  <mat-card-actions class="justify-end gap-2">
-    @if(!authService.isLoggedIn()){
-      <button mat-flat-button
-        (click)="openSessionBookingDialog()"
-        [disabled]="session().status !== SessionStatusEnum.AVAILABLE">
-        <mat-icon>queue</mat-icon>
-        Reservar
+  <mat-card-actions align="end">
+    <button mat-flat-button
+      (click)="openSessionBookingDialog()"
+      [disabled]="session().status !== SessionStatusEnum.AVAILABLE">
+      <mat-icon>queue</mat-icon>
+      Reservar
+    </button>
+    @if(authService.isLoggedIn()) {
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="mais opções" matTooltip="Mais opções">
+        <div class="flex flex-col">
+          <mat-icon>more_vert</mat-icon>
+        </div>
       </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="cancelSession()">
+          <mat-icon>cancel</mat-icon>
+          <span>Cancelar</span>
+        </button>
+        <button mat-menu-item (click)="clearSession()">
+          <mat-icon>settings_backup_restore</mat-icon>
+          <span>Reabrir</span>
+        </button>
+        <button mat-menu-item (click)="sendConfirmationEmail()">
+          <mat-icon>outgoing_mail</mat-icon>
+          <span>Enviar confirmação</span>
+        </button>
+      </mat-menu>
     }
   </mat-card-actions>
 </mat-card>

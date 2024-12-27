@@ -1,13 +1,17 @@
 <div class="flex flex-col w-full p-6 gap-6 items-center">
-    @if(!searching){
-        @for (session of daySessions; track session._id) {
-            <app-session-card (refreshTabEmitter)="getDaySessions()" [session]="session"></app-session-card>
-        } @empty {
-            <div>Não existem sessões</div>
+	@if(!searching){
+        @if (_authService.isLoggedIn()) {
+            <button mat-icon-button matTooltip="Nova sessão" matTooltipPosition="after" (click)="addSession()">
+                <mat-icon>add</mat-icon>
+            </button>
         }
-    } @else {
-        <div class="flex flex-col items-center content-center">
-            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-        </div>
-    }
+	@for (session of daySessions; track session._id) {
+	<app-session-card (refreshTabEmitter)="getDaySessions()" [session]="session"></app-session-card>
+	} @empty {
+	<div>Não existem sessões</div>
+	} } @else {
+	<div class="flex flex-col items-center content-center">
+		<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+	</div>
+	}
 </div>

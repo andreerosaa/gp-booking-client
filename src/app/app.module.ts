@@ -32,11 +32,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { authInterceptor } from './services/auth/interceptor/auth.inteceptor';
 import { refreshTokenInterceptor } from './services/auth/interceptor/refresh-token.inteceptor';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 registerLocaleData(localePt);
 
 @NgModule({
-	declarations: [AppComponent, MainComponent, HeaderComponent, DateTabsComponent, DayPanelComponent, SessionCardComponent, SessionBookingDialogComponent, SnackBarComponent, FocusDirective, HidePipe],
+	declarations: [AppComponent, MainComponent, HeaderComponent, DateTabsComponent, DayPanelComponent, SessionCardComponent, SessionBookingDialogComponent, SnackBarComponent, FocusDirective, HidePipe, ConfirmationDialogComponent],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
