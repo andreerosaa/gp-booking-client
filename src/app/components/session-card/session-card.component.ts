@@ -7,7 +7,6 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { SessionService } from '../../services/session/session.service';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-session-card',
@@ -20,16 +19,16 @@ export class SessionCardComponent {
   refreshTabEmitter = output();
   session = input.required<SessionByDateModel>();
 
-  readonly dialog = inject(MatDialog);
-  readonly authService = inject(AuthService);
-  readonly sessionService = inject(SessionService);
-  readonly snackBarService = inject(SnackBarService);
+  private readonly _dialog = inject(MatDialog);
+  private readonly _sessionService = inject(SessionService);
+  private readonly _snackBarService = inject(SnackBarService);
 
-  SessionStatusMessages = SessionStatusMessages;
-  SessionStatusEnum = SessionStatusEnum;
+  readonly authService = inject(AuthService);
+  readonly SessionStatusMessages = SessionStatusMessages;
+  readonly SessionStatusEnum = SessionStatusEnum;
   
   openSessionBookingDialog() {
-    const dialogRef = this.dialog.open(SessionBookingDialogComponent, {
+    const dialogRef = this._dialog.open(SessionBookingDialogComponent, {
       data:{
         session: this.session()
       }
@@ -42,7 +41,7 @@ export class SessionCardComponent {
   }
 
   openDeleteSessionDialog() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef = this._dialog.open(ConfirmationDialogComponent, {
       data:{
         title: 'Eliminar sessão',
         message: 'Tem a certeza de que pretende eliminar esta sessão?'
@@ -56,9 +55,15 @@ export class SessionCardComponent {
   }
 
   openEditSessionDialog(){}
+
+  openCancelSessionDialog(){}
+
+  openClearSessionDialog(){}
+
+  openSendConfirmationEmailDialog(){}
   
   deleteSession(){
-    this.sessionService.deleteSession(this.session()._id).subscribe({
+    this._sessionService.deleteSession(this.session()._id).subscribe({
       complete: () => {
         this.refreshTabEmitter.emit();
       },
@@ -66,13 +71,13 @@ export class SessionCardComponent {
         console.log(error);
         switch(error.status) {
           case HttpStatusCode.Forbidden:
-            this.snackBarService.openErrorSnackBar('Sem permissões para eliminar sessão');
+            this._snackBarService.openErrorSnackBar('Sem permissões para eliminar sessão');
             break;
           case HttpStatusCode.NotFound:
-            this.snackBarService.openErrorSnackBar('Sessão não encontrada');
+            this._snackBarService.openErrorSnackBar('Sessão não encontrada');
             break;
           default:
-            this.snackBarService.openErrorSnackBar('Erro ao eliminar sessão');
+            this._snackBarService.openErrorSnackBar('Erro ao eliminar sessão');
             break;
         }
       }
