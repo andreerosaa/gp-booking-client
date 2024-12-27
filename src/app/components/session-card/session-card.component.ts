@@ -24,7 +24,6 @@ export class SessionCardComponent {
   readonly authService = inject(AuthService);
   readonly sessionService = inject(SessionService);
   readonly snackBarService = inject(SnackBarService);
-  readonly router = inject(Router);
 
   SessionStatusMessages = SessionStatusMessages;
   SessionStatusEnum = SessionStatusEnum;
