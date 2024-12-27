@@ -11,7 +11,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import localePt from '@angular/common/locales/pt-PT';
 import { registerLocaleData } from '@angular/common';
 import { DayPanelComponent } from './components/day-panel/day-panel.component';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SessionCardComponent } from './components/session-card/session-card.component';
 import { MatCardModule } from '@angular/material/card';
@@ -30,6 +30,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
+import { authInterceptor } from './services/auth/interceptor/auth.inteceptor';
+import { refreshTokenInterceptor } from './services/auth/interceptor/refresh-token.inteceptor';
 
 registerLocaleData(localePt);
 
@@ -58,7 +60,10 @@ registerLocaleData(localePt);
 		MatSlideToggleModule,
 		MatTooltipModule,
 		MatMenuModule],
-	providers: [{ provide: LOCALE_ID, useValue: 'pt-PT' }, provideAnimationsAsync(), provideHttpClient()],
+	providers: [
+		{ provide: LOCALE_ID, useValue: 'pt-PT' },
+		provideAnimationsAsync(),
+		provideHttpClient(withInterceptors([authInterceptor, refreshTokenInterceptor]))],
 	bootstrap: [AppComponent]
 })
 export class AppModule {}

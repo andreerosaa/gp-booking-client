@@ -25,10 +25,25 @@
 				<mat-icon class="material-symbols-outlined">description</mat-icon>
 				<span>Termos e condições</span>
 			</button>
-			<button mat-menu-item [routerLink]="['login']">
-				<mat-icon class="material-symbols-outlined">shield_person</mat-icon>
-				<span>Área reservada</span>
-			</button>
+			@if (!authService.isLoggedIn()) {
+				<button mat-menu-item [routerLink]="['login']">
+					<mat-icon class="material-symbols-outlined">shield_person</mat-icon>
+					<span>Área reservada</span>
+				</button>
+			} @else {
+				<button mat-menu-item [routerLink]="['patients']">
+					<mat-icon class="material-symbols-outlined">person</mat-icon>
+					<span>Clientes</span>
+				</button>
+				<button mat-menu-item [routerLink]="['therapists']">
+					<mat-icon class="material-symbols-outlined">spa</mat-icon>
+					<span>Terapeutas</span>
+				</button>
+				<button mat-menu-item (click)="logout()">
+					<mat-icon class="material-symbols-outlined">logout</mat-icon>
+					<span>Sair</span>
+				</button>
+			}
 		</mat-menu>
 	</div>
 </header>

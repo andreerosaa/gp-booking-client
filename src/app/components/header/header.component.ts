@@ -1,6 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ThemeService } from '../../services/theme/theme.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 
 @Component({
 	selector: 'app-header',
@@ -9,9 +13,14 @@ import { ThemeService } from '../../services/theme/theme.service';
 	styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
+	authService = inject(AuthService);
 	darkMode = signal(true);
 
-	constructor(private readonly _themeService: ThemeService) {}
+	constructor(
+		private readonly _themeService: ThemeService,
+		private readonly _router: Router,
+		private readonly _snackBarService: SnackBarService
+	) {}
 
 	ngOnInit() {
 		const darkModeInLocalStorage = localStorage.getItem('isDarkMode');
@@ -25,5 +34,17 @@ export class HeaderComponent implements OnInit {
 	toggleDarkMode(event: MatSlideToggleChange) {
 		this.darkMode.set(event.checked);
 		this._themeService.setDarkMode(event.checked);
+	}
+
+	logout() {
+		this.authService.logout().subscribe({
+					complete: () => {
+						this._router.navigate(['/']);
+					},
+					error: (error: HttpErrorResponse) => {
+						console.log(error);
+						this._snackBarService.openErrorSnackBar('Erro a efetuar logout');
+					}
+				});
 	}
 }
