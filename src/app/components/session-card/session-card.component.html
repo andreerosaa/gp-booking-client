@@ -7,14 +7,20 @@
     <p>Duração: {{session().durationInMinutes}} minutos</p>
     <p>Vagas: {{session().vacancies}}</p>
     <p>Estado: {{SessionStatusMessages[session().status]}}</p>
+    @if(authService.isLoggedIn() && (session().status === SessionStatusEnum.PENDING || session().status === SessionStatusEnum.CONFIRMED)) {
+      <p>Cliente: <a [routerLink]="['patient/',session().patient?.id]" matTooltip="Abrir detalhes do cliente" matTooltipPosition="after">{{session().patient?.name}}</a></p>
+      <p>Email: {{session().patient?.email}}</p>
+    }
   </mat-card-content>
-  <mat-card-actions class="justify-end">
-    <button mat-flat-button
-      (click)="openSessionBookingDialog()"
-      [disabled]="session().status !== SessionStatusEnum.AVAILABLE">
-      <mat-icon>queue</mat-icon>
-      Reservar
-    </button>
+  <mat-card-actions class="justify-end gap-2">
+    @if(!authService.isLoggedIn()){
+      <button mat-flat-button
+        (click)="openSessionBookingDialog()"
+        [disabled]="session().status !== SessionStatusEnum.AVAILABLE">
+        <mat-icon>queue</mat-icon>
+        Reservar
+      </button>
+    }
   </mat-card-actions>
 </mat-card>
   

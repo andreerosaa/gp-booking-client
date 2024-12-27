@@ -2,6 +2,7 @@ import { Component, inject, input, output } from '@angular/core';
 import { SessionByDateModel, SessionStatusEnum, SessionStatusMessages } from '../../models/session.model';
 import { MatDialog } from '@angular/material/dialog';
 import { SessionBookingDialogComponent } from '../session-booking-dialog/session-booking-dialog.component';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-session-card',
@@ -15,6 +16,7 @@ export class SessionCardComponent {
   session = input.required<SessionByDateModel>();
 
   readonly dialog = inject(MatDialog);
+  readonly authService = inject(AuthService);
 
   SessionStatusMessages = SessionStatusMessages;
   SessionStatusEnum = SessionStatusEnum;

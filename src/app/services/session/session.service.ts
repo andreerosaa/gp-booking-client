@@ -21,6 +21,12 @@ export class SessionService {
 		return this._http.post<SessionByDateModel[]>(`${this._apiUrl}/date`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
+	getSessionsByDateDetailed(selectedDate: Date): Observable<SessionByDateModel[]> {
+		const request: SessionByDateRequestModel = { date: selectedDate };
+
+		return this._http.post<SessionByDateModel[]>(`${this._apiUrl}/date-detailed`, request).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
 	bookSession(sessionId: string, name: string, email: string): Observable<BookSessionResponse> {
 		const request: BookSessionRequestModel = { patientName: name, email: email };
 

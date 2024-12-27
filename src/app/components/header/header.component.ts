@@ -13,8 +13,8 @@ import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 	styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
-	authService = inject(AuthService);
-	darkMode = signal(true);
+	readonly authService = inject(AuthService);
+	readonly darkMode = signal(true);
 
 	constructor(
 		private readonly _themeService: ThemeService,

@@ -10,11 +10,10 @@ export interface SessionModel extends BaseModel {
 	confirmationToken: string;
 	cancelationToken: string;
 }
-
 export interface SessionByDateModel extends BaseModel {
 	date: Date;
 	therapist: { id: string; name: string };
-	patientId: string;
+	patient?: {id: string; name: string, email: string};
 	durationInMinutes: number;
 	vacancies: number;
 	status: SessionStatusEnum;
