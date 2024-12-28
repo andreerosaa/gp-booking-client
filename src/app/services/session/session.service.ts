@@ -1,10 +1,8 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { SessionByDateModel } from '../../models/session.model';
+import { BookSessionRequestModel, BookSessionResponse, SessionByDateModel, SessionByDateRequestModel } from '../../models/session.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { BookSessionRequestModel, BookSessionResponse } from '../../models/bookSessionRequest.model';
-import { SessionByDateRequestModel } from '../../models/sessionByDateRequest.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BaseResponse } from '../../models/base.model';
 

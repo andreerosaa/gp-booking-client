@@ -6,6 +6,7 @@ import { AuthService } from '../../../../services/auth/auth.service';
 import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { LoginForm } from '../../../../models/user.model';
 
 @Component({
 	selector: 'app-login',
@@ -17,15 +18,15 @@ import { Router } from '@angular/router';
 export class LoginComponent {
 	private readonly _destroyRef = inject(DestroyRef);
 
-	protected readonly _maxLength = 50;
+	protected readonly maxLength = 50;
 
 	readonly hide = signal(true);
 	readonly usernameErrorMessage = signal('');
 	readonly passwordErrorMessage = signal('');
 
-	readonly loginForm = new FormGroup({
-		username: new FormControl('', [Validators.required, Validators.maxLength(this._maxLength)]),
-		password: new FormControl('', [Validators.required, Validators.maxLength(this._maxLength)])
+	readonly loginForm = new FormGroup<LoginForm>({
+		username: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
+		password: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)])
 	});
 
 	loading = false;

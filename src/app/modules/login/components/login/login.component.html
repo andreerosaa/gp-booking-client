@@ -8,14 +8,14 @@
                 <form class="flex flex-col" id="loginForm" [formGroup]="loginForm" (ngSubmit)="login()">
                     <mat-form-field>
                         <mat-label>Nome de utilizador</mat-label>
-                        <input matInput placeholder="João Silva" [maxlength]="_maxLength" [formControl]="getUsernameControl" />
+                        <input matInput placeholder="João Silva" [maxlength]="maxLength" [formControl]="getUsernameControl" />
                         @if (getUsernameControl.invalid) {
 							<mat-error>{{ usernameErrorMessage() }}</mat-error>
 						}
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Palavra-passe</mat-label>
-                        <input matInput [type]="hide() ? 'password' : 'text'" [maxlength]="_maxLength" [formControl]="getPasswordControl" />
+                        <input matInput [type]="hide() ? 'password' : 'text'" [maxlength]="maxLength" [formControl]="getPasswordControl" />
                         <button mat-icon-button type="button" matSuffix (click)="togglePasswordVisibility($event)">
                             <mat-icon class="mr-2">{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
                         </button>

@@ -1,12 +1,11 @@
 import { Component, DestroyRef, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SessionBookingDialogData } from '../../models/session.model';
+import { BookSessionResponse, SessionBookingDialogData, SessionBookingForm, VerificationForm } from '../../models/session.model';
 import { FormControl, FormControlStatus, FormGroup, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SessionService } from '../../services/session/session.service';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { BookSessionResponse } from '../../models/bookSessionRequest.model';
 import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 import { PatientService } from '../../services/patient/patient.service';
 import { PatientModel } from '../../models/patient.model';
@@ -23,15 +22,17 @@ export class SessionBookingDialogComponent implements OnInit {
 	private readonly dialogRef = inject(MatDialogRef<SessionBookingDialogComponent>);
 	private readonly _destroyRef = inject(DestroyRef);
 	protected readonly data = inject<SessionBookingDialogData>(MAT_DIALOG_DATA);
-	protected readonly _maxLength = 50;
+	protected readonly maxLength = 50;
 
-	readonly sessionForm = new FormGroup({
-		name: new FormControl('', [Validators.required, Validators.maxLength(this._maxLength)]),
-		email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(this._maxLength)]),
+	readonly sessionForm = new FormGroup<SessionBookingForm>({
+		name: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
+		email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(this.maxLength)]),
 		terms: new FormControl(false, [Validators.requiredTrue])
 	});
 
-	readonly verificationForm = new FormGroup({code: new FormControl(null, [Validators.required, Validators.maxLength(4), Validators.minLength(4)])});
+	readonly verificationForm = new FormGroup<VerificationForm>({
+		code: new FormControl(null, [Validators.required, Validators.maxLength(4), Validators.minLength(4)])
+	});
 
 	readonly emailErrorMessage = signal('');
 	readonly nameErrorMessage = signal('');
@@ -72,7 +73,7 @@ export class SessionBookingDialogComponent implements OnInit {
 		} else if (this.getEmailControl.hasError('email')) {
 			this.emailErrorMessage.set('Email inválido');
 		} else if (this.getEmailControl.hasError('maxlength')) {
-			this.emailErrorMessage.set(`Número máx. de caracteres: ${this._maxLength}`);
+			this.emailErrorMessage.set(`Número máx. de caracteres: ${this.maxLength}`);
 		} else {
 			this.emailErrorMessage.set('');
 		}
@@ -80,13 +81,13 @@ export class SessionBookingDialogComponent implements OnInit {
 		if (this.getNameControl.hasError('required')) {
 			this.nameErrorMessage.set('Campo obrigatório');
 		} else if (this.getNameControl.hasError('maxlength')) {
-			this.nameErrorMessage.set(`Número máx. de caracteres: ${this._maxLength}`);
+			this.nameErrorMessage.set(`Número máx. de caracteres: ${this.maxLength}`);
 		} else {
 			this.nameErrorMessage.set('');
 		}
 	}
 
-	onNoClick(refresh?: boolean): void {
+	closeDialog(refresh?: boolean): void {
 		this.dialogRef.close(refresh);
 	}
 
@@ -164,7 +165,7 @@ export class SessionBookingDialogComponent implements OnInit {
 					this.newPatient = true;
 					this.patientId = bookSessionResponse.session.patientId;
 				} else {
-					this.onNoClick(true);
+					this.closeDialog(true);
 					this._snackBarService.openSuccessSnackBar('Sessão reservada, aguarda confirmação até 24 horas antes');
 				}
 			},

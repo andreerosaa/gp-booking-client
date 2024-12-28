@@ -7,6 +7,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { SessionService } from '../../services/session/session.service';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
+import { CreateEditSessionDialogComponent } from '../create-edit-session-dialog/create-edit-session-dialog.component';
 
 @Component({
   selector: 'app-session-card',
@@ -54,7 +55,19 @@ export class SessionCardComponent {
     });
   }
 
-  openEditSessionDialog(){}
+  openEditSessionDialog(){
+    const dialogRef = this._dialog.open(CreateEditSessionDialogComponent, {
+      data: {
+        date: this.session().date,
+        session: this.session()
+      }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result) {
+        this.refreshTabEmitter.emit();
+      }
+    });
+  }
 
   openCancelSessionDialog(){}
 
@@ -83,8 +96,6 @@ export class SessionCardComponent {
       }
     });
   }
-
-  editSession(){}
 
   cancelSession(){}
 
