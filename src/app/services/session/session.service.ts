@@ -1,6 +1,6 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { BookSessionRequestModel, BookSessionResponse, SessionByDateModel, SessionByDateRequestModel } from '../../models/session.model';
+import { BookSessionRequestModel, BookSessionResponse, CreateSessionFormValue, CreateSessionRequestModel, SessionByDateModel, SessionByDateRequestModel, SessionModel, SessionStatusEnum } from '../../models/session.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -30,6 +30,18 @@ export class SessionService {
 		const request: BookSessionRequestModel = { patientName: name, email: email };
 
 		return this._http.post<BookSessionResponse>(`${this._apiUrl}/book/${sessionId}`, request).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
+	createSession(createSessionForm: CreateSessionFormValue): Observable<SessionModel> {
+		const request: CreateSessionRequestModel = { 
+			date: createSessionForm.date,
+			therapistId: createSessionForm.therapist._id,
+			durationInMinutes: createSessionForm.durationInMinutes,
+			vacancies: createSessionForm.vacancies,
+			status: SessionStatusEnum.AVAILABLE
+		};
+
+		return this._http.post<SessionModel>(`${this._apiUrl}`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
 	deleteSession(sessionId: string): Observable<BaseResponse> {

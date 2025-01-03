@@ -33,11 +33,28 @@ import { MatMenuModule } from '@angular/material/menu';
 import { authInterceptor } from './services/auth/interceptor/auth.inteceptor';
 import { refreshTokenInterceptor } from './services/auth/interceptor/refresh-token.inteceptor';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { CreateEditSessionDialogComponent } from './components/create-edit-session-dialog/create-edit-session-dialog.component';
+import { MatTimepickerModule } from '@angular/material/timepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 registerLocaleData(localePt);
 
 @NgModule({
-	declarations: [AppComponent, MainComponent, HeaderComponent, DateTabsComponent, DayPanelComponent, SessionCardComponent, SessionBookingDialogComponent, SnackBarComponent, FocusDirective, HidePipe, ConfirmationDialogComponent],
+	declarations: [
+		AppComponent,
+		MainComponent,
+		HeaderComponent,
+		DateTabsComponent,
+		DayPanelComponent,
+		SessionCardComponent,
+		SessionBookingDialogComponent,
+		SnackBarComponent,
+		FocusDirective,
+		HidePipe,
+		ConfirmationDialogComponent,
+		CreateEditSessionDialogComponent
+	],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
@@ -47,7 +64,7 @@ registerLocaleData(localePt);
 		MatButtonModule,
 		MatIconModule,
 		MatFormFieldModule,
-		MatInputModule, 
+		MatInputModule,
 		FormsModule,
 		MatDialogTitle,
 		MatDialogContent,
@@ -60,11 +77,16 @@ registerLocaleData(localePt);
 		MatCheckboxModule,
 		MatSlideToggleModule,
 		MatTooltipModule,
-		MatMenuModule],
+		MatMenuModule,
+		MatTimepickerModule,
+		MatAutocompleteModule
+	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'pt-PT' },
 		provideAnimationsAsync(),
-		provideHttpClient(withInterceptors([authInterceptor, refreshTokenInterceptor]))],
+		provideHttpClient(withInterceptors([authInterceptor, refreshTokenInterceptor])),
+		provideNativeDateAdapter()
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule {}

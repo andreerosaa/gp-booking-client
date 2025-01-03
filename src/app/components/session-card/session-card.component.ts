@@ -78,6 +78,7 @@ export class SessionCardComponent {
   deleteSession(){
     this._sessionService.deleteSession(this.session()._id).subscribe({
       complete: () => {
+        this._snackBarService.openSuccessSnackBar('Sessão eliminada');
         this.refreshTabEmitter.emit();
       },
       error: (error: HttpErrorResponse) => {

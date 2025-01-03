@@ -1,0 +1,60 @@
+<h2  mat-dialog-title>{{ data.session ? 'Editar sessão' : 'Criar sessão' }}</h2>
+<mat-dialog-content class="min-w-96">
+	<p class="mb-3">{{ data.date | date : 'EEEE, dd/MM' }}</p>
+	@if(!loading) {
+		@if (!data.session) {
+			<form class="flex flex-col gap-3" id="createSessionForm" [formGroup]="createSessionForm" (ngSubmit)="createSession()">
+				<mat-form-field>
+					<mat-label>Hora</mat-label>
+					<input matInput [formControl]="getDateControl" [matTimepicker]="picker">
+					<mat-timepicker-toggle matIconSuffix [for]="picker"/>
+					<mat-timepicker #picker [interval]="timeInterval"/>
+					@if (getDateControl.invalid) {
+						<mat-error>Introduza uma data válida</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Terapeuta</mat-label>
+					<input type="text"
+						   placeholder="Selecione o terapeuta"
+						   matInput
+						   [formControl]="getTherapistControl"
+						   [matAutocomplete]="auto">
+					<mat-autocomplete #auto="matAutocomplete" [displayWith]="autocompleteDisplay">
+					  @for (therapist of filteredTherapists | async; track therapist._id) {
+						<mat-option [value]="therapist">{{therapist.name}}</mat-option>
+					  }
+					</mat-autocomplete>
+					@if (getTherapistControl.invalid) {
+						<mat-error>Introduza uma terapeuta válido</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Duração (minutos)</mat-label>
+					<input matInput type="number" [formControl]="getDurationControl" min="1" max="1440">
+					@if (getDurationControl.invalid) {
+						<mat-error>Introduza uma duração válida</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Vagas</mat-label>
+					<input matInput type="number" [formControl]="getVacanciesControl">
+					@if (getVacanciesControl.invalid) {
+						<mat-error>Introduza um número de vagas válido</mat-error>
+					}
+				</mat-form-field>
+			</form>
+		}
+	}  @else {
+		<div class="flex flex-col py-3 items-center content-center">
+			<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+		</div>
+	}
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-button mat-dialog-close (click)="closeDialog()">Cancelar</button>
+	<button mat-flat-button type="submit" [attr.form]="data.session ? 'editSessionForm': 'createSessionForm'" [disabled]="data.session ? !editSessionForm.valid : !createSessionForm.valid"> {{ data.session ? 'Editar' : 'Criar' }}</button>
+</mat-dialog-actions>

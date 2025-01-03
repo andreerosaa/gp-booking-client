@@ -12,6 +12,7 @@
           </button>
           <button mat-icon-button
             matTooltip="Editar"
+            disabled="true"
             (click)="openEditSessionDialog()">
             <mat-icon>edit</mat-icon>
           </button>
@@ -42,15 +43,15 @@
         </div>
       </button>
       <mat-menu #menu="matMenu" xPosition="before">
-        <button mat-menu-item (click)="cancelSession()">
+        <button mat-menu-item disabled="true" (click)="cancelSession()">
           <mat-icon>cancel</mat-icon>
           <span>Cancelar</span>
         </button>
-        <button mat-menu-item (click)="clearSession()">
+        <button mat-menu-item disabled="true" (click)="clearSession()">
           <mat-icon>settings_backup_restore</mat-icon>
           <span>Reabrir</span>
         </button>
-        <button mat-menu-item (click)="sendConfirmationEmail()">
+        <button mat-menu-item disabled="true" (click)="sendConfirmationEmail()">
           <mat-icon>outgoing_mail</mat-icon>
           <span>Enviar confirmação</span>
         </button>

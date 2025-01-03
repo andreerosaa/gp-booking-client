@@ -1,8 +1,10 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { SessionByDateModel } from '../../models/session.model';
 import { SessionService } from '../../services/session/session.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateEditSessionDialogComponent } from '../create-edit-session-dialog/create-edit-session-dialog.component';
 
 @Component({
 	selector: 'app-day-panel',
@@ -13,16 +15,16 @@ import { AuthService } from '../../services/auth/auth.service';
 export class DayPanelComponent implements OnInit {
 	date = input.required<Date>();
 
+	private readonly _dialog = inject(MatDialog);
+	private readonly _sessionService = inject(SessionService);
+
+	readonly authService = inject(AuthService);
+
 	searching = true;
 	daySessions: SessionByDateModel[] = [];
 
-	constructor(
-		private readonly _sessionService: SessionService,
-		readonly _authService: AuthService,
-	) {}
-
 	ngOnInit(): void {
-		if(this._authService.isLoggedIn()) {
+		if(this.authService.isLoggedIn()) {
 			this.getDaySessionsDetailed();
 		} else {
 			this.getDaySessions();
@@ -59,5 +61,16 @@ export class DayPanelComponent implements OnInit {
 		});
 	}
 
-	addSession() {}
+	openAddSessionDialog(){
+		const dialogRef = this._dialog.open(CreateEditSessionDialogComponent, {
+			data:{
+			  date: this.date()
+			}
+		  });
+		  dialogRef.afterClosed().subscribe((result) => {
+			if(result) {
+			  this.getDaySessions();
+			}
+		  });
+	}
 }

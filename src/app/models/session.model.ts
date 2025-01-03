@@ -1,5 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { BaseIdentification, BaseModel, IdentificationWithEmail } from './base.model';
+import { TherapistModel } from './therapist.model';
 
 export interface SessionModel extends BaseModel {
 	date: Date;
@@ -62,17 +63,31 @@ export interface BookSessionResponse {
 	newPatient: boolean;
 }
 
+export interface CreateSessionRequestModel {
+	date: Date;
+	therapistId: string;
+	durationInMinutes: number;
+	vacancies: number;
+	status: SessionStatusEnum;
+}
+
 export interface SessionByDateRequestModel {
 	date: Date;
 }
 
 export interface CreateSessionForm {
-	date: FormControl<Date | null>
-	therapist: FormControl<BaseIdentification | null>
-	durationInMinutes: FormControl<number | null>
-	vacancies: FormControl<number | null>
+	date: FormControl<Date | null>;
+	therapist: FormControl<TherapistModel | null>;
+	durationInMinutes: FormControl<number | null>;
+	vacancies: FormControl<number | null>;
+}
+export interface CreateSessionFormValue {
+	date: Date;
+	therapist: TherapistModel;
+	durationInMinutes: number;
+	vacancies: number;
 }
 export interface CreateEditSessionDialogData {
-	date: Date,
-	session?: SessionByDateModel,
+	date: Date;
+	session?: SessionByDateModel;
 }

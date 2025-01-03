@@ -21,4 +21,3 @@ export interface BaseIdentification {
 export interface IdentificationWithEmail extends BaseIdentification {
 	email: string;
 }
-

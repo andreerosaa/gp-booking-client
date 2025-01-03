@@ -16,7 +16,7 @@ export class DateTabsComponent implements OnInit {
 	dateRange: Date[] = [];
 	today = new Date();
 
-	constructor(private _datesService: DatesService) {}
+	constructor(private readonly _datesService: DatesService) {}
 
 	ngOnInit(): void {
 		this.dateRange = this._datesService.getDateRange();
