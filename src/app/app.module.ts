@@ -37,6 +37,7 @@ import { CreateEditSessionDialogComponent } from './components/create-edit-sessi
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 
 registerLocaleData(localePt);
 
@@ -79,7 +80,8 @@ registerLocaleData(localePt);
 		MatTooltipModule,
 		MatMenuModule,
 		MatTimepickerModule,
-		MatAutocompleteModule
+		MatAutocompleteModule,
+		MatSelectModule
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'pt-PT' },

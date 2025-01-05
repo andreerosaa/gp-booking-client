@@ -41,4 +41,9 @@ export class PatientService {
 
 		return this._http.post<PatientModel>(`${this._apiUrl}/name/${patientId}`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
+
+	getPatients(): Observable<PatientModel[]> {
+
+		return this._http.get<PatientModel[]>(this._apiUrl).pipe(takeUntilDestroyed(this._destroyRef));
+	}
 }

@@ -22,12 +22,12 @@
 						   [formControl]="getTherapistControl"
 						   [matAutocomplete]="auto">
 					<mat-autocomplete #auto="matAutocomplete" [displayWith]="autocompleteDisplay">
-					  @for (therapist of filteredTherapists | async; track therapist._id) {
+					  @for (therapist of filteredTherapists | async; track therapist.id) {
 						<mat-option [value]="therapist">{{therapist.name}}</mat-option>
 					  }
 					</mat-autocomplete>
 					@if (getTherapistControl.invalid) {
-						<mat-error>Introduza uma terapeuta válido</mat-error>
+						<mat-error>Introduza um terapeuta válido</mat-error>
 					}
 				</mat-form-field>
 
@@ -38,6 +38,84 @@
 						<mat-error>Introduza uma duração válida</mat-error>
 					}
 				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Vagas</mat-label>
+					<input matInput type="number" [formControl]="getVacanciesControl">
+					@if (getVacanciesControl.invalid) {
+						<mat-error>Introduza um número de vagas válido</mat-error>
+					}
+				</mat-form-field>
+			</form>
+		} @else {
+			<form class="flex flex-col gap-3" id="editSessionForm" [formGroup]="editSessionForm" (ngSubmit)="editSession()">
+				<mat-form-field>
+					<mat-label>Hora</mat-label>
+					<input matInput [formControl]="getDateControl" [matTimepicker]="picker">
+					<mat-timepicker-toggle matIconSuffix [for]="picker"/>
+					<mat-timepicker #picker [interval]="timeInterval"/>
+					@if (getDateControl.invalid) {
+						<mat-error>Introduza uma data válida</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Terapeuta</mat-label>
+					<input type="text"
+						   placeholder="Selecione o terapeuta"
+						   matInput
+						   [formControl]="getTherapistControl"
+						   [matAutocomplete]="auto">
+					<mat-autocomplete #auto="matAutocomplete" [displayWith]="autocompleteDisplay">
+					  @for (therapist of filteredTherapists | async; track therapist.id) {
+						<mat-option [value]="therapist">{{therapist.name}}</mat-option>
+					  }
+					</mat-autocomplete>
+					@if (getTherapistControl.invalid) {
+						<mat-error>Introduza um terapeuta válido</mat-error>
+					}
+				</mat-form-field>
+
+				<!-- TODO: check business logic if it is alowed to do this -->
+				<!-- @if (data.session.patient) {
+					<mat-form-field>
+						<mat-label>Cliente</mat-label>
+						<input type="text"
+							   placeholder="Selecione o cliente"
+							   matInput
+							   [formControl]="getPatientControl"
+							   [matAutocomplete]="auto">
+						<mat-autocomplete #auto="matAutocomplete" [displayWith]="autocompleteDisplay">
+						  @for (patient of filteredPatients | async; track patient.id) {
+							<mat-option [value]="patient">{{patient.name}}</mat-option>
+						  }
+						</mat-autocomplete>
+						@if (getPatientControl.invalid) {
+							<mat-error>Introduza um cliente válido</mat-error>
+						}
+					</mat-form-field>
+				} -->
+
+				<mat-form-field>
+					<mat-label>Duração (minutos)</mat-label>
+					<input matInput type="number" [formControl]="getDurationControl" min="1" max="1440">
+					@if (getDurationControl.invalid) {
+						<mat-error>Introduza uma duração válida</mat-error>
+					}
+				</mat-form-field>
+
+				<!-- TODO: check business logic if it is alowed to do this -->
+				<!-- <mat-form-field>
+					<mat-label>Estado</mat-label>
+					<mat-select [formControl]="getStatusControl" name="status">
+					  @for (status of statuses; track status) {
+						<mat-option [value]="status">{{SessionStatusMessages[status]}}</mat-option>
+					  }
+					</mat-select>
+					@if (getStatusControl.invalid) {
+						<mat-error>Introduza um estado válido</mat-error>
+					}
+				</mat-form-field> -->
 
 				<mat-form-field>
 					<mat-label>Vagas</mat-label>

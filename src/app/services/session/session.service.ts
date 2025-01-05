@@ -1,6 +1,6 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { BookSessionRequestModel, BookSessionResponse, CreateSessionFormValue, CreateSessionRequestModel, SessionByDateModel, SessionByDateRequestModel, SessionModel, SessionStatusEnum } from '../../models/session.model';
+import { BookSessionRequestModel, BookSessionResponse, CreateSessionFormValue, CreateEditSessionRequestModel, EditSessionFormValue, SessionByDateModel, SessionByDateRequestModel, SessionModel, SessionStatusEnum } from '../../models/session.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -33,15 +33,27 @@ export class SessionService {
 	}
 
 	createSession(createSessionForm: CreateSessionFormValue): Observable<SessionModel> {
-		const request: CreateSessionRequestModel = { 
+		const request: CreateEditSessionRequestModel = { 
 			date: createSessionForm.date,
-			therapistId: createSessionForm.therapist._id,
+			therapistId: createSessionForm.therapist.id,
 			durationInMinutes: createSessionForm.durationInMinutes,
 			vacancies: createSessionForm.vacancies,
 			status: SessionStatusEnum.AVAILABLE
 		};
 
 		return this._http.post<SessionModel>(`${this._apiUrl}`, request).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
+	editSession(editSessionForm: EditSessionFormValue, sessionId: string): Observable<SessionModel> {
+		const request: CreateEditSessionRequestModel = { 
+			date: editSessionForm.date,
+			therapistId: editSessionForm.therapist.id,
+			durationInMinutes: editSessionForm.durationInMinutes,
+			status: editSessionForm.status,
+			vacancies: editSessionForm.vacancies,
+		};
+
+		return this._http.patch<SessionModel>(`${this._apiUrl}/update/${sessionId}`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
 	deleteSession(sessionId: string): Observable<BaseResponse> {

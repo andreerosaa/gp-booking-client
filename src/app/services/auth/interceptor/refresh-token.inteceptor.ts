@@ -15,17 +15,17 @@ export function refreshTokenInterceptor(req: HttpRequest<unknown>, next: HttpHan
 			if (error.status === HttpStatusCode.Forbidden) {
 				return authService.refreshToken().pipe(
 					switchMap((refreshTokenResponse: LoginUserResponse | BaseResponse) => {
-            if('accessToken' in refreshTokenResponse) {
-              const cloned = req.clone({
-                setHeaders: {
-                  Authorization: `Bearer ${refreshTokenResponse.accessToken}`
-                }
-              });
-              return next(cloned);
-            } else {
-              router.navigate(['/'])
-              return EMPTY;
-            }
+						if ('accessToken' in refreshTokenResponse) {
+							const cloned = req.clone({
+								setHeaders: {
+									Authorization: `Bearer ${refreshTokenResponse.accessToken}`
+								}
+							});
+							return next(cloned);
+						} else {
+							router.navigate(['/']);
+							return EMPTY;
+						}
 					})
 				);
 			}
