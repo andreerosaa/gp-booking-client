@@ -78,7 +78,6 @@ export class SessionCardComponent {
   deleteSession(series=false){
     const seriesId = this.session().seriesId;
 
-    console.log(series, seriesId)
     if(series && seriesId){
       this._sessionService.deleteRecurringSessions(seriesId).subscribe({
         complete: () => {

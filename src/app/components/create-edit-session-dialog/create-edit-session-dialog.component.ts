@@ -4,7 +4,7 @@ import { CreateEditSessionDialogData, CreateSessionForm, CreateSessionFormValue,
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from '../../../environments/environment.development';
 import { TherapistService } from '../../services/therapist/therapist.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 import { TherapistModel } from '../../models/therapist.model';
 import { map, Observable, startWith } from 'rxjs';
@@ -154,7 +154,14 @@ export class CreateEditSessionDialogComponent implements OnInit {
 				error: (error: HttpErrorResponse) => {
 					this.loading = false;
 					console.log(error);
-					this._snackBarService.openErrorSnackBar('Erro a criar série');
+					switch(error.status) {
+						case HttpStatusCode.Forbidden:
+							this._snackBarService.openErrorSnackBar('Não é possível criar sessões no passado');
+							break;
+						default:
+							this._snackBarService.openErrorSnackBar('Erro a criar série');
+							break;
+					}
 				}
 			});
 		} else {
@@ -167,7 +174,14 @@ export class CreateEditSessionDialogComponent implements OnInit {
 				error: (error: HttpErrorResponse) => {
 					this.loading = false;
 					console.log(error);
-					this._snackBarService.openErrorSnackBar('Erro a criar sessão');
+					switch(error.status) {
+						case HttpStatusCode.Forbidden:
+							this._snackBarService.openErrorSnackBar('Não é possível criar sessões no passado');
+							break;
+						default:
+							this._snackBarService.openErrorSnackBar('Erro a criar sessão');
+							break;
+					}
 				}
 			});
 		}
