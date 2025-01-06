@@ -69,7 +69,7 @@ export class DayPanelComponent implements OnInit {
 		  });
 		  dialogRef.afterClosed().subscribe((result) => {
 			if(result) {
-			  this.getDaySessions();
+			  this.getDaySessionsDetailed();
 			}
 		  });
 	}

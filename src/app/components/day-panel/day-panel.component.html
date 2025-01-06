@@ -6,7 +6,7 @@
             </button>
         }
 	@for (session of daySessions; track session._id) {
-	<app-session-card (refreshTabEmitter)="getDaySessions()" [session]="session"></app-session-card>
+	<app-session-card (refreshTabEmitter)="authService.isLoggedIn() ? getDaySessionsDetailed() : getDaySessions()" [session]="session"></app-session-card>
 	} @empty {
 	<div>Não existem sessões</div>
 	} } @else {
