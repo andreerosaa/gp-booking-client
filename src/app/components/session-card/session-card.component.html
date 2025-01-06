@@ -5,11 +5,29 @@
       <mat-card-subtitle>Terapeuta: {{session().therapist.name}}</mat-card-subtitle>
       @if (authService.isLoggedIn()) {
         <div>
-          <button mat-icon-button
-            matTooltip="Eliminar"
-            (click)="openDeleteSessionDialog()">
-            <mat-icon>delete</mat-icon>
-          </button>
+          @if(session().seriesId){
+            <button mat-icon-button [matMenuTriggerFor]="deleteMenu" aria-label="Eliminar" matTooltip="Eliminar">
+              <div class="flex flex-col">
+                <mat-icon>delete</mat-icon>
+              </div>
+            </button>
+            <mat-menu #deleteMenu="matMenu" xPosition="before">
+              <button mat-menu-item (click)="openDeleteSessionDialog()">
+                <mat-icon>looks_one</mat-icon>
+                <span>Eliminar ocorrência</span>
+              </button>
+              <button mat-menu-item (click)="openDeleteSessionDialog(true)">
+                <mat-icon>delete_sweep</mat-icon>
+                <span>Eliminar série</span>
+              </button>
+            </mat-menu>
+          } @else {
+            <button mat-icon-button
+              matTooltip="Eliminar"
+              (click)="openDeleteSessionDialog()">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
           <button mat-icon-button
             matTooltip="Editar"
             (click)="openEditSessionDialog()">

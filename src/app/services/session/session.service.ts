@@ -44,6 +44,19 @@ export class SessionService {
 		return this._http.post<SessionModel>(`${this._apiUrl}`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
+	createRecurringSession(createSessionForm: CreateSessionFormValue): Observable<SessionModel[]> {
+		const request: CreateEditSessionRequestModel = { 
+			date: createSessionForm.date,
+			therapistId: createSessionForm.therapist.id,
+			durationInMinutes: createSessionForm.durationInMinutes,
+			vacancies: createSessionForm.vacancies,
+			recurrence: createSessionForm.recurrence,
+			status: SessionStatusEnum.AVAILABLE
+		};
+
+		return this._http.post<SessionModel[]>(`${this._apiUrl}/recurring`, request).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
 	editSession(editSessionForm: EditSessionFormValue, sessionId: string): Observable<SessionModel> {
 		const request: CreateEditSessionRequestModel = { 
 			date: editSessionForm.date,
@@ -59,5 +72,10 @@ export class SessionService {
 	deleteSession(sessionId: string): Observable<BaseResponse> {
 
 		return this._http.delete<BaseResponse>(`${this._apiUrl}/delete/${sessionId}`).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
+	deleteRecurringSessions(seriesId: string): Observable<BaseResponse> {
+
+		return this._http.delete<BaseResponse>(`${this._apiUrl}/recurring/delete/${seriesId}`).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 }

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CreateEditSessionDialogData, CreateSessionForm, CreateSessionFormValue, EditSessionForm, EditSessionFormValue, SessionStatusEnum, SessionStatusMessages } from '../../models/session.model';
+import { CreateEditSessionDialogData, CreateSessionForm, CreateSessionFormValue, EditSessionForm, EditSessionFormValue, SessionRecurrenceEnum, SessionRecurrenceMessages, SessionStatusEnum, SessionStatusMessages } from '../../models/session.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from '../../../environments/environment.development';
 import { TherapistService } from '../../services/therapist/therapist.service';
@@ -27,10 +27,12 @@ export class CreateEditSessionDialogComponent implements OnInit {
 	private readonly _sessionService = inject(SessionService);
 	protected readonly data = inject<CreateEditSessionDialogData>(MAT_DIALOG_DATA);
 	protected readonly maxLength = 50;
-	protected readonly statuses = Object.values(SessionStatusEnum).filter((v) => !isNaN(Number(v))) as SessionStatusEnum[];
 	protected readonly timeInterval = `${environment.TIMEPICKER_INTERVAL_MINUTES}min`;
+	protected readonly statuses = Object.values(SessionStatusEnum).filter((v) => !isNaN(Number(v))) as SessionStatusEnum[];
+	protected readonly recurrenceTypes = Object.values(SessionRecurrenceEnum).filter((v) => !isNaN(Number(v))) as SessionRecurrenceEnum[];
 
 	SessionStatusMessages = SessionStatusMessages;
+	SessionRecurrenceMessages = SessionRecurrenceMessages;
 
 	createSessionForm!: FormGroup<Partial<CreateSessionForm>>;
 	editSessionForm!: FormGroup<any>;
@@ -54,6 +56,7 @@ export class CreateEditSessionDialogComponent implements OnInit {
 				date: new FormControl(new Date(this.data.date), [Validators.required, Validators.maxLength(this.maxLength)]),
 				therapist: new FormControl(null, [Validators.required, Validators.maxLength(this.maxLength)]),
 				durationInMinutes: new FormControl(null, [Validators.required, Validators.maxLength(this.maxLength)]),
+				recurrence: new FormControl(null, [Validators.maxLength(this.maxLength)]),
 				vacancies: new FormControl({ value: 1, disabled: true }, [Validators.required, Validators.maxLength(this.maxLength)])
 			});
 		} else {
@@ -141,18 +144,33 @@ export class CreateEditSessionDialogComponent implements OnInit {
 		}
 
 		this.loading = true;
-		this._sessionService.createSession(this.createSessionForm.getRawValue() as CreateSessionFormValue).subscribe({
-			complete: () => {
-				this.loading = false;
-				this._snackBarService.openSuccessSnackBar('Sessão criada com sucesso');
-				this.closeDialog(true);
-			},
-			error: (error: HttpErrorResponse) => {
-				this.loading = false;
-				console.log(error);
-				this._snackBarService.openErrorSnackBar('Erro a criar sessão');
-			}
-		});
+			if(this.getRecurrenceControl.value != null) {
+			this._sessionService.createRecurringSession(this.createSessionForm.getRawValue() as CreateSessionFormValue).subscribe({
+				complete: () => {
+					this.loading = false;
+					this._snackBarService.openSuccessSnackBar('Série criada com sucesso');
+					this.closeDialog(true);
+				},
+				error: (error: HttpErrorResponse) => {
+					this.loading = false;
+					console.log(error);
+					this._snackBarService.openErrorSnackBar('Erro a criar série');
+				}
+			});
+		} else {
+			this._sessionService.createSession(this.createSessionForm.getRawValue() as CreateSessionFormValue).subscribe({
+				complete: () => {
+					this.loading = false;
+					this._snackBarService.openSuccessSnackBar('Sessão criada com sucesso');
+					this.closeDialog(true);
+				},
+				error: (error: HttpErrorResponse) => {
+					this.loading = false;
+					console.log(error);
+					this._snackBarService.openErrorSnackBar('Erro a criar sessão');
+				}
+			});
+		}
 	}
 
 	editSession() {
@@ -195,6 +213,9 @@ export class CreateEditSessionDialogComponent implements OnInit {
 	}
 	get getDurationControl(): FormControl {
 		return this.data.session ? this.editSessionForm.get('durationInMinutes') as FormControl : this.createSessionForm.get('durationInMinutes') as FormControl;
+	}
+	get getRecurrenceControl(): FormControl {
+		return this.createSessionForm.get('recurrence') as FormControl;
 	}
 	get getVacanciesControl(): FormControl {
 		return this.data.session ? this.editSessionForm.get('vacancies') as FormControl : this.createSessionForm.get('vacancies') as FormControl;

@@ -41,16 +41,16 @@ export class SessionCardComponent {
     });
   }
 
-  openDeleteSessionDialog() {
+  openDeleteSessionDialog(series=false) {
     const dialogRef = this._dialog.open(ConfirmationDialogComponent, {
       data:{
-        title: 'Eliminar sessão',
-        message: 'Tem a certeza de que pretende eliminar esta sessão?'
+        title: series ? 'Eliminar série' : 'Eliminar sessão',
+        message: series ? 'Tem a certeza de que pretende eliminar esta série de sessões?' : 'Tem a certeza de que pretende eliminar esta sessão?'
       }
     });
     dialogRef.afterClosed().subscribe((result) => {
       if(result) {
-        this.deleteSession();
+        this.deleteSession(series);
       }
     });
   }
@@ -75,27 +75,53 @@ export class SessionCardComponent {
 
   openSendConfirmationEmailDialog(){}
   
-  deleteSession(){
-    this._sessionService.deleteSession(this.session()._id).subscribe({
-      complete: () => {
-        this._snackBarService.openSuccessSnackBar('Sessão eliminada');
-        this.refreshTabEmitter.emit();
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log(error);
-        switch(error.status) {
-          case HttpStatusCode.Forbidden:
-            this._snackBarService.openErrorSnackBar('Sem permissões para eliminar sessão');
-            break;
-          case HttpStatusCode.NotFound:
-            this._snackBarService.openErrorSnackBar('Sessão não encontrada');
-            break;
-          default:
-            this._snackBarService.openErrorSnackBar('Erro ao eliminar sessão');
-            break;
+  deleteSession(series=false){
+    const seriesId = this.session().seriesId;
+
+    console.log(series, seriesId)
+    if(series && seriesId){
+      this._sessionService.deleteRecurringSessions(seriesId).subscribe({
+        complete: () => {
+          this._snackBarService.openSuccessSnackBar('Série eliminada');
+          this.refreshTabEmitter.emit();
+        },
+        error: (error: HttpErrorResponse) => {
+          console.log(error);
+          switch(error.status) {
+            case HttpStatusCode.Forbidden:
+              this._snackBarService.openErrorSnackBar('Sem permissões para eliminar série');
+              break;
+            case HttpStatusCode.NotFound:
+              this._snackBarService.openErrorSnackBar('Série não encontrada');
+              break;
+            default:
+              this._snackBarService.openErrorSnackBar('Erro ao eliminar série');
+              break;
+          }
         }
-      }
-    });
+      });
+    } else {
+      this._sessionService.deleteSession(this.session()._id).subscribe({
+        complete: () => {
+          this._snackBarService.openSuccessSnackBar('Sessão eliminada');
+          this.refreshTabEmitter.emit();
+        },
+        error: (error: HttpErrorResponse) => {
+          console.log(error);
+          switch(error.status) {
+            case HttpStatusCode.Forbidden:
+              this._snackBarService.openErrorSnackBar('Sem permissões para eliminar sessão');
+              break;
+            case HttpStatusCode.NotFound:
+              this._snackBarService.openErrorSnackBar('Sessão não encontrada');
+              break;
+            default:
+              this._snackBarService.openErrorSnackBar('Erro ao eliminar sessão');
+              break;
+          }
+        }
+      });
+    }
   }
 
   cancelSession(){}

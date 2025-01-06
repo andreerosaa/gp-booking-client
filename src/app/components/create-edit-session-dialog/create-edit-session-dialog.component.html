@@ -40,6 +40,18 @@
 				</mat-form-field>
 
 				<mat-form-field>
+					<mat-label>Repetir (Opcional)</mat-label>
+					<mat-select [formControl]="getRecurrenceControl" name="recurrence">
+					  @for (recurrence of recurrenceTypes; track recurrence) {
+						<mat-option [value]="recurrence">{{SessionRecurrenceMessages[recurrence]}}</mat-option>
+					  }
+					</mat-select>
+					@if (getRecurrenceControl.invalid) {
+						<mat-error>Introduza um tipo de recorrência válido</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field>
 					<mat-label>Vagas</mat-label>
 					<input matInput type="number" [formControl]="getVacanciesControl">
 					@if (getVacanciesControl.invalid) {

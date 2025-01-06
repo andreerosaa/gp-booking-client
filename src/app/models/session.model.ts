@@ -10,6 +10,7 @@ export interface SessionModel extends BaseModel {
 	status: SessionStatusEnum;
 	confirmationToken: string;
 	cancelationToken: string;
+	seriesId?: string;
 }
 export interface SessionByDateModel extends BaseModel {
 	date: Date;
@@ -20,6 +21,7 @@ export interface SessionByDateModel extends BaseModel {
 	status: SessionStatusEnum;
 	confirmationToken: string;
 	cancelationToken: string;
+	seriesId?: string;
 }
 
 export enum SessionStatusEnum {
@@ -67,6 +69,7 @@ export interface CreateEditSessionRequestModel {
 	therapistId: string;
 	durationInMinutes: number;
 	vacancies: number;
+	recurrence?: SessionRecurrenceEnum;
 	status: SessionStatusEnum;
 }
 
@@ -78,12 +81,14 @@ export interface CreateSessionForm {
 	date: FormControl<Date | null>;
 	therapist: FormControl<BaseIdentification | null>;
 	durationInMinutes: FormControl<number | null>;
+	recurrence?: FormControl<SessionRecurrenceEnum | null>;
 	vacancies: FormControl<number | null>;
 }
 export interface CreateSessionFormValue {
 	date: Date;
 	therapist: BaseIdentification;
 	durationInMinutes: number;
+	recurrence?: SessionRecurrenceEnum;
 	vacancies: number;
 }
 
@@ -99,3 +104,17 @@ export interface CreateEditSessionDialogData {
 	date: Date;
 	session?: SessionByDateModel;
 }
+
+export enum SessionRecurrenceEnum {
+	DAILY,
+	WEEKDAYS,
+	WEEKLY,
+	MONTHLY
+}
+
+export const SessionRecurrenceMessages: { [key in SessionRecurrenceEnum]: string } = {
+	[SessionRecurrenceEnum.DAILY]: 'Todos os dias',
+	[SessionRecurrenceEnum.WEEKDAYS]: 'Todos os dias de semana',
+	[SessionRecurrenceEnum.WEEKLY]: 'Todas as semanas',
+	[SessionRecurrenceEnum.MONTHLY]: 'Todos os meses',
+};
