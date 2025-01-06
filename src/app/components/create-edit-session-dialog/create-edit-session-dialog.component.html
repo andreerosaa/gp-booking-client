@@ -42,6 +42,7 @@
 				<mat-form-field>
 					<mat-label>Repetir (Opcional)</mat-label>
 					<mat-select [formControl]="getRecurrenceControl" name="recurrence">
+					<mat-option>Nenhuma</mat-option>
 					  @for (recurrence of recurrenceTypes; track recurrence) {
 						<mat-option [value]="recurrence">{{SessionRecurrenceMessages[recurrence]}}</mat-option>
 					  }
