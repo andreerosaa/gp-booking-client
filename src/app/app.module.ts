@@ -54,7 +54,7 @@ registerLocaleData(localePt);
 		FocusDirective,
 		HidePipe,
 		ConfirmationDialogComponent,
-		CreateEditSessionDialogComponent
+		CreateEditSessionDialogComponent,
 	],
 	imports: [
 		BrowserModule,
