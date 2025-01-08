@@ -35,7 +35,7 @@ export class CreateEditSessionDialogComponent implements OnInit {
 	SessionRecurrenceMessages = SessionRecurrenceMessages;
 
 	createSessionForm!: FormGroup<Partial<CreateSessionForm>>;
-	editSessionForm!: FormGroup<any>;
+	editSessionForm!: FormGroup<Partial<EditSessionForm>>;
 	therapists: BaseIdentification[] = [];
 	filteredTherapists!: Observable<BaseIdentification[]>;
 	patients: IdentificationWithEmail[] = [];

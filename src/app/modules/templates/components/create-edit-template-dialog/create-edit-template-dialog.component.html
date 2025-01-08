@@ -1,0 +1,67 @@
+<h2  mat-dialog-title>{{ data.template ? 'Editar template diário' : 'Criar template diário' }}</h2>
+<mat-dialog-content class="w-[500px]">
+	@if(!loading) {
+		@if (!data.template) {
+			<form class="flex flex-col gap-3" id="createTemplateForm" [formGroup]="createTemplateForm" (ngSubmit)="createTemplate()">
+                <mat-form-field>
+					<mat-label>Nome</mat-label>
+					<input matInput type="text" [formControl]="getNameControl">
+					@if (getNameControl.invalid) {
+						<mat-error>Introduza um nome válido</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Horas de início</mat-label>
+					<input matInput [formControl]="getStartTimesControl" [matTimepicker]="picker">
+					<mat-timepicker-toggle matIconSuffix [for]="picker"/>
+					<mat-timepicker #picker [interval]="timeInterval"/>
+					@if (getStartTimesControl.invalid) {
+						<mat-error>Introduza uma hora válida</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Terapeuta</mat-label>
+					<input type="text"
+						   placeholder="Selecione o terapeuta"
+						   matInput
+						   [formControl]="getTherapistControl"
+						   [matAutocomplete]="auto">
+					<mat-autocomplete #auto="matAutocomplete" [displayWith]="autocompleteDisplay">
+					  @for (therapist of filteredTherapists | async; track therapist.id) {
+						<mat-option [value]="therapist">{{therapist.name}}</mat-option>
+					  }
+					</mat-autocomplete>
+					@if (getTherapistControl.invalid) {
+						<mat-error>Introduza um terapeuta válido</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Duração (minutos)</mat-label>
+					<input matInput type="number" [formControl]="getDurationControl" min="1" max="1440">
+					@if (getDurationControl.invalid) {
+						<mat-error>Introduza uma duração válida</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Vagas</mat-label>
+					<input matInput type="number" [formControl]="getVacanciesControl">
+					@if (getVacanciesControl.invalid) {
+						<mat-error>Introduza um número de vagas válido</mat-error>
+					}
+				</mat-form-field>
+			</form>
+		} 
+	}  @else {
+		<div class="flex flex-col py-3 items-center content-center">
+			<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+		</div>
+	}
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-button mat-dialog-close (click)="closeDialog()">Cancelar</button>
+	<button mat-flat-button type="submit" [attr.form]="data.template ? 'editTemplateForm': 'createTemplateForm'" [disabled]="data.template ? !editTemplateForm.valid : !createTemplateForm.valid"> {{ data.template ? 'Editar' : 'Criar' }}</button>
+</mat-dialog-actions>

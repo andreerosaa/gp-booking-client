@@ -5,13 +5,14 @@
                 <mat-icon>add</mat-icon>
             </button>
         }
-	@for (session of daySessions; track session._id) {
-	<app-session-card (refreshTabEmitter)="authService.isLoggedIn() ? getDaySessionsDetailed() : getDaySessions()" [session]="session"></app-session-card>
-	} @empty {
-	<div>Não existem sessões</div>
-	} } @else {
-	<div class="flex flex-col items-center content-center">
-		<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-	</div>
+		@for (session of daySessions; track session._id) {
+			<app-session-card (refreshTabEmitter)="authService.isLoggedIn() ? getDaySessionsDetailed() : getDaySessions()" [session]="session"></app-session-card>
+		} @empty {
+			<div>Não existem sessões</div>
+		}
+	} @else {
+		<div class="flex flex-col items-center content-center">
+			<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+		</div>
 	}
 </div>

@@ -34,7 +34,7 @@ export class DayPanelComponent implements OnInit {
 	getDaySessions() {
 		this._sessionService.getSessionsByDate(this.date()).subscribe({
 			next: (sessions: SessionByDateModel[]) => {
-				this.daySessions = sessions;
+				this.daySessions = [...sessions];
 			},
 			complete: () => {
 				this.searching = false;
@@ -49,7 +49,7 @@ export class DayPanelComponent implements OnInit {
 	getDaySessionsDetailed() {
 		this._sessionService.getSessionsByDateDetailed(this.date()).subscribe({
 			next: (sessions: SessionByDateModel[]) => {
-				this.daySessions = sessions;
+				this.daySessions = [...sessions];
 			},
 			complete: () => {
 				this.searching = false;
