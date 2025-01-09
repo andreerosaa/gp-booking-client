@@ -1,4 +1,4 @@
-import { Component, inject, model, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TherapistService } from '../../../../services/therapist/therapist.service';
 import { SnackBarService } from '../../../../services/snack-bar/snack-bar.service';
@@ -9,105 +9,104 @@ import { BaseIdentification } from '../../../../models/base.model';
 import { map, Observable, startWith } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TherapistModel } from '../../../../models/therapist.model';
-import { MatTimepickerSelected } from '@angular/material/timepicker';
 
 @Component({
-  selector: 'app-create-edit-template-dialog',
-  standalone: false,
-  templateUrl: './create-edit-template-dialog.component.html',
-  styleUrl: './create-edit-template-dialog.component.scss'
+	selector: 'app-create-edit-template-dialog',
+	standalone: false,
+	templateUrl: './create-edit-template-dialog.component.html',
+	styleUrl: './create-edit-template-dialog.component.scss'
 })
 export class CreateEditTemplateDialogComponent implements OnInit {
-    private readonly dialogRef = inject(MatDialogRef<CreateEditTemplateDialogComponent>);
-    private readonly _therapistService = inject(TherapistService);
-    private readonly _snackBarService = inject(SnackBarService);
-    protected readonly data = inject<CreateEditTemplateDialogData>(MAT_DIALOG_DATA);
-    protected readonly maxLength = 50;
-    protected readonly timeInterval = `${environment.TIMEPICKER_INTERVAL_MINUTES}min`;
+	private readonly dialogRef = inject(MatDialogRef<CreateEditTemplateDialogComponent>);
+	private readonly _therapistService = inject(TherapistService);
+	private readonly _snackBarService = inject(SnackBarService);
+	protected readonly data = inject<CreateEditTemplateDialogData>(MAT_DIALOG_DATA);
+	protected readonly maxLength = 50;
+	protected readonly timeInterval = `${environment.TIMEPICKER_INTERVAL_MINUTES}min`;
 
-    createTemplateForm!: FormGroup<Partial<CreateTemplateForm>>;
-    editTemplateForm!: FormGroup<Partial<EditTemplateForm>>;
+	createTemplateForm!: FormGroup<Partial<CreateTemplateForm>>;
+	editTemplateForm!: FormGroup<Partial<EditTemplateForm>>;
 
-    therapists: BaseIdentification[] = [];
-    filteredTherapists!: Observable<BaseIdentification[]>;
-    loading = true;
+	therapists: BaseIdentification[] = [];
+	filteredTherapists!: Observable<BaseIdentification[]>;
+	loading = true;
 
+	ngOnInit() {
+		this.searchTherapists();
+		this.buildForm();
+		this.getStartTimesControl.valueChanges.subscribe((val) => {
+			console.log(val);
+		});
+	}
 
-    ngOnInit() {
-      this.searchTherapists();
-      this.buildForm();
-      this.getStartTimesControl.valueChanges.subscribe((val) => {
-        console.log(val);
-      })
-    }
+	buildForm() {
+		if (!this.data.template) {
+			this.createTemplateForm = new FormGroup<Partial<CreateTemplateForm>>({
+				name: new FormControl(null, [Validators.required, Validators.maxLength(this.maxLength)]),
+				startTimes: new FormControl(null, [Validators.required, Validators.maxLength(this.maxLength)]),
+				therapist: new FormControl(null, [Validators.required, Validators.maxLength(this.maxLength)]),
+				durationInMinutes: new FormControl(null, [Validators.required, Validators.maxLength(this.maxLength)]),
+				vacancies: new FormControl({ value: 1, disabled: true }, [Validators.required, Validators.maxLength(this.maxLength)])
+			});
+		}
+	}
 
-    buildForm() {
-      if (!this.data.template) {
-        this.createTemplateForm = new FormGroup<Partial<CreateTemplateForm>>({
-          name: new FormControl(null, [Validators.required, Validators.maxLength(this.maxLength)]),
-          startTimes: new FormControl(null, [Validators.required, Validators.maxLength(this.maxLength)]),
-          therapist: new FormControl(null, [Validators.required, Validators.maxLength(this.maxLength)]),
-          durationInMinutes: new FormControl(null, [Validators.required, Validators.maxLength(this.maxLength)]),
-          vacancies: new FormControl({ value: 1, disabled: true }, [Validators.required, Validators.maxLength(this.maxLength)])
-        });
-      }
-    }
+	searchTherapists() {
+		this._therapistService
+			.getTherapists()
+			.pipe(
+				map((therapists: TherapistModel[]): BaseIdentification[] => {
+					return therapists.map((therapist: TherapistModel): BaseIdentification => {
+						return { id: therapist._id, name: therapist.name };
+					});
+				})
+			)
+			.subscribe({
+				next: (therapists: BaseIdentification[]) => {
+					this.therapists = [...therapists];
+				},
+				complete: () => {
+					this.loading = false;
+					this.filterTherapists();
+				},
+				error: (error: HttpErrorResponse) => {
+					this.loading = false;
+					console.log(error);
+					this._snackBarService.openErrorSnackBar('Erro a pesquisar terapeutas');
+				}
+			});
+	}
 
-    searchTherapists() {
-      this._therapistService.getTherapists()
-      .pipe(
-        map((therapists: TherapistModel[]): BaseIdentification[] => {
-          return therapists.map((therapist: TherapistModel): BaseIdentification => {
-            return { id: therapist._id, name: therapist.name}
-          })
-        })
-      )	
-      .subscribe({
-        next: (therapists: BaseIdentification []) => {
-          this.therapists = [...therapists];
-        },
-        complete: () => {
-          this.loading = false;
-          this.filterTherapists();
-        },
-        error: (error: HttpErrorResponse) => {
-          this.loading = false;
-          console.log(error);
-          this._snackBarService.openErrorSnackBar('Erro a pesquisar terapeutas');
-        }
-      });
-    }
+	filterTherapists() {
+		this.filteredTherapists = this.getTherapistControl.valueChanges.pipe(
+			startWith(''),
+			map((filterValue: string) => this.therapists.filter((option) => option.name.toLowerCase().includes(filterValue)))
+		);
+	}
 
-    filterTherapists() {
-      this.filteredTherapists = this.getTherapistControl.valueChanges.pipe(
-        startWith(''),
-        map((filterValue: string) => this.therapists.filter((option) => option.name.toLowerCase().includes(filterValue)))
-      );
-    }
+	createTemplate() {}
 
-    createTemplate(){}
+	closeDialog(refresh?: boolean): void {
+		this.dialogRef.close(refresh);
+	}
 
-    closeDialog(refresh?: boolean): void {
-      this.dialogRef.close(refresh);
-    }
+	autocompleteDisplay(therapist: TherapistModel): string {
+		return therapist?.name ? therapist.name : '';
+	}
 
-    autocompleteDisplay(therapist: TherapistModel): string {
-      return therapist?.name ? therapist.name : '';
-    }
-
-    get getNameControl(): FormControl {
-      return this.createTemplateForm.get('name') as FormControl;
-    }
-    get getStartTimesControl(): FormControl {
-      return this.createTemplateForm.get('startTimes') as FormControl;
-    }
-    get getTherapistControl(): FormControl {
-      return this.createTemplateForm.get('therapist') as FormControl;
-    }
-    get getDurationControl(): FormControl {
-      return this.createTemplateForm.get('durationInMinutes') as FormControl;
-    }
-    get getVacanciesControl(): FormControl {
-      return this.createTemplateForm.get('vacancies') as FormControl;
-    }
+	get getNameControl(): FormControl {
+		return this.createTemplateForm.get('name') as FormControl;
+	}
+	get getStartTimesControl(): FormControl {
+		return this.createTemplateForm.get('startTimes') as FormControl;
+	}
+	get getTherapistControl(): FormControl {
+		return this.createTemplateForm.get('therapist') as FormControl;
+	}
+	get getDurationControl(): FormControl {
+		return this.createTemplateForm.get('durationInMinutes') as FormControl;
+	}
+	get getVacanciesControl(): FormControl {
+		return this.createTemplateForm.get('vacancies') as FormControl;
+	}
 }
