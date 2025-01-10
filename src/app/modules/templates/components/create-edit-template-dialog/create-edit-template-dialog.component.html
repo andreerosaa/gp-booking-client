@@ -13,7 +13,17 @@
 
 				<mat-form-field>
 					<mat-label>Horas de início</mat-label>
-					<input matInput [formControl]="getStartTimesControl" [matTimepicker]="picker">
+                    <mat-chip-grid #chipGrid [formControl]="getStartTimesControl">
+                        @for (time of getStartTimesControl.value; track $index) {
+                          <mat-chip-row (removed)="remove(time)" >
+                            {{time}}
+                            <button matChipRemove>
+                              <mat-icon>cancel</mat-icon>
+                            </button>
+                          </mat-chip-row>
+                        }
+                    </mat-chip-grid>
+					<input matInput [matTimepicker]="picker" [matChipInputFor]="chipGrid" (matChipInputTokenEnd)="add($event)">
 					<mat-timepicker-toggle matIconSuffix [for]="picker"/>
 					<mat-timepicker #picker [interval]="timeInterval"/>
 					@if (getStartTimesControl.invalid) {

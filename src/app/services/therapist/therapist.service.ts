@@ -16,6 +16,11 @@ export class TherapistService {
 
   getTherapists(): Observable<TherapistModel[]> {
 
-    return this._http.get<TherapistModel[]>(this._apiUrl).pipe(takeUntilDestroyed(this._destroyRef));
+    return this._http.get<TherapistModel[]>(`${this._apiUrl}`).pipe(takeUntilDestroyed(this._destroyRef));
+  }
+
+  getTherapistById(therapistId: string): Observable<TherapistModel> {
+
+    return this._http.get<TherapistModel>(`${this._apiUrl}/${therapistId}`).pipe(takeUntilDestroyed(this._destroyRef));
   }
 }

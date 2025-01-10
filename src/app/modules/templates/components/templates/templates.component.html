@@ -11,7 +11,7 @@
 <mat-accordion multi>
     @if (!searching) {
         @for (template of templates; track template._id) {
-            <app-template-slot [template]="template"></app-template-slot>
+            <app-template-slot [template]="template" (refreshPageEmitter)="getTemplates()"></app-template-slot>
         } @empty {
             <p class="text-center">Não existem templates de horários</p>
         }

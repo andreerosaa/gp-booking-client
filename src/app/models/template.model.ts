@@ -19,7 +19,7 @@ export interface CreateTemplateRequest {
 
 export interface CreateTemplateForm {
     name : FormControl<string | null>
-    startTimes : FormControl<Date[] | null>
+    startTimes : FormControl<string[] | null>
     therapist : FormControl<BaseIdentification | null>
     durationInMinutes : FormControl<number | null>
     vacancies : FormControl<number | null>    
@@ -27,7 +27,7 @@ export interface CreateTemplateForm {
 
 export interface CreateTemplateFormValue {
 	name: string;
-	startTimes: Date[];
+	startTimes: string[];
 	therapist: BaseIdentification;
 	durationInMinutes: number;
 	vacancies: number;
