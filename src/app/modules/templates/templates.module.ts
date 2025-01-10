@@ -16,6 +16,7 @@ import { MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel } from '@angula
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -41,7 +42,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatSnackBarAction,
     MatAutocompleteModule,
     MatTimepickerModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTooltipModule
   ]
 })
 export class TemplatesModule { }

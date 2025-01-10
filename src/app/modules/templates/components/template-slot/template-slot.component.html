@@ -8,7 +8,7 @@
                     <!-- <span>{{time | date:'HH:mm'}}-{{computeEndTime(time, template().durationInMinutes) | date: 'HH:mm'}}{{$last ? '':', '}}</span> -->
                 }
             </div>
-            <button mat-icon-button (click)="$event.stopPropagation(); openDeleteTemplateDialog()">
+            <button mat-icon-button matTooltip="Eliminar" (click)="$event.stopPropagation(); openDeleteTemplateDialog()">
                 <mat-icon>delete</mat-icon>
             </button>
         </mat-panel-description>
