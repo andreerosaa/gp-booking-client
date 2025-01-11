@@ -1,11 +1,11 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, inject, Input } from '@angular/core';
 
 @Directive({
   selector: '[focus]',
   standalone: false
 })
 export class FocusDirective {
-  constructor(private hostElement: ElementRef) {}
+  private readonly hostElement = inject(ElementRef)
 
   @Input()
   set focus(focus: boolean) {

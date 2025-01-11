@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { DatesService } from '../../services/dates/dates.service';
 import { MatTabGroup } from '@angular/material/tabs';
 
@@ -10,13 +10,12 @@ import { MatTabGroup } from '@angular/material/tabs';
 	styleUrl: './date-tabs.component.scss'
 })
 export class DateTabsComponent implements OnInit {
-	
 	@ViewChild('tabGroup') tabGroup!: MatTabGroup;
-	
+
+	private readonly _datesService = inject(DatesService);
+
 	dateRange: Date[] = [];
 	today = new Date();
-
-	constructor(private readonly _datesService: DatesService) {}
 
 	ngOnInit(): void {
 		this.dateRange = this._datesService.getDateRange();
