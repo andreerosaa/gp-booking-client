@@ -132,4 +132,21 @@ export class SessionCardComponent {
   computeEndTime() {
 		return new Date(new Date(this.session().date).getTime() + this.session().durationInMinutes * 60000);
 	}
+
+  statusColor() {
+    let colorClass = '';
+    switch(this.session().status) {
+      case(SessionStatusEnum.AVAILABLE):
+        colorClass = 'green';
+        break;
+      case(SessionStatusEnum.PENDING):
+        colorClass = 'orange';
+        break;
+      case(SessionStatusEnum.CONFIRMED):
+        colorClass = 'red';
+        break;
+    }
+
+    return colorClass;
+  }
 }

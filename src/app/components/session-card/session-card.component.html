@@ -38,8 +38,8 @@
     </mat-card-title-group>
   </mat-card-header>
   <mat-card-content>
-    <p>Duração: {{session().durationInMinutes}} minutos</p>
-    <p>Estado: {{SessionStatusMessages[session().status]}}</p>
+    <p>{{session().durationInMinutes}} minutos</p>
+    <p>{{SessionStatusMessages[session().status]}}<span class="ml-2 ball" [ngClass]="statusColor()"></span></p>
     @if(authService.isLoggedIn() && (session().status === SessionStatusEnum.PENDING || session().status === SessionStatusEnum.CONFIRMED)) {
       <p>Cliente: <a [routerLink]="['patient/',session().patient?.id]" matTooltip="Abrir detalhes do cliente" matTooltipPosition="after">{{session().patient?.name}}</a></p>
       <p>Email: {{session().patient?.email}}</p>
