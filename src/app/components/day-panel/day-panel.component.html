@@ -25,7 +25,7 @@
 		@for (session of daySessions; track session._id) {
 			<app-session-card (refreshTabEmitter)="authService.isLoggedIn() ? getDaySessionsDetailed() : getDaySessions()" [session]="session"></app-session-card>
 		} @empty {
-			<div>Não existem sessões</div>
+			<img src="assets/gp-logo.png" alt="gym logo" class="mt-10 opacity-15 w-60" />
 		}
 	} @else {
 		<div class="flex flex-col items-center content-center">
