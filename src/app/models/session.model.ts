@@ -1,5 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { BaseIdentification, BaseModel, IdentificationWithEmail } from './base.model';
+import { TemplateModel } from './template.model';
 
 export interface SessionModel extends BaseModel {
 	date: Date;
@@ -103,6 +104,25 @@ export interface EditSessionFormValue extends CreateSessionFormValue {
 export interface CreateEditSessionDialogData {
 	date: Date;
 	session?: SessionByDateModel;
+}
+export interface CreateFromTemplateDialogData {
+	date: Date;
+}
+
+export interface CreateFromTemplateForm {
+	template: FormControl<TemplateModel | null>;
+}
+export interface CreateFromTemplateFormValue {
+	template: TemplateModel;
+}
+
+export interface CreateFromTemplateRequestModel {
+	date: Date;
+	templateId: string;
+}
+
+export interface ClearDayRequestModel {
+	date: Date;
 }
 
 export enum SessionRecurrenceEnum {

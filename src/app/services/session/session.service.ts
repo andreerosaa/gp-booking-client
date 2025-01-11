@@ -1,6 +1,6 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { BookSessionRequestModel, BookSessionResponse, CreateSessionFormValue, CreateEditSessionRequestModel, EditSessionFormValue, SessionByDateModel, SessionByDateRequestModel, SessionModel, SessionStatusEnum } from '../../models/session.model';
+import { BookSessionRequestModel, BookSessionResponse, CreateSessionFormValue, CreateEditSessionRequestModel, EditSessionFormValue, SessionByDateModel, SessionByDateRequestModel, SessionModel, SessionStatusEnum, CreateFromTemplateRequestModel, CreateFromTemplateFormValue, ClearDayRequestModel } from '../../models/session.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -57,6 +57,15 @@ export class SessionService {
 		return this._http.post<SessionModel[]>(`${this._apiUrl}/recurring`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
+	createFromTemplate(date: Date, createFromTemplateForm: CreateFromTemplateFormValue): Observable<SessionModel[]> {
+		const request: CreateFromTemplateRequestModel = {
+			date: date,
+			templateId: createFromTemplateForm.template._id,
+		};
+
+		return this._http.post<SessionModel[]>(`${this._apiUrl}/template`, request).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
 	editSession(editSessionForm: EditSessionFormValue, sessionId: string): Observable<SessionModel> {
 		const request: CreateEditSessionRequestModel = { 
 			date: editSessionForm.date,
@@ -77,5 +86,13 @@ export class SessionService {
 	deleteRecurringSessions(seriesId: string): Observable<BaseResponse> {
 
 		return this._http.delete<BaseResponse>(`${this._apiUrl}/recurring/delete/${seriesId}`).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
+	clearDaySessions(date: Date): Observable<BaseResponse>{
+		const request: ClearDayRequestModel = { 
+			date: date,
+		};
+
+		return this._http.post<BaseResponse>(`${this._apiUrl}/day/delete`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 }

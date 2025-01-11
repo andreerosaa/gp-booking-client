@@ -1,7 +1,7 @@
 <mat-card class="min-w-96" appearance="outlined">
   <mat-card-header>
     <mat-card-title-group>
-      <mat-card-title>{{session().date | date: 'HH:mm'}}</mat-card-title>
+      <mat-card-title>{{session().date | date: 'HH:mm'}} - {{computeEndTime() | date: 'HH:mm'}}</mat-card-title>
       <mat-card-subtitle>Terapeuta: {{session().therapist.name}}</mat-card-subtitle>
       @if (authService.isLoggedIn()) {
         <div>
@@ -39,7 +39,6 @@
   </mat-card-header>
   <mat-card-content>
     <p>Duração: {{session().durationInMinutes}} minutos</p>
-    <p>Vagas: {{session().vacancies}}</p>
     <p>Estado: {{SessionStatusMessages[session().status]}}</p>
     @if(authService.isLoggedIn() && (session().status === SessionStatusEnum.PENDING || session().status === SessionStatusEnum.CONFIRMED)) {
       <p>Cliente: <a [routerLink]="['patient/',session().patient?.id]" matTooltip="Abrir detalhes do cliente" matTooltipPosition="after">{{session().patient?.name}}</a></p>

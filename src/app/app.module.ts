@@ -38,6 +38,7 @@ import { MatTimepickerModule } from '@angular/material/timepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
+import { CreateFromTemplateDialogComponent } from './components/create-from-template-dialog/create-from-template-dialog.component';
 
 registerLocaleData(localePt);
 
@@ -55,6 +56,7 @@ registerLocaleData(localePt);
 		HidePipe,
 		ConfirmationDialogComponent,
 		CreateEditSessionDialogComponent,
+		CreateFromTemplateDialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -81,7 +83,7 @@ registerLocaleData(localePt);
 		MatMenuModule,
 		MatTimepickerModule,
 		MatAutocompleteModule,
-		MatSelectModule
+		MatSelectModule,
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'pt-PT' },

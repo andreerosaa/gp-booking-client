@@ -128,4 +128,8 @@ export class SessionCardComponent {
   clearSession(){}
 
   sendConfirmationEmail(){}
+
+  computeEndTime() {
+		return new Date(new Date(this.session().date).getTime() + this.session().durationInMinutes * 60000);
+	}
 }

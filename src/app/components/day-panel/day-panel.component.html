@@ -1,9 +1,26 @@
 <div class="flex flex-col w-full p-6 gap-6 items-center">
 	@if(!searching){
         @if (authService.isLoggedIn()) {
-            <button mat-icon-button matTooltip="Nova sessão" matTooltipPosition="after" (click)="openAddSessionDialog()">
-                <mat-icon>add</mat-icon>
-            </button>
+			<div class="flex w-full justify-start">
+				<button mat-flat-button [matMenuTriggerFor]="createMenu">
+					<mat-icon>add</mat-icon>
+					Criar sessões
+				</button>
+				<mat-menu #createMenu="matMenu" xPosition="before">
+					<button mat-menu-item (click)="openCreateFromTemplateDialog()">
+						<mat-icon>event_note</mat-icon>
+						<span>Template diário</span>
+					</button>
+					<button mat-menu-item (click)="openAddSessionDialog()">
+						<mat-icon>looks_one</mat-icon>
+						<span>Sessão individual</span>
+					</button>
+				</mat-menu>
+				<button mat-button (click)="openClearDayDialog()" [disabled]="daySessions.length === 0">
+					<mat-icon>event_busy</mat-icon>
+					Limpar dia
+				</button>
+			</div>
         }
 		@for (session of daySessions; track session._id) {
 			<app-session-card (refreshTabEmitter)="authService.isLoggedIn() ? getDaySessionsDetailed() : getDaySessions()" [session]="session"></app-session-card>

@@ -1,0 +1,32 @@
+<h2  mat-dialog-title>Preencher dia com template diário</h2>
+<mat-dialog-content class="min-w-96">
+	<p class="mb-3">{{ data.date | date : 'EEEE, dd/MM' }}</p>
+	@if(!loading) {
+		<form class="flex flex-col gap-3" id="createFromTemplateForm" [formGroup]="createFromTemplateForm" (ngSubmit)="createFromTemplate()">
+			<mat-form-field>
+				<mat-label>Template</mat-label>
+				<input type="text"
+						placeholder="Selecione o template"
+						matInput
+						[formControl]="getTemplateControl"
+						[matAutocomplete]="auto">
+				<mat-autocomplete #auto="matAutocomplete" [displayWith]="autocompleteDisplay">
+					@for (template of filteredTemplates | async; track template._id) {
+					<mat-option [value]="template">{{template.name}}</mat-option>
+					}
+				</mat-autocomplete>
+				@if (getTemplateControl.invalid) {
+					<mat-error>Introduza um template válido</mat-error>
+				}
+			</mat-form-field>
+		</form>
+	}  @else {
+		<div class="flex flex-col py-3 items-center content-center">
+			<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+		</div>
+	}
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-button mat-dialog-close (click)="closeDialog()">Cancelar</button>
+	<button mat-flat-button type="submit" form="createFromTemplateForm" [disabled]="!createFromTemplateForm.valid">Preencher</button>
+</mat-dialog-actions>

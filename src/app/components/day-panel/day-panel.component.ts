@@ -1,10 +1,13 @@
 import { Component, inject, input, OnInit } from '@angular/core';
 import { SessionByDateModel } from '../../models/session.model';
 import { SessionService } from '../../services/session/session.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateEditSessionDialogComponent } from '../create-edit-session-dialog/create-edit-session-dialog.component';
+import { CreateFromTemplateDialogComponent } from '../create-from-template-dialog/create-from-template-dialog.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 
 @Component({
 	selector: 'app-day-panel',
@@ -17,6 +20,7 @@ export class DayPanelComponent implements OnInit {
 
 	private readonly _dialog = inject(MatDialog);
 	private readonly _sessionService = inject(SessionService);
+	private readonly _snackBarService = inject(SnackBarService);
 
 	readonly authService = inject(AuthService);
 
@@ -73,4 +77,54 @@ export class DayPanelComponent implements OnInit {
 			}
 		  });
 	}
+
+	openCreateFromTemplateDialog() {
+		const dialogRef = this._dialog.open(CreateFromTemplateDialogComponent, {
+			data:{
+			  date: this.date()
+			}
+		  });
+		  dialogRef.afterClosed().subscribe((result) => {
+			if(result) {
+			  this.getDaySessionsDetailed();
+			}
+		  });
+	}
+
+	openClearDayDialog() {
+		const dialogRef = this._dialog.open(ConfirmationDialogComponent, {
+			data:{
+			title: 'Limpar sessões deste dia',
+			message: 'Tem a certeza de que pretende eliminar todas as sessões a decorrer neste dia?'
+			}
+		});
+		dialogRef.afterClosed().subscribe((result) => {
+			if(result) {
+			this.clearDaySessions();
+			}
+		});
+	}
+
+	clearDaySessions(){
+		this._sessionService.clearDaySessions(this.date()).subscribe({
+		complete: () => {
+			this._snackBarService.openSuccessSnackBar('Sessões eliminadas');
+			this.getDaySessionsDetailed();
+		},
+		error: (error: HttpErrorResponse) => {
+			console.log(error);
+			switch(error.status) {
+			case HttpStatusCode.Forbidden:
+				this._snackBarService.openErrorSnackBar('Sem permissões para eliminar sessões');
+				break;
+			case HttpStatusCode.NotFound:
+				this._snackBarService.openErrorSnackBar('Sessão não encontrada');
+				break;
+			default:
+				this._snackBarService.openErrorSnackBar('Erro ao eliminar sessões');
+				break;
+			}
+		}
+		});
+	  }
 }
