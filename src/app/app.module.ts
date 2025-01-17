@@ -39,6 +39,8 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { CreateFromTemplateDialogComponent } from './components/create-from-template-dialog/create-from-template-dialog.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 registerLocaleData(localePt);
 
@@ -84,12 +86,14 @@ registerLocaleData(localePt);
 		MatTimepickerModule,
 		MatAutocompleteModule,
 		MatSelectModule,
+		MatSidenavModule,
+		MatDatepickerModule
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'pt-PT' },
 		provideAnimationsAsync(),
 		provideHttpClient(withInterceptors([authInterceptor, refreshTokenInterceptor])),
-		provideNativeDateAdapter()
+		provideNativeDateAdapter(),
 	],
 	bootstrap: [AppComponent]
 })

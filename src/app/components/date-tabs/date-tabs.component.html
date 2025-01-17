@@ -1,14 +1,37 @@
-<button mat-button matTooltip="Voltar à data de hoje" matTooltipPosition="right" (click)="resetSelectedTab()">
-	<mat-icon>today</mat-icon>
-	Hoje
-</button>
-<mat-tab-group #tabGroup>
-	@for (date of dateRange; track date) {
-		<mat-tab>
-			<ng-template mat-tab-label>{{ date | date : 'EEEE, dd/MM' }}</ng-template>
-			<ng-template matTabContent>
-				<app-day-panel [date]="date"></app-day-panel>
-			</ng-template>
-		</mat-tab>
+<div class="flex w-full justify-between mb-2">
+	<button mat-button matTooltip="Voltar à data de hoje" matTooltipPosition="right" (click)="resetSelectedTab()">
+		<mat-icon>today</mat-icon>
+		Hoje
+	</button>
+	@if (drawer.opened) {
+		<button type="button" mat-icon-button matTooltip="Fechar" (click)="drawer.toggle()">
+			<mat-icon>arrow_right</mat-icon>
+		</button>
+	} @else {
+		<button type="button" mat-icon-button matTooltip="Expandir" (click)="drawer.toggle()">
+			<mat-icon>arrow_left</mat-icon>
+		</button>
 	}
-</mat-tab-group>
+</div>
+<mat-drawer-container>
+	<mat-drawer-content class="flex w-1/2 p-2">
+		<mat-card>
+			<mat-calendar [minDate]="minDate" [(selected)]="selected"></mat-calendar>
+		</mat-card>
+	</mat-drawer-content>
+
+	<!-- TODO: position below in smaller screens -->
+	<mat-drawer #drawer mode="side" position="end" opened="true">
+		<mat-tab-group #tabGroup>
+			@for (date of dateRange; track date) {
+			<mat-tab>
+				<ng-template mat-tab-label>{{ date | date : 'EEEE, dd/MM' }}</ng-template>
+				<ng-template matTabContent>
+					<app-day-panel [date]="date"></app-day-panel>
+				</ng-template>
+			</mat-tab>
+			}
+		</mat-tab-group>
+	</mat-drawer>
+</mat-drawer-container>
+	
