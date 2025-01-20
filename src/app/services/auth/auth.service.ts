@@ -5,6 +5,7 @@ import { LoginUserRequest, LoginUserResponse } from '../../models/user.model';
 import { environment } from '../../../environments/environment.development';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BaseResponse } from '../../models/base.model';
+import { Router } from '@angular/router';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,6 +13,7 @@ import { BaseResponse } from '../../models/base.model';
 export class AuthService {
 	private readonly _destroyRef = inject(DestroyRef);
 	private readonly _http = inject(HttpClient);
+	private readonly _router = inject(Router);
 	private readonly _apiUrl = `${environment.API_BASE_URL}/user`;
 
 	login(username: string, password: string): Observable<LoginUserResponse> {
@@ -26,7 +28,10 @@ export class AuthService {
 	logout(): Observable<BaseResponse> {
 		return this._http.post<BaseResponse>(`${this._apiUrl}/logout`, {}).pipe(
 			takeUntilDestroyed(this._destroyRef),
-			tap(() => this.setAccessToken(''))
+			tap(() => {
+				this.setAccessToken('');
+				this._router.navigate(['/']).then(() => window.location.reload())
+			})
 		);
 	}
 

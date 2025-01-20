@@ -2,7 +2,6 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ThemeService } from '../../services/theme/theme.service';
 import { AuthService } from '../../services/auth/auth.service';
-import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 
@@ -13,14 +12,11 @@ import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 	styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
+	private readonly _themeService = inject(ThemeService);
+	private readonly _snackBarService = inject(SnackBarService);
+	
 	readonly authService = inject(AuthService);
 	readonly darkMode = signal(true);
-
-	constructor(
-		private readonly _themeService: ThemeService,
-		private readonly _router: Router,
-		private readonly _snackBarService: SnackBarService
-	) {}
 
 	ngOnInit() {
 		const darkModeInLocalStorage = localStorage.getItem('isDarkMode');
@@ -38,9 +34,6 @@ export class HeaderComponent implements OnInit {
 
 	logout() {
 		this.authService.logout().subscribe({
-					complete: () => {
-						this._router.navigate(['/']);
-					},
 					error: (error: HttpErrorResponse) => {
 						console.log(error);
 						this._snackBarService.openErrorSnackBar('Erro a efetuar logout');
