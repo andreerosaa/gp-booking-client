@@ -16,13 +16,13 @@
 <mat-drawer-container>
 	<mat-drawer-content class="flex w-1/2 p-2">
 		<mat-card>
-			<mat-calendar [minDate]="minDate" [(selected)]="selected"></mat-calendar>
+			<mat-calendar [minDate]="minDate" [maxDate]="maxDate" [(selected)]="selectedDate"></mat-calendar>
 		</mat-card>
 	</mat-drawer-content>
 
 	<!-- TODO: position below in smaller screens -->
 	<mat-drawer #drawer mode="side" position="end" opened="true">
-		<mat-tab-group #tabGroup>
+		<mat-tab-group #tabGroup [selectedIndex]="selectedIndex()" (selectedIndexChange)="setSelectedDate($event)">
 			@for (date of dateRange; track date) {
 			<mat-tab>
 				<ng-template mat-tab-label>{{ date | date : 'EEEE, dd/MM' }}</ng-template>

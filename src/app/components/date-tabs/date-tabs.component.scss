@@ -2,6 +2,13 @@
     background: none;
 }
 
+.mat-drawer-container {
+    display: flex;
+    width: 100%;
+    align-items: start;
+    justify-content: center;
+}
+
 .mat-drawer {
     display: flex;
     width: 50%;
