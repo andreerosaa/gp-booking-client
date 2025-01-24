@@ -1,9 +1,9 @@
-import { Component, computed, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { DatesService } from '../../services/dates/dates.service';
 import { MatTabGroup } from '@angular/material/tabs';
-import { AuthService } from '../../services/auth/auth.service';
 import { MatCalendar } from '@angular/material/datepicker';
 import { MatDrawer } from '@angular/material/sidenav';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-date-tabs',
@@ -11,18 +11,19 @@ import { MatDrawer } from '@angular/material/sidenav';
 	templateUrl: './date-tabs.component.html',
 	styleUrl: './date-tabs.component.scss'
 })
-export class DateTabsComponent implements OnInit {
+export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('tabGroup') tabGroup!: MatTabGroup;
 	@ViewChild(MatCalendar) calendar!: MatCalendar<Date>;
 	@ViewChild('drawer', { static: true }) drawer!: MatDrawer;
 
 	private readonly _datesService = inject(DatesService);
-	private readonly _authService = inject(AuthService);
+	private _subscription!: Subscription;
 
 	dateRange: Date[] = [];
 	today = new Date();
 	minDate = new Date();
 	maxDate = new Date();
+	monthYearView: number[] = [this.today.getMonth(), this.today.getFullYear()];
 
 	selectedDate = signal<Date | null>(this.today);
 	selectedIndex = computed<number>(() =>
@@ -46,6 +47,22 @@ export class DateTabsComponent implements OnInit {
 		this.maxDate = this.dateRange[this.dateRange.length - 1];
 	}
 
+	ngAfterViewInit() {
+		this._subscription = this.calendar.stateChanges.subscribe(() => {
+			const currentMonthYearView = [this.calendar.activeDate.getMonth(), this.calendar.activeDate.getFullYear()];
+			if (!this.compareArrays(this.monthYearView, currentMonthYearView)) {
+				this.monthYearView = [this.calendar.activeDate.getMonth(), this.calendar.activeDate.getFullYear()];
+				this.getMonthlySessions()
+			}
+		});
+	}
+
+	ngOnDestroy() {
+		if (this._subscription) {
+			this._subscription.unsubscribe();
+		}
+	}
+
 	resetSelectedTab() {
 		this.tabGroup.selectedIndex = this.dateRange.findIndex((date) => date.getDate() === this.today.getDate());
 		this.selectedDate.set(this.today);
@@ -54,5 +71,13 @@ export class DateTabsComponent implements OnInit {
 
 	setSelectedDate(index: number) {
 		this.selectedDate.set(this.dateRange[index]);
+	}
+
+	getMonthlySessions(){
+		console.log('getting monthly sessions')
+	}
+
+	private compareArrays(arr1: number[], arr2: number[]) {
+		return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
 	}
 }
