@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, computed, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { DatesService } from '../../services/dates/dates.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { AuthService } from '../../services/auth/auth.service';
@@ -18,7 +18,6 @@ export class DateTabsComponent implements OnInit {
 
 	private readonly _datesService = inject(DatesService);
 	private readonly _authService = inject(AuthService);
-	private readonly _changeDetectorRef = inject(ChangeDetectorRef);
 
 	selectedDate = signal<Date | null>(null);
 	selectedIndex = computed<number>(() =>
@@ -31,18 +30,19 @@ export class DateTabsComponent implements OnInit {
 	);
 	effect = effect(() => {
 		this.selectedIndex();
-		if(!this.drawer.opened) {
+		if (!this.drawer.opened) {
 			this.drawer.toggle();
-			this._changeDetectorRef.detectChanges()
 		}
-	})
+	});
 	dateRange: Date[] = [];
 	today = new Date();
-	minDate = this._authService.isLoggedIn() ? new Date(new Date(this.today).setFullYear(this.today.getFullYear() - 1)) : this.today;
-	maxDate = new Date(new Date(this.today).setFullYear(this.today.getFullYear() + 1));
+	minDate = new Date();
+	maxDate = new Date();
 
 	ngOnInit(): void {
 		this.dateRange = this._datesService.getDateRange();
+		this.minDate = this.dateRange[0];
+		this.maxDate = this.dateRange[this.dateRange.length - 1];
 	}
 
 	resetSelectedTab() {
@@ -55,4 +55,3 @@ export class DateTabsComponent implements OnInit {
 		this.selectedDate.set(this.dateRange[index]);
 	}
 }
-	

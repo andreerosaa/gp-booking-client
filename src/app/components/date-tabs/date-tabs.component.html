@@ -22,7 +22,7 @@
 
 	<!-- TODO: position below in smaller screens -->
 	<mat-drawer #drawer mode="side" position="end" opened="true">
-		<mat-tab-group #tabGroup [selectedIndex]="selectedIndex()" (selectedIndexChange)="setSelectedDate($event)">
+		<mat-tab-group #tabGroup [selectedIndex]="selectedIndex()" (selectedIndexChange)="setSelectedDate($event)" animationDuration="200">
 			@for (date of dateRange; track date) {
 			<mat-tab>
 				<ng-template mat-tab-label>{{ date | date : 'EEEE, dd/MM' }}</ng-template>
