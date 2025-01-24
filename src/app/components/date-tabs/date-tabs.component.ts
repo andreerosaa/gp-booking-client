@@ -19,7 +19,12 @@ export class DateTabsComponent implements OnInit {
 	private readonly _datesService = inject(DatesService);
 	private readonly _authService = inject(AuthService);
 
-	selectedDate = signal<Date | null>(null);
+	dateRange: Date[] = [];
+	today = new Date();
+	minDate = new Date();
+	maxDate = new Date();
+
+	selectedDate = signal<Date | null>(this.today);
 	selectedIndex = computed<number>(() =>
 		this.dateRange.findIndex(
 			(date) =>
@@ -34,10 +39,6 @@ export class DateTabsComponent implements OnInit {
 			this.drawer.toggle();
 		}
 	});
-	dateRange: Date[] = [];
-	today = new Date();
-	minDate = new Date();
-	maxDate = new Date();
 
 	ngOnInit(): void {
 		this.dateRange = this._datesService.getDateRange();

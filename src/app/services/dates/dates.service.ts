@@ -11,9 +11,11 @@ export class DatesService {
 
 	getDateRange(): Date[] {
 		let daysRange = 0;
+		let startIndex = 0;
 		// Check if logged in
 		if(this._authService.isLoggedIn()) {
 			daysRange = environment.DAYS_RANGE_ADMIN;
+			startIndex = -daysRange -1
 		} else {
 			daysRange = environment.DAYS_RANGE;
 		}
@@ -23,7 +25,7 @@ export class DatesService {
 
 		// Compute days list from current Date
 		const daysList = [];
-		for (let i = 0; i < daysRange; i++) {
+		for (let i = startIndex; i <= daysRange; i++) {
 			let newDay = new Date();
 			newDay.setDate(currentDate.getDate() + i);
 			daysList.push(newDay);
