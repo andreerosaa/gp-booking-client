@@ -4,11 +4,11 @@
 		Hoje
 	</button>
 	@if (drawer.opened) {
-		<button type="button" mat-icon-button matTooltip="Fechar" (click)="drawer.toggle()">
+		<button type="button" mat-icon-button matTooltip="Fechar" disabled="true" (click)="drawer.toggle()">
 			<mat-icon>arrow_right</mat-icon>
 		</button>
 	} @else {
-		<button type="button" mat-icon-button matTooltip="Expandir" (click)="drawer.toggle()">
+		<button type="button" mat-icon-button matTooltip="Expandir" disabled="true" (click)="drawer.toggle()">
 			<mat-icon>arrow_left</mat-icon>
 		</button>
 	}
