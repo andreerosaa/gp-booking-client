@@ -16,7 +16,7 @@
 <mat-drawer-container>
 	<mat-drawer-content class="flex w-1/2 p-2">
 		<mat-card>
-			<mat-calendar [minDate]="minDate" [maxDate]="maxDate" [(selected)]="selectedDate"></mat-calendar>
+			<mat-calendar [dateClass]="dateClass()" [minDate]="minDate" [maxDate]="maxDate" [(selected)]="selectedDate"></mat-calendar>
 		</mat-card>
 	</mat-drawer-content>
 

@@ -1,16 +1,22 @@
-.mat-drawer-container, .mat-drawer {
-    background: none;
+.mat-drawer-container,
+.mat-drawer {
+	background: none;
 }
 
 .mat-drawer-container {
-    display: flex;
-    width: 100%;
-    align-items: start;
-    justify-content: center;
+	display: flex;
+	width: 100%;
+	align-items: start;
+	justify-content: center;
 }
 
 .mat-drawer {
-    display: flex;
-    width: 50%;
-    padding: 0.5rem;
+	display: flex;
+	width: 50%;
+	padding: 0.5rem;
+}
+
+::ng-deep .session-status-date.mat-calendar-body-cell:not(.mat-calendar-body-disabled) .mat-calendar-body-cell-content {
+	border-color: red;
+	color: green;
 }
