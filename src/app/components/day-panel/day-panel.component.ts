@@ -44,7 +44,7 @@ export class DayPanelComponent implements OnInit {
 				this.searching = false;
 			},
 			error: (error: HttpErrorResponse) => {
-				console.log(error);
+				console.error(error);
 				this.searching = false;
 			}
 		});
@@ -59,7 +59,7 @@ export class DayPanelComponent implements OnInit {
 				this.searching = false;
 			},
 			error: (error: HttpErrorResponse) => {
-				console.log(error);
+				console.error(error);
 				this.searching = false;
 			}
 		});
@@ -112,7 +112,7 @@ export class DayPanelComponent implements OnInit {
 			this.getDaySessionsDetailed();
 		},
 		error: (error: HttpErrorResponse) => {
-			console.log(error);
+			console.error(error);
 			switch(error.status) {
 			case HttpStatusCode.Forbidden:
 				this._snackBarService.openErrorSnackBar('Sem permissões para eliminar sessões');

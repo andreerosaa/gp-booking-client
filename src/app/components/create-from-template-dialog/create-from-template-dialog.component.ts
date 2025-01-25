@@ -16,7 +16,7 @@ import { TemplateModel } from '../../models/template.model';
 	styleUrl: './create-from-template-dialog.component.scss'
 })
 export class CreateFromTemplateDialogComponent implements OnInit {
-	private readonly dialogRef = inject(MatDialogRef<CreateFromTemplateDialogComponent>);
+	private readonly _dialogRef = inject(MatDialogRef<CreateFromTemplateDialogComponent>);
 	private readonly _snackBarService = inject(SnackBarService);
 	private readonly _templateService = inject(TemplateService);
 	private readonly _sessionService = inject(SessionService);
@@ -50,7 +50,7 @@ export class CreateFromTemplateDialogComponent implements OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
-				console.log(error);
+				console.error(error);
 				this._snackBarService.openErrorSnackBar('Erro a pesquisar templates');
 			}
 		});
@@ -77,7 +77,7 @@ export class CreateFromTemplateDialogComponent implements OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
-				console.log(error);
+				console.error(error);
 				switch(error.status) {
 					case HttpStatusCode.Forbidden:
 						this._snackBarService.openErrorSnackBar('Não é possível criar sessões no passado');
@@ -91,7 +91,7 @@ export class CreateFromTemplateDialogComponent implements OnInit {
 	}
 
 	closeDialog(refresh?: boolean): void {
-		this.dialogRef.close(refresh);
+		this._dialogRef.close(refresh);
 	}
 
 	autocompleteDisplay(template: TemplateModel): string {

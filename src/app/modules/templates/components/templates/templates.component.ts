@@ -33,7 +33,7 @@ export class TemplatesComponent implements OnInit {
         this.searching = false;
       },
       error: (error: HttpErrorResponse) => {
-        console.log(error);
+        console.error(error);
         this.searching = false;
       }
     });

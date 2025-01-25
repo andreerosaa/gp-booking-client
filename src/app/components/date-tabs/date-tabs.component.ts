@@ -4,6 +4,9 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { MatCalendar } from '@angular/material/datepicker';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
+import { SessionService } from '../../services/session/session.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DayStatusByMonth } from '../../models/session.model';
 
 @Component({
 	selector: 'app-date-tabs',
@@ -17,6 +20,7 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('drawer', { static: true }) drawer!: MatDrawer;
 
 	private readonly _datesService = inject(DatesService);
+	private readonly _sessionService = inject(SessionService);
 	private _subscription!: Subscription;
 
 	dateRange: Date[] = [];
@@ -50,9 +54,9 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	ngAfterViewInit() {
 		this._subscription = this.calendar.stateChanges.subscribe(() => {
 			const currentMonthYearView = [this.calendar.activeDate.getMonth(), this.calendar.activeDate.getFullYear()];
-			if (!this.compareArrays(this.monthYearView, currentMonthYearView)) {
+			if (!this._compareArrays(this.monthYearView, currentMonthYearView)) {
 				this.monthYearView = [this.calendar.activeDate.getMonth(), this.calendar.activeDate.getFullYear()];
-				this.getMonthlySessions()
+				this.getMonthlySessions();
 			}
 		});
 	}
@@ -73,11 +77,19 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.selectedDate.set(this.dateRange[index]);
 	}
 
-	getMonthlySessions(){
-		console.log('getting monthly sessions')
+	getMonthlySessions() {
+		this._sessionService.getMonthlySessions(this.monthYearView).subscribe({
+			next: (response: DayStatusByMonth) => {
+				//TODO: get days with available sessions
+				console.log(response);
+			},
+			error: (error: HttpErrorResponse) => {
+				console.error(error);
+			}
+		});
 	}
 
-	private compareArrays(arr1: number[], arr2: number[]) {
+	private _compareArrays(arr1: number[], arr2: number[]) {
 		return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
 	}
 }

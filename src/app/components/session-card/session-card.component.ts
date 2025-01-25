@@ -85,7 +85,7 @@ export class SessionCardComponent {
           this.refreshTabEmitter.emit();
         },
         error: (error: HttpErrorResponse) => {
-          console.log(error);
+          console.error(error);
           switch(error.status) {
             case HttpStatusCode.Forbidden:
               this._snackBarService.openErrorSnackBar('Sem permissões para eliminar série');
@@ -106,7 +106,7 @@ export class SessionCardComponent {
           this.refreshTabEmitter.emit();
         },
         error: (error: HttpErrorResponse) => {
-          console.log(error);
+          console.error(error);
           switch(error.status) {
             case HttpStatusCode.Forbidden:
               this._snackBarService.openErrorSnackBar('Sem permissões para eliminar sessão');

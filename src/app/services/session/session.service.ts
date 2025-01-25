@@ -1,6 +1,21 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { BookSessionRequestModel, BookSessionResponse, CreateSessionFormValue, CreateEditSessionRequestModel, EditSessionFormValue, SessionByDateModel, SessionByDateRequestModel, SessionModel, SessionStatusEnum, CreateFromTemplateRequestModel, CreateFromTemplateFormValue, ClearDayRequestModel } from '../../models/session.model';
+import {
+	BookSessionRequestModel,
+	BookSessionResponse,
+	CreateSessionFormValue,
+	CreateEditSessionRequestModel,
+	EditSessionFormValue,
+	SessionByDateModel,
+	SessionByDateRequestModel,
+	SessionModel,
+	SessionStatusEnum,
+	CreateFromTemplateRequestModel,
+	CreateFromTemplateFormValue,
+	ClearDayRequestModel,
+	GetDayStatusByMonthRequestModel,
+	DayStatusByMonth
+} from '../../models/session.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -33,7 +48,7 @@ export class SessionService {
 	}
 
 	createSession(createSessionForm: CreateSessionFormValue): Observable<SessionModel> {
-		const request: CreateEditSessionRequestModel = { 
+		const request: CreateEditSessionRequestModel = {
 			date: createSessionForm.date,
 			therapistId: createSessionForm.therapist.id,
 			durationInMinutes: createSessionForm.durationInMinutes,
@@ -45,7 +60,7 @@ export class SessionService {
 	}
 
 	createRecurringSession(createSessionForm: CreateSessionFormValue): Observable<SessionModel[]> {
-		const request: CreateEditSessionRequestModel = { 
+		const request: CreateEditSessionRequestModel = {
 			date: createSessionForm.date,
 			therapistId: createSessionForm.therapist.id,
 			durationInMinutes: createSessionForm.durationInMinutes,
@@ -60,39 +75,46 @@ export class SessionService {
 	createFromTemplate(date: Date, createFromTemplateForm: CreateFromTemplateFormValue): Observable<SessionModel[]> {
 		const request: CreateFromTemplateRequestModel = {
 			date: date,
-			templateId: createFromTemplateForm.template._id,
+			templateId: createFromTemplateForm.template._id
 		};
 
 		return this._http.post<SessionModel[]>(`${this._apiUrl}/template`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
 	editSession(editSessionForm: EditSessionFormValue, sessionId: string): Observable<SessionModel> {
-		const request: CreateEditSessionRequestModel = { 
+		const request: CreateEditSessionRequestModel = {
 			date: editSessionForm.date,
 			therapistId: editSessionForm.therapist.id,
 			durationInMinutes: editSessionForm.durationInMinutes,
 			status: editSessionForm.status,
-			vacancies: editSessionForm.vacancies,
+			vacancies: editSessionForm.vacancies
 		};
 
 		return this._http.patch<SessionModel>(`${this._apiUrl}/update/${sessionId}`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
 	deleteSession(sessionId: string): Observable<BaseResponse> {
-
 		return this._http.delete<BaseResponse>(`${this._apiUrl}/delete/${sessionId}`).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
 	deleteRecurringSessions(seriesId: string): Observable<BaseResponse> {
-
 		return this._http.delete<BaseResponse>(`${this._apiUrl}/recurring/delete/${seriesId}`).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
-	clearDaySessions(date: Date): Observable<BaseResponse>{
-		const request: ClearDayRequestModel = { 
-			date: date,
+	clearDaySessions(date: Date): Observable<BaseResponse> {
+		const request: ClearDayRequestModel = {
+			date: date
 		};
 
 		return this._http.post<BaseResponse>(`${this._apiUrl}/day/delete`, request).pipe(takeUntilDestroyed(this._destroyRef));
+	}
+
+	getMonthlySessions(monthYearView: number[]): Observable<DayStatusByMonth> {
+		const request: GetDayStatusByMonthRequestModel = {
+			month: monthYearView[0],
+			year: monthYearView[1]
+		};
+
+		return this._http.post<DayStatusByMonth>(`${this._apiUrl}/month`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 }

@@ -20,7 +20,7 @@ import { BaseIdentification, IdentificationWithEmail } from '../../models/base.m
 	styleUrl: './create-edit-session-dialog.component.scss'
 })
 export class CreateEditSessionDialogComponent implements OnInit {
-	private readonly dialogRef = inject(MatDialogRef<CreateEditSessionDialogComponent>);
+	private readonly _dialogRef = inject(MatDialogRef<CreateEditSessionDialogComponent>);
 	private readonly _therapistService = inject(TherapistService);
 	private readonly _patientService = inject(PatientService);
 	private readonly _snackBarService = inject(SnackBarService);
@@ -93,7 +93,7 @@ export class CreateEditSessionDialogComponent implements OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
-				console.log(error);
+				console.error(error);
 				this._snackBarService.openErrorSnackBar('Erro a pesquisar terapeutas');
 			}
 		});
@@ -118,7 +118,7 @@ export class CreateEditSessionDialogComponent implements OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
-				console.log(error);
+				console.error(error);
 				this._snackBarService.openErrorSnackBar('Erro a pesquisar clientes');
 			}
 		});
@@ -153,7 +153,7 @@ export class CreateEditSessionDialogComponent implements OnInit {
 				},
 				error: (error: HttpErrorResponse) => {
 					this.loading = false;
-					console.log(error);
+					console.error(error);
 					switch(error.status) {
 						case HttpStatusCode.Forbidden:
 							this._snackBarService.openErrorSnackBar('Não é possível criar sessões no passado');
@@ -173,7 +173,7 @@ export class CreateEditSessionDialogComponent implements OnInit {
 				},
 				error: (error: HttpErrorResponse) => {
 					this.loading = false;
-					console.log(error);
+					console.error(error);
 					switch(error.status) {
 						case HttpStatusCode.Forbidden:
 							this._snackBarService.openErrorSnackBar('Não é possível criar sessões no passado');
@@ -203,7 +203,7 @@ export class CreateEditSessionDialogComponent implements OnInit {
 				},
 				error: (error: HttpErrorResponse) => {
 					this.loading = false;
-					console.log(error);
+					console.error(error);
 					this._snackBarService.openErrorSnackBar('Erro a editar sessão');
 				}
 			});
@@ -212,7 +212,7 @@ export class CreateEditSessionDialogComponent implements OnInit {
 	}
 
 	closeDialog(refresh?: boolean): void {
-		this.dialogRef.close(refresh);
+		this._dialogRef.close(refresh);
 	}
 
 	autocompleteDisplay(therapist: TherapistModel): string {

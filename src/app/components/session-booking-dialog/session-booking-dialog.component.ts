@@ -19,7 +19,7 @@ import { PatientModel } from '../../models/patient.model';
 export class SessionBookingDialogComponent implements OnInit {
 	@ViewChild('codeInput') codeInput!: ElementRef;
 
-	private readonly dialogRef = inject(MatDialogRef<SessionBookingDialogComponent>);
+	private readonly _dialogRef = inject(MatDialogRef<SessionBookingDialogComponent>);
 	private readonly _destroyRef = inject(DestroyRef);
 	protected readonly data = inject<SessionBookingDialogData>(MAT_DIALOG_DATA);
 	protected readonly maxLength = 50;
@@ -88,7 +88,7 @@ export class SessionBookingDialogComponent implements OnInit {
 	}
 
 	closeDialog(refresh?: boolean): void {
-		this.dialogRef.close(refresh);
+		this._dialogRef.close(refresh);
 	}
 
 	checkPatientExists() {
@@ -103,7 +103,7 @@ export class SessionBookingDialogComponent implements OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
-				console.log(error);
+				console.error(error);
 				switch (error.status) {
 					case HttpStatusCode.BadRequest:
 						this._snackBarService.openErrorSnackBar('Email ou nome incorretos');
@@ -132,7 +132,7 @@ export class SessionBookingDialogComponent implements OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
-				console.log(error)
+				console.error(error)
 				this._snackBarService.openErrorSnackBar('Erro ao criar utilizador');
 			}
 		})
@@ -151,7 +151,7 @@ export class SessionBookingDialogComponent implements OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
-				console.log(error)
+				console.error(error)
 				this._snackBarService.openErrorSnackBar('Erro ao criar utilizador');
 			}
 		})
@@ -174,7 +174,7 @@ export class SessionBookingDialogComponent implements OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
-				console.log(error);
+				console.error(error);
 				switch (error.status) {
 					case HttpStatusCode.BadRequest:
 						this._snackBarService.openErrorSnackBar('Email ou nome incorretos');
@@ -212,7 +212,7 @@ export class SessionBookingDialogComponent implements OnInit {
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
 				this.verificationForm.reset();
-				console.log(error);
+				console.error(error);
 				switch (error.status) {
 					case HttpStatusCode.BadRequest:
 						this._snackBarService.openErrorSnackBar('Código inválido ou expirado');
@@ -242,7 +242,7 @@ export class SessionBookingDialogComponent implements OnInit {
 			error: (error: HttpErrorResponse) => {
 				this.gettingNewCode = false;
 				this.codeInput.nativeElement.focus();
-				console.log(error);
+				console.error(error);
 				switch (error.status) {
 					case HttpStatusCode.Forbidden:
 						this._snackBarService.openErrorSnackBar('Código já confirmado');

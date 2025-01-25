@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit {
 	logout() {
 		this.authService.logout().subscribe({
 					error: (error: HttpErrorResponse) => {
-						console.log(error);
+						console.error(error);
 						this._snackBarService.openErrorSnackBar('Erro a efetuar logout');
 					}
 				});

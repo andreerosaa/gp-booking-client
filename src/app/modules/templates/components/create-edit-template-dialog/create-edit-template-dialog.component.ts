@@ -7,7 +7,7 @@ import { environment } from '../../../../../environments/environment.development
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseIdentification } from '../../../../models/base.model';
 import { map, Observable, startWith } from 'rxjs';
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { TherapistModel } from '../../../../models/therapist.model';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { TemplateService } from '../../../../services/template/template.service';
@@ -19,7 +19,7 @@ import { TemplateService } from '../../../../services/template/template.service'
 	styleUrl: './create-edit-template-dialog.component.scss'
 })
 export class CreateEditTemplateDialogComponent implements OnInit {
-	private readonly dialogRef = inject(MatDialogRef<CreateEditTemplateDialogComponent>);
+	private readonly _dialogRef = inject(MatDialogRef<CreateEditTemplateDialogComponent>);
 	private readonly _therapistService = inject(TherapistService);
 	private readonly _templateService = inject(TemplateService);
 	private readonly _snackBarService = inject(SnackBarService);
@@ -71,7 +71,7 @@ export class CreateEditTemplateDialogComponent implements OnInit {
 				},
 				error: (error: HttpErrorResponse) => {
 					this.loading = false;
-					console.log(error);
+					console.error(error);
 					this._snackBarService.openErrorSnackBar('Erro a pesquisar terapeutas');
 				}
 			});
@@ -98,14 +98,14 @@ export class CreateEditTemplateDialogComponent implements OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
-				console.log(error);
+				console.error(error);
 				this._snackBarService.openErrorSnackBar('Erro a criar template');
 			}
 		});
 	}
 
 	closeDialog(refresh?: boolean): void {
-		this.dialogRef.close(refresh);
+		this._dialogRef.close(refresh);
 	}
 
 	add(event: MatChipInputEvent): void {

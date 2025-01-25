@@ -125,6 +125,17 @@ export interface ClearDayRequestModel {
 	date: Date;
 }
 
+export interface GetDayStatusByMonthRequestModel {
+	month: number;
+	year: number;
+}
+
+export interface DayStatusByMonth {
+	available: Date[]; //at least one available
+	pending: Date[]; //at least one pending
+	full: Date[]; //none available
+}
+
 export enum SessionRecurrenceEnum {
 	DAILY,
 	WEEKDAYS,
@@ -136,5 +147,5 @@ export const SessionRecurrenceMessages: { [key in SessionRecurrenceEnum]: string
 	[SessionRecurrenceEnum.DAILY]: 'Todos os dias',
 	[SessionRecurrenceEnum.WEEKDAYS]: 'Todos os dias de semana',
 	[SessionRecurrenceEnum.WEEKLY]: 'Todas as semanas',
-	[SessionRecurrenceEnum.MONTHLY]: 'Todos os meses',
+	[SessionRecurrenceEnum.MONTHLY]: 'Todos os meses'
 };

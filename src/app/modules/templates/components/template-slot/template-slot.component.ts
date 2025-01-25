@@ -38,7 +38,7 @@ export class TemplateSlotComponent implements OnInit {
           this.therapistName = therapist.name;
         },
         error: (error: HttpErrorResponse) => {
-          console.log(error);
+          console.error(error);
           this._snackBarService.openErrorSnackBar('Erro a pesquisar terapeuta');
         }
       });
@@ -65,7 +65,7 @@ export class TemplateSlotComponent implements OnInit {
 				this.refreshPageEmitter.emit();
 			},
 			error: (error: HttpErrorResponse) => {
-				console.log(error);
+				console.error(error);
 				switch (error.status) {
 					case HttpStatusCode.Forbidden:
 						this._snackBarService.openErrorSnackBar('Sem permissões para eliminar template');

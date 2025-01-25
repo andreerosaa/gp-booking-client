@@ -5,12 +5,12 @@ import { Directive, ElementRef, inject, Input } from '@angular/core';
   standalone: false
 })
 export class FocusDirective {
-  private readonly hostElement = inject(ElementRef)
+  private readonly _hostElement = inject(ElementRef)
 
   @Input()
   set focus(focus: boolean) {
     if (focus) {
-      this.hostElement.nativeElement.focus();
+      this._hostElement.nativeElement.focus();
     }
   }
 }

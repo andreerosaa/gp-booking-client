@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SessionBookingDialogData } from '../../models/session.model';
 import { ConfirmationDialogData } from '../../models/base.model';
 
 @Component({
@@ -10,14 +9,14 @@ import { ConfirmationDialogData } from '../../models/base.model';
 	styleUrl: './confirmation-dialog.component.scss'
 })
 export class ConfirmationDialogComponent {
-	private readonly dialogRef = inject(MatDialogRef<ConfirmationDialogComponent>);
+	private readonly _dialogRef = inject(MatDialogRef<ConfirmationDialogComponent>);
 	protected readonly data = inject<ConfirmationDialogData>(MAT_DIALOG_DATA);
 
 	onCancelClick(): void {
-		this.dialogRef.close(false);
+		this._dialogRef.close(false);
 	}
 
 	onConfirmClick(): void {
-		this.dialogRef.close(true);
+		this._dialogRef.close(true);
 	}
 }

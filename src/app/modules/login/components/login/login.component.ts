@@ -68,7 +68,7 @@ export class LoginComponent {
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
 				this.loginForm.reset();
-				console.log(error);
+				console.error(error);
 				switch (error.status) {
 					case HttpStatusCode.BadRequest:
 						this._snackBarService.openErrorSnackBar('Credenciais inválidas');
