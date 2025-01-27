@@ -53,8 +53,8 @@
 <mat-dialog-actions>
 	<button mat-button mat-dialog-close (click)="closeDialog()">Cancelar</button>
 	@if (!newPatient) {
-		<button mat-flat-button cdkFocusInitial type="submit" form="sessionForm" [disabled]="!sessionForm.valid">Reservar</button>
+		<button mat-flat-button type="submit" form="sessionForm" [disabled]="!sessionForm.valid">Reservar</button>
 	} @else {
-		<button mat-flat-button cdkFocusInitial type="submit" form="verificationForm" [disabled]="!verificationForm.valid">Verificar</button>
+		<button mat-flat-button type="submit" form="verificationForm" [disabled]="!verificationForm.valid">Verificar</button>
 	}
 </mat-dialog-actions>
