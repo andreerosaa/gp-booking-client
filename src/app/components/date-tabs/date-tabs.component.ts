@@ -1,16 +1,18 @@
-import { AfterViewInit, Component, computed, effect, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, inject, OnDestroy, OnInit, Renderer2, signal, ViewChild } from '@angular/core';
 import { DatesService } from '../../services/dates/dates.service';
 import { MatTabGroup } from '@angular/material/tabs';
-import { MatCalendar, MatCalendarCellCssClasses } from '@angular/material/datepicker';
+import { MatCalendar } from '@angular/material/datepicker';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
 import { SessionService } from '../../services/session/session.service';
+import { DayStatusByMonth } from '../../models/session.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'app-date-tabs',
 	standalone: false,
 	templateUrl: './date-tabs.component.html',
-	styleUrl: './date-tabs.component.scss',
+	styleUrl: './date-tabs.component.scss'
 })
 export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('tabGroup') tabGroup!: MatTabGroup;
@@ -19,6 +21,7 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	private readonly _datesService = inject(DatesService);
 	private readonly _sessionService = inject(SessionService);
+	private readonly _renderer = inject(Renderer2);
 	private _subscription!: Subscription;
 
 	dateRange: Date[] = [];
@@ -26,7 +29,7 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	minDate = new Date();
 	maxDate = new Date();
 	monthYearView: number[] = [this.today.getMonth(), this.today.getFullYear()];
-	dayDates: Date[] = [];
+	dayDates!: DayStatusByMonth;
 
 	selectedDate = signal<Date | null>(this.today);
 	selectedIndex = computed<number>(() =>
@@ -68,7 +71,12 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	resetSelectedTab() {
-		this.tabGroup.selectedIndex = this.dateRange.findIndex((date) => date.getDate() === this.today.getDate());
+		this.tabGroup.selectedIndex = this.dateRange.findIndex(
+			(date) =>
+				date.getDate() === this.selectedDate()?.getDate() &&
+				date.getMonth() === this.selectedDate()?.getMonth() &&
+				date.getFullYear() === this.selectedDate()?.getFullYear()
+		);
 		this.selectedDate.set(this.today);
 		this.calendar._goToDateInView(this.today, 'month');
 	}
@@ -78,43 +86,70 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	getMonthlySessions() {
-		const days = [2, 7, 15, 16, 27, 28];
+		this._sessionService.getMonthlySessions(this.monthYearView).subscribe({
+			next: (response: DayStatusByMonth) => {
+				this.dayDates = response;
+				let spanDates = document.querySelectorAll('.mat-calendar-body-cell:not(.mat-calendar-body-disabled) .mat-calendar-body-cell-content');
+				if (spanDates?.length > 0) {
+					spanDates.forEach((spanDate) => {
+						const dateValue = Number(spanDate.textContent);
+						const dateObj = new Date(this.monthYearView[1], this.monthYearView[0], dateValue);
+						const dateClass = this._getDateClass(dateObj);
 
-		days.forEach((day) => {
-			let dayDate = new Date(this.today);
-
-			dayDate.setDate(day);
-
-			this.dayDates.push(dayDate);
+						if (dateClass) {
+							const ball = this._renderer.createElement('span');
+							this._renderer.addClass(ball, 'ball');
+							this._renderer.addClass(ball, dateClass);
+							this._renderer.appendChild(spanDate.parentElement, ball);
+							// this._renderer.addClass(spanDate.parentElement, dateClass);
+						}
+					});
+				}
+			},
+			error: (error: HttpErrorResponse) => {
+				console.error(error);
+			}
 		});
-
-		// this._sessionService.getMonthlySessions(this.monthYearView).subscribe({
-		// 	next: (response: DayStatusByMonth) => {
-		// 		//TODO: get days with available sessions
-		// 		console.log(response);
-		// 	},
-		// 	error: (error: HttpErrorResponse) => {
-		// 		console.error(error);
-		// 	}
-		// });
 	}
 
-	dateClass() {
-		return (date: Date): MatCalendarCellCssClasses => {
-			const findDate = this.dayDates.find((day) => {
-				const compareDay = day.getDate() === date.getDate();
-				const compareMonth = day.getMonth() === date.getMonth();
-				const compareYear = day.getFullYear() === date.getFullYear();
-				return compareDay && compareMonth && compareYear;
-			});
+	private _getDateClass(date: Date) {
+		if (!this.dayDates) {
+			return '';
+		}
 
-			if (findDate !== undefined) {
-				return 'session-status-date';
-			} else {
-				return '';
-			}
-		};
-	};
+		const isAvailable = this._findDates(date, this.dayDates.available);
+
+		if (isAvailable !== undefined) {
+			return 'day-available';
+		}
+
+		const isPending = this._findDates(date, this.dayDates.pending);
+
+		if (isPending !== undefined) {
+			return 'day-pending';
+		}
+
+		const isFull = this._findDates(date, this.dayDates.full);
+
+		if (isFull !== undefined) {
+			return 'day-full';
+		}
+
+		return '';
+	}
+
+	private _findDates(date: Date, dayDates: Date[]) {
+		if (!dayDates || dayDates.length === 0) {
+			return;
+		}
+		return dayDates.find((day) => {
+			const dayObj = new Date(day);
+			const compareDay = dayObj.getDate() === date.getDate();
+			const compareMonth = dayObj.getMonth() === date.getMonth();
+			const compareYear = dayObj.getFullYear() === date.getFullYear();
+			return compareDay && compareMonth && compareYear;
+		});
+	}
 
 	private _compareArrays(arr1: number[], arr2: number[]) {
 		return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);

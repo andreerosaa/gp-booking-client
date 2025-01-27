@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CreateFromTemplateDialogData, CreateFromTemplateForm, CreateFromTemplateFormValue, CreateSessionFormValue} from '../../models/session.model';
+import { CreateFromTemplateDialogData, CreateFromTemplateForm, CreateFromTemplateFormValue } from '../../models/session.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
@@ -80,7 +80,7 @@ export class CreateFromTemplateDialogComponent implements OnInit {
 				console.error(error);
 				switch(error.status) {
 					case HttpStatusCode.Forbidden:
-						this._snackBarService.openErrorSnackBar('Não é possível criar sessões no passado');
+						this._snackBarService.openErrorSnackBar('Não é possível criar sessões anteriores à hora atual');
 						break;
 					default:
 						this._snackBarService.openErrorSnackBar('Erro a preencher o dia');

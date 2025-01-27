@@ -156,7 +156,7 @@ export class CreateEditSessionDialogComponent implements OnInit {
 					console.error(error);
 					switch(error.status) {
 						case HttpStatusCode.Forbidden:
-							this._snackBarService.openErrorSnackBar('Não é possível criar sessões no passado');
+							this._snackBarService.openErrorSnackBar('Não é possível criar sessões anteriores à hora atual');
 							break;
 						default:
 							this._snackBarService.openErrorSnackBar('Erro a criar série');
@@ -176,7 +176,7 @@ export class CreateEditSessionDialogComponent implements OnInit {
 					console.error(error);
 					switch(error.status) {
 						case HttpStatusCode.Forbidden:
-							this._snackBarService.openErrorSnackBar('Não é possível criar sessões no passado');
+							this._snackBarService.openErrorSnackBar('Não é possível criar sessões anteriores à hora atual');
 							break;
 						default:
 							this._snackBarService.openErrorSnackBar('Erro a criar sessão');

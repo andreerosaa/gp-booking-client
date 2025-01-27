@@ -4,19 +4,19 @@
 		Hoje
 	</button>
 	@if (drawer.opened) {
-		<button type="button" mat-icon-button matTooltip="Fechar" disabled="true" (click)="drawer.toggle()">
-			<mat-icon>arrow_right</mat-icon>
-		</button>
+	<button type="button" mat-icon-button matTooltip="Fechar" disabled="true" (click)="drawer.toggle()">
+		<mat-icon>arrow_right</mat-icon>
+	</button>
 	} @else {
-		<button type="button" mat-icon-button matTooltip="Expandir" disabled="true" (click)="drawer.toggle()">
-			<mat-icon>arrow_left</mat-icon>
-		</button>
+	<button type="button" mat-icon-button matTooltip="Expandir" disabled="true" (click)="drawer.toggle()">
+		<mat-icon>arrow_left</mat-icon>
+	</button>
 	}
 </div>
 <mat-drawer-container>
 	<mat-drawer-content class="flex w-1/2 p-2">
 		<mat-card>
-			<mat-calendar [dateClass]="dateClass()" [minDate]="minDate" [maxDate]="maxDate" [(selected)]="selectedDate"></mat-calendar>
+			<mat-calendar [minDate]="minDate" [maxDate]="maxDate" [(selected)]="selectedDate"></mat-calendar>
 		</mat-card>
 	</mat-drawer-content>
 
@@ -33,4 +33,3 @@
 		</mat-tab-group>
 	</mat-drawer>
 </mat-drawer-container>
-	
