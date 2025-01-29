@@ -185,6 +185,9 @@ export class SessionBookingDialogComponent implements OnInit {
 					case HttpStatusCode.Forbidden:
 						this._snackBarService.openErrorSnackBar('Sessão já reservada');
 						break;
+					case HttpStatusCode.Unauthorized:
+						this._snackBarService.openErrorSnackBar('Atingiu o número máximo de sessões reservadas para este dia');
+						break;
 					default:
 						this._snackBarService.openErrorSnackBar('Erro ao reservar sessão');
 						break;

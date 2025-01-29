@@ -5,7 +5,7 @@ import { MatCalendar } from '@angular/material/datepicker';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
 import { SessionService } from '../../services/session/session.service';
-import { DayStatusByMonth } from '../../models/session.model';
+import { DayStatusByMonth, DayStatusEnum, DayStatusMap } from '../../models/session.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -94,12 +94,16 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 					spanDates.forEach((spanDate) => {
 						const dateValue = Number(spanDate.textContent);
 						const dateObj = new Date(this.monthYearView[1], this.monthYearView[0], dateValue);
-						const dateClass = this._getDateClass(dateObj);
+						const dateMap = this._getDateClass(dateObj);
+						const dateClass = DayStatusMap.get(dateMap)?.dateClass;
+						const dateTooltip = DayStatusMap.get(dateMap)?.toolTip;
 
-						if (dateClass) {
+						if (dateClass && dateTooltip) {
 							const ball = this._renderer.createElement('span');
 							this._renderer.addClass(ball, 'ball');
 							this._renderer.addClass(ball, dateClass);
+							// this._renderer.setAttribute(spanDate.parentElement, 'matTooltip', dateTooltip);
+							// this._renderer.addClass(spanDate.parentElement, 'mat-mdc-tooltip-trigger');
 							this._renderer.appendChild(spanDate.parentElement, ball);
 							// this._renderer.addClass(spanDate.parentElement, dateClass);
 						}
@@ -112,30 +116,30 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	private _getDateClass(date: Date) {
+	private _getDateClass(date: Date): DayStatusEnum {
 		if (!this.dayDates) {
-			return '';
+			return DayStatusEnum.NONE;
 		}
 
 		const isAvailable = this._findDates(date, this.dayDates.available);
 
 		if (isAvailable !== undefined) {
-			return 'day-available';
+			return DayStatusEnum.AVAILABLE
 		}
 
 		const isPending = this._findDates(date, this.dayDates.pending);
 
 		if (isPending !== undefined) {
-			return 'day-pending';
+			return DayStatusEnum.PENDING
 		}
 
 		const isFull = this._findDates(date, this.dayDates.full);
 
 		if (isFull !== undefined) {
-			return 'day-full';
+			return DayStatusEnum.FULL
 		}
 
-		return '';
+		return DayStatusEnum.NONE;
 	}
 
 	private _findDates(date: Date, dayDates: Date[]) {

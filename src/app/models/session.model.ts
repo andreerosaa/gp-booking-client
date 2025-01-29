@@ -41,6 +41,20 @@ export const SessionStatusMessages: { [key in SessionStatusEnum]: string } = {
 	[SessionStatusEnum.CANCELED]: 'Cancelada'
 };
 
+export enum DayStatusEnum {
+	AVAILABLE,
+	PENDING,
+	FULL,
+	NONE
+}
+
+export const DayStatusMap = new Map<DayStatusEnum, { dateClass: string, toolTip: string}>([
+	[DayStatusEnum.AVAILABLE, {dateClass: 'day-available', toolTip: 'Pelo menos 1 sessão disponível'}],
+	[DayStatusEnum.PENDING, {dateClass: 'day-pending', toolTip: 'Pelo menos 1 sessão a aguardar confirmação'}],
+	[DayStatusEnum.FULL, {dateClass: 'day-full', toolTip: 'Sem sessões disponíveis'}],
+	[DayStatusEnum.NONE, {dateClass: '', toolTip: ''}]
+])
+
 export interface SessionBookingDialogData {
 	session: SessionModel;
 }
