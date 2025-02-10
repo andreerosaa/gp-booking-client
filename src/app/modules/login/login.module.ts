@@ -9,9 +9,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import { LoginRegisterComponent } from './components/login-register/login-register.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
-	declarations: [LoginComponent],
-	imports: [CommonModule, LoginRoutingModule, MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatCardModule, MatIconModule]
+	declarations: [LoginComponent, RegisterComponent, LoginRegisterComponent],
+	imports: [CommonModule, LoginRoutingModule, MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatCardModule, MatIconModule, MatTabsModule]
 })
 export class LoginModule {}
