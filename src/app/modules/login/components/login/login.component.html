@@ -7,10 +7,10 @@
             @if(!loading) {
                 <form class="flex flex-col" id="loginForm" [formGroup]="loginForm" (ngSubmit)="login()">
                     <mat-form-field>
-                        <mat-label>Nome de utilizador</mat-label>
-                        <input matInput placeholder="João Silva" [maxlength]="maxLength" [formControl]="getUsernameControl" />
-                        @if (getUsernameControl.invalid) {
-							<mat-error>{{ usernameErrorMessage() }}</mat-error>
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="joao.silva@gmail.com" [maxlength]="maxLength" [formControl]="getEmailControl" />
+                        @if (getEmailControl.invalid) {
+							<mat-error>{{ emailErrorMessage() }}</mat-error>
 						}
                     </mat-form-field>
                     <mat-form-field>

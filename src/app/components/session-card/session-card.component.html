@@ -2,16 +2,16 @@
 	<mat-card-header>
 		<mat-card-title-group>
 			<mat-card-title>
-					{{ session().date | date : 'HH:mm' }} - {{ computeEndTime() | date : 'HH:mm'
+					{{ session().date | date : 'HH:mm' }} - {{ computeEndTime | date : 'HH:mm'
 					}}<span
 						[matTooltip]="SessionStatusMessages[session().status]"
             matTooltipPosition="after"
 						class="ml-3 ball cursor-pointer"
-						[ngClass]="statusColor()"
+						[ngClass]="statusColor"
 					></span>
       </mat-card-title>
 			<mat-card-subtitle>Terapeuta: {{session().therapist.name}}</mat-card-subtitle>
-			@if (authService.isLoggedIn()) {
+			@if (authService.isAdmin()) {
 			<div>
 				@if(session().seriesId){
 				<button mat-icon-button [matMenuTriggerFor]="deleteMenu" aria-label="Eliminar" matTooltip="Eliminar">
@@ -46,22 +46,22 @@
 		<!-- <p>{{SessionStatusMessages[session().status]}}<span class="ml-2 ball" [ngClass]="statusColor()"></span></p> -->
 		<!-- <p>Terapeuta: {{session().therapist.name}}</p> -->
 
-		@if(authService.isLoggedIn() && (session().status === SessionStatusEnum.PENDING || session().status === SessionStatusEnum.CONFIRMED)) {
+		@if(authService.isAdmin() && (session().status === SessionStatusEnum.PENDING || session().status === SessionStatusEnum.CONFIRMED)) {
 		<p>
 			Cliente:
-			<a [routerLink]="['patient/', session().patient?.id]" matTooltip="Abrir detalhes do cliente" matTooltipPosition="after">{{
-				session().patient?.name
+			<a [routerLink]="['patient/', session().user?.id]" matTooltip="Abrir detalhes do cliente" matTooltipPosition="after">{{
+				session().user?.name + ' ' + session().user?.surname
 			}}</a>
 		</p>
-		<p>Email: {{ session().patient?.email }}</p>
+		<p>Email: {{ session().user?.email }}</p>
 		}
 	</mat-card-content>
 	<mat-card-actions align="end">
-		<button mat-flat-button (click)="openSessionBookingDialog()" [disabled]="session().status !== SessionStatusEnum.AVAILABLE">
+		<button mat-flat-button (click)="handleSessionBooking()" [disabled]="session().status !== SessionStatusEnum.AVAILABLE">
 			<mat-icon>queue</mat-icon>
 			Reservar
 		</button>
-		@if(authService.isLoggedIn()) {
+		@if(authService.isAdmin()) {
 		<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="mais opções" matTooltip="Mais opções">
 			<div class="flex flex-col">
 				<mat-icon>more_vert</mat-icon>

@@ -22,6 +22,7 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	private readonly _datesService = inject(DatesService);
 	private readonly _sessionService = inject(SessionService);
 	private readonly _renderer = inject(Renderer2);
+	
 	private _subscription!: Subscription;
 
 	dateRange: Date[] = [];

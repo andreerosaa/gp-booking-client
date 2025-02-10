@@ -10,6 +10,7 @@ import { ConfirmationDialogData } from '../../models/base.model';
 })
 export class ConfirmationDialogComponent {
 	private readonly _dialogRef = inject(MatDialogRef<ConfirmationDialogComponent>);
+	
 	protected readonly data = inject<ConfirmationDialogData>(MAT_DIALOG_DATA);
 
 	onCancelClick(): void {

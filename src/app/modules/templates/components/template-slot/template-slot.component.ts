@@ -24,25 +24,23 @@ export class TemplateSlotComponent implements OnInit {
 	private readonly _therapistService = inject(TherapistService);
 	private readonly _snackBarService = inject(SnackBarService);
 
-  therapistName = '';
+	therapistName = '';
 
-  ngOnInit(): void {
-    this.getTherapistData();
-  }
+	ngOnInit(): void {
+		this.getTherapistData();
+	}
 
-  getTherapistData() {
-    this._therapistService
-      .getTherapistById(this.template().therapistId)
-      .subscribe({
-        next: (therapist: TherapistModel) => {
-          this.therapistName = therapist.name;
-        },
-        error: (error: HttpErrorResponse) => {
-          console.error(error);
-          this._snackBarService.openErrorSnackBar('Erro a pesquisar terapeuta');
-        }
-      });
-  }
+	getTherapistData() {
+		this._therapistService.getTherapistById(this.template().therapistId).subscribe({
+			next: (therapist: TherapistModel) => {
+				this.therapistName = therapist.name;
+			},
+			error: (error: HttpErrorResponse) => {
+				console.error(error);
+				this._snackBarService.openErrorSnackBar('Erro a pesquisar terapeuta');
+			}
+		});
+	}
 
 	openDeleteTemplateDialog() {
 		const dialogRef = this._dialog.open(ConfirmationDialogComponent, {

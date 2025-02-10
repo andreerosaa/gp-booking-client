@@ -9,9 +9,9 @@ import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 import { TherapistModel } from '../../models/therapist.model';
 import { map, Observable, startWith } from 'rxjs';
 import { SessionService } from '../../services/session/session.service';
-import { PatientService } from '../../services/patient/patient.service';
-import { PatientModel } from '../../models/patient.model';
 import { BaseIdentification, IdentificationWithEmail } from '../../models/base.model';
+import { UserService } from '../../services/user/user.service';
+import { UserModel } from '../../models/user.model';
 
 @Component({
 	selector: 'app-create-edit-session-dialog',
@@ -22,9 +22,10 @@ import { BaseIdentification, IdentificationWithEmail } from '../../models/base.m
 export class CreateEditSessionDialogComponent implements OnInit {
 	private readonly _dialogRef = inject(MatDialogRef<CreateEditSessionDialogComponent>);
 	private readonly _therapistService = inject(TherapistService);
-	private readonly _patientService = inject(PatientService);
+	private readonly _userService = inject(UserService);
 	private readonly _snackBarService = inject(SnackBarService);
 	private readonly _sessionService = inject(SessionService);
+	
 	protected readonly data = inject<CreateEditSessionDialogData>(MAT_DIALOG_DATA);
 	protected readonly maxLength = 50;
 	protected readonly timeInterval = `${environment.TIMEPICKER_INTERVAL_MINUTES}min`;
@@ -38,14 +39,14 @@ export class CreateEditSessionDialogComponent implements OnInit {
 	editSessionForm!: FormGroup<Partial<EditSessionForm>>;
 	therapists: BaseIdentification[] = [];
 	filteredTherapists!: Observable<BaseIdentification[]>;
-	patients: IdentificationWithEmail[] = [];
-	filteredPatients!: Observable<IdentificationWithEmail[]>;
+	users: IdentificationWithEmail[] = [];
+	filteredUsers!: Observable<IdentificationWithEmail[]>;
 	loading = true;
 
 	ngOnInit() {
 		this.searchTherapists();
-		if(this.data.session?.patient) {
-			this.searchPatients();
+		if(this.data.session?.user) {
+			this.searchUsers();
 		}
 		this.buildForm();
 	}
@@ -68,8 +69,8 @@ export class CreateEditSessionDialogComponent implements OnInit {
 				vacancies: new FormControl({ value: this.data.session.vacancies, disabled: true }, [Validators.required, Validators.maxLength(this.maxLength)]),
 			});
 
-			if(this.data.session.patient) {
-				this.editSessionForm.addControl('patient', new FormControl(this.data.session.patient, [Validators.required, Validators.maxLength(this.maxLength)]))
+			if(this.data.session.user) {
+				this.editSessionForm.addControl('user', new FormControl(this.data.session.user, [Validators.required, Validators.maxLength(this.maxLength)]))
 			}	
 		}
 	}
@@ -99,22 +100,22 @@ export class CreateEditSessionDialogComponent implements OnInit {
 		});
 	}
 
-	searchPatients() {
-		this._patientService.getPatients()
+	searchUsers() {
+		this._userService.getUsers()
 		.pipe(
-			map((patients: PatientModel[]): IdentificationWithEmail[] => {
-				return patients.map((patient: PatientModel): IdentificationWithEmail => {
-					return { id: patient._id, name: patient.name, email: patient.email}
+			map((users: UserModel[]): IdentificationWithEmail[] => {
+				return users.map((user: UserModel): IdentificationWithEmail => {
+					return { id: user._id, name: user.name, email: user.email, surname: user.surname }
 				})
 			})
 		)
 		.subscribe({
-			next: (patients: IdentificationWithEmail[]) => {
-				this.patients = [...patients];
+			next: (users: IdentificationWithEmail[]) => {
+				this.users = [...users];
 			},
 			complete: () => {
 				this.loading = false;
-				this.filterPatients();
+				this.filterUsers();
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
@@ -131,10 +132,10 @@ export class CreateEditSessionDialogComponent implements OnInit {
 		);
 	}
 
-	filterPatients() {
-		this.filteredPatients = this.getPatientControl.valueChanges.pipe(
+	filterUsers() {
+		this.filteredUsers = this.getUserControl.valueChanges.pipe(
 			startWith(''),
-			map((filterValue: string) => this.patients.filter((option) => option.name.toLowerCase().includes(filterValue)))
+			map((filterValue: string) => this.users.filter((option) => option.name.toLowerCase().includes(filterValue)))
 		);
 	}
 
@@ -234,8 +235,8 @@ export class CreateEditSessionDialogComponent implements OnInit {
 	get getVacanciesControl(): FormControl {
 		return this.data.session ? this.editSessionForm.get('vacancies') as FormControl : this.createSessionForm.get('vacancies') as FormControl;
 	}
-	get getPatientControl(): FormControl {
-		return this.editSessionForm.get('patient') as FormControl;
+	get getUserControl(): FormControl {
+		return this.editSessionForm.get('user') as FormControl;
 	}
 	get getStatusControl(): FormControl {
 		return this.editSessionForm.get('status') as FormControl;

@@ -21,6 +21,10 @@ export class SessionBookingDialogComponent implements OnInit {
 
 	private readonly _dialogRef = inject(MatDialogRef<SessionBookingDialogComponent>);
 	private readonly _destroyRef = inject(DestroyRef);
+	private readonly _sessionService = inject(SessionService);
+	private readonly _snackBarService = inject(SnackBarService);
+	private readonly _patientService = inject(PatientService);
+	
 	protected readonly data = inject<SessionBookingDialogData>(MAT_DIALOG_DATA);
 	protected readonly maxLength = 50;
 
@@ -42,11 +46,7 @@ export class SessionBookingDialogComponent implements OnInit {
 	newPatient = false;
 	patientId = '';
 
-	constructor(
-		readonly _sessionService: SessionService,
-		readonly _snackBarService: SnackBarService,
-		readonly _patientService: PatientService
-	) {
+	constructor() {
 		merge(this.getEmailControl.statusChanges, this.getEmailControl.valueChanges)
 			.pipe(takeUntilDestroyed(this._destroyRef))
 			.subscribe(() => this.updateErrorMessage());
@@ -159,18 +159,11 @@ export class SessionBookingDialogComponent implements OnInit {
 
 	bookSession() {
 		this.loading = true;
-		this._sessionService.bookSession(this.data.session._id, this.getNameControl.value, this.getEmailControl.value).subscribe({
-			next: (bookSessionResponse: BookSessionResponse) => {
-				if (bookSessionResponse.newPatient) {
-					this.newPatient = true;
-					this.patientId = bookSessionResponse.session.patientId;
-				} else {
-					this.closeDialog(true);
-					this._snackBarService.openSuccessSnackBar('Sessão reservada, aguarda confirmação até 24 horas antes');
-				}
-			},
+		this._sessionService.bookSession(this.data.session._id, this.getEmailControl.value).subscribe({
 			complete: () => {
 				this.loading = false;
+				this.closeDialog(true);
+				this._snackBarService.openSuccessSnackBar('Sessão reservada, aguarda confirmação até 24 horas antes');
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;

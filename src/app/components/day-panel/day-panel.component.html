@@ -1,6 +1,6 @@
 <div class="flex flex-col w-full p-6 gap-4 items-center">
 	@if(!searching){
-        @if (authService.isLoggedIn()) {
+        @if (authService.isAdmin()) {
 			<div class="flex w-full justify-start">
 				<button mat-flat-button [matMenuTriggerFor]="createMenu">
 					<mat-icon>add</mat-icon>
@@ -23,7 +23,7 @@
 			</div>
         }
 		@for (session of daySessions; track session._id) {
-			<app-session-card (refreshTabEmitter)="authService.isLoggedIn() ? getDaySessionsDetailed() : getDaySessions()" [session]="session"></app-session-card>
+			<app-session-card (refreshTabEmitter)="authService.isAdmin() ? getDaySessionsDetailed() : getDaySessions()" [session]="session"></app-session-card>
 		} @empty {
 			<img src="assets/gp-logo.png" alt="gym logo" class="mt-10 opacity-15 w-60" />
 		}

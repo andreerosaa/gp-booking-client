@@ -2,17 +2,28 @@ import { FormControl } from '@angular/forms';
 import { BaseModel } from './base.model';
 
 export interface UserModel extends BaseModel {
-	username: string;
+	name: string;
+	surname: string;
+	email: string;
+	verified: boolean;
+	verificationCode: number;
+	expirationCode: Date;
 	password?: string;
+	role: RoleEnum;
+}
+
+export enum RoleEnum {
+	ADMIN = 'admin',
+	PATIENT = 'patient'
 }
 
 export interface LoginUserRequest {
-	username: string;
+	email: string;
 	password: string;
 }
 
 export interface LoginForm {
-	username: FormControl<string | null>;
+	email: FormControl<string | null>;
 	password: FormControl<string | null>;
 }
 

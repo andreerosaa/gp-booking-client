@@ -20,6 +20,7 @@ export class CreateFromTemplateDialogComponent implements OnInit {
 	private readonly _snackBarService = inject(SnackBarService);
 	private readonly _templateService = inject(TemplateService);
 	private readonly _sessionService = inject(SessionService);
+	
 	protected readonly data = inject<CreateFromTemplateDialogData>(MAT_DIALOG_DATA);
 	protected readonly maxLength = 50;
 

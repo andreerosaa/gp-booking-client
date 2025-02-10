@@ -28,21 +28,31 @@
 			@if (!authService.isLoggedIn()) {
 				<button mat-menu-item [routerLink]="['login']">
 					<mat-icon class="material-symbols-outlined">shield_person</mat-icon>
-					<span>Área reservada</span>
+					<span>Login</span>
 				</button>
 			} @else {
-				<button mat-menu-item [routerLink]="['patients']">
-					<mat-icon class="material-symbols-outlined">person</mat-icon>
-					<span>Clientes</span>
-				</button>
-				<button mat-menu-item [routerLink]="['therapists']">
-					<mat-icon class="material-symbols-outlined">spa</mat-icon>
-					<span>Terapeutas</span>
-				</button>
-				<button mat-menu-item [routerLink]="['templates']">
-					<mat-icon class="material-symbols-outlined">edit_calendar</mat-icon>
-					<span>Templates</span>
-				</button>
+				@switch (authService.getUserRole()) {
+					@case (RoleEnum.ADMIN) {
+						<button mat-menu-item [routerLink]="['patients']">
+							<mat-icon class="material-symbols-outlined">person</mat-icon>
+							<span>Clientes</span>
+						</button>
+						<button mat-menu-item [routerLink]="['therapists']">
+							<mat-icon class="material-symbols-outlined">spa</mat-icon>
+							<span>Terapeutas</span>
+						</button>
+						<button mat-menu-item [routerLink]="['templates']">
+							<mat-icon class="material-symbols-outlined">edit_calendar</mat-icon>
+							<span>Templates</span>
+						</button>
+					}
+					@case (RoleEnum.PATIENT) {
+						<button mat-menu-item [routerLink]="['sessions']">
+							<mat-icon class="material-symbols-outlined">bookmark</mat-icon>
+							<span>As minhas sessões</span>
+						</button>
+					}
+				}
 				<button mat-menu-item (click)="logout()">
 					<mat-icon class="material-symbols-outlined">logout</mat-icon>
 					<span>Sair</span>

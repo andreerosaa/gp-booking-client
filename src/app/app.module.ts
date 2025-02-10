@@ -41,6 +41,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { CreateFromTemplateDialogComponent } from './components/create-from-template-dialog/create-from-template-dialog.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AdminBookingDialogComponent } from './components/admin-booking-dialog/admin-booking-dialog.component';
 
 registerLocaleData(localePt);
 
@@ -53,6 +54,7 @@ registerLocaleData(localePt);
 		DayPanelComponent,
 		SessionCardComponent,
 		SessionBookingDialogComponent,
+		AdminBookingDialogComponent,
 		SnackBarComponent,
 		FocusDirective,
 		HidePipe,

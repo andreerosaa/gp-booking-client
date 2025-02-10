@@ -17,26 +17,25 @@ import { LoginForm } from '../../../../models/user.model';
 })
 export class LoginComponent {
 	private readonly _destroyRef = inject(DestroyRef);
+	private readonly _authService = inject(AuthService);
+	private readonly _snackBarService = inject(SnackBarService);
+	private readonly _router = inject(Router);
 
 	protected readonly maxLength = 50;
 
 	readonly hide = signal(true);
-	readonly usernameErrorMessage = signal('');
+	readonly emailErrorMessage = signal('');
 	readonly passwordErrorMessage = signal('');
 
 	readonly loginForm = new FormGroup<LoginForm>({
-		username: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
+		email: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
 		password: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)])
 	});
 
 	loading = false;
 
-	constructor(
-    private readonly _authService: AuthService,
-    private readonly _snackBarService: SnackBarService,
-    private readonly _router: Router
-  ) {
-		merge(this.getUsernameControl.statusChanges, this.getUsernameControl.valueChanges)
+	constructor() {
+		merge(this.getEmailControl.statusChanges, this.getEmailControl.valueChanges)
 			.pipe(takeUntilDestroyed(this._destroyRef))
 			.subscribe(() => this.updateErrorMessage());
 		merge(this.getPasswordControl.statusChanges, this.getPasswordControl.valueChanges)
@@ -45,10 +44,10 @@ export class LoginComponent {
 	}
 
 	updateErrorMessage() {
-		if (this.getUsernameControl.hasError('required')) {
-			this.usernameErrorMessage.set('Campo obrigatório');
+		if (this.getEmailControl.hasError('required')) {
+			this.emailErrorMessage.set('Campo obrigatório');
 		} else {
-			this.usernameErrorMessage.set('');
+			this.emailErrorMessage.set('');
 		}
 
 		if (this.getPasswordControl.hasError('required')) {
@@ -60,7 +59,7 @@ export class LoginComponent {
 
 	login() {
 		this.loading = true;
-		this._authService.login(this.getUsernameControl.value, this.getPasswordControl.value).subscribe({
+		this._authService.login(this.getEmailControl.value, this.getPasswordControl.value).subscribe({
 			complete: () => {
 				this.loading = false;
 				this._router.navigate(['/']);
@@ -92,8 +91,8 @@ export class LoginComponent {
 		event.stopPropagation();
 	}
 
-	get getUsernameControl(): FormControl {
-		return this.loginForm.get('username') as FormControl;
+	get getEmailControl(): FormControl {
+		return this.loginForm.get('email') as FormControl;
 	}
 	get getPasswordControl(): FormControl {
 		return this.loginForm.get('password') as FormControl;

@@ -5,7 +5,7 @@ import { TemplateModel } from './template.model';
 export interface SessionModel extends BaseModel {
 	date: Date;
 	therapistId: string;
-	patientId: string;
+	userId: string;
 	durationInMinutes: number;
 	vacancies: number;
 	status: SessionStatusEnum;
@@ -16,7 +16,7 @@ export interface SessionModel extends BaseModel {
 export interface SessionByDateModel extends BaseModel {
 	date: Date;
 	therapist: BaseIdentification;
-	patient?: IdentificationWithEmail;
+	user?: IdentificationWithEmail;
 	durationInMinutes: number;
 	vacancies: number;
 	status: SessionStatusEnum;
@@ -26,11 +26,11 @@ export interface SessionByDateModel extends BaseModel {
 }
 
 export enum SessionStatusEnum {
-	AVAILABLE,
-	PENDING,
-	CONFIRMED,
-	COMPLETED,
-	CANCELED
+	AVAILABLE = 'available',
+	PENDING = 'pending',
+	CONFIRMED = 'confirmed',
+	COMPLETED = 'completed',
+	CANCELED = 'canceled'
 }
 
 export const SessionStatusMessages: { [key in SessionStatusEnum]: string } = {
@@ -65,18 +65,20 @@ export interface SessionBookingForm {
 	terms: FormControl<boolean | null>;
 }
 
+export interface AdminBookingForm {
+	user: FormControl<IdentificationWithEmail | null>;
+}
+
 export interface VerificationForm {
 	code: FormControl<string | null>;
 }
 
 export interface BookSessionRequestModel {
-	patientName: string;
 	email: string;
 }
 
 export interface BookSessionResponse {
 	session: SessionModel;
-	newPatient: boolean;
 }
 
 export interface CreateEditSessionRequestModel {
@@ -109,11 +111,11 @@ export interface CreateSessionFormValue {
 
 export interface EditSessionForm extends CreateSessionForm {
 	status: FormControl<SessionStatusEnum | null>;
-	patient: FormControl<IdentificationWithEmail | null>;
+	user: FormControl<IdentificationWithEmail | null>;
 }
 export interface EditSessionFormValue extends CreateSessionFormValue {
 	status: SessionStatusEnum;
-	patient: IdentificationWithEmail;
+	user: IdentificationWithEmail;
 }
 export interface CreateEditSessionDialogData {
 	date: Date;

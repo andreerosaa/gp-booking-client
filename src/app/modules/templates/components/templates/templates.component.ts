@@ -14,37 +14,37 @@ import { CreateEditTemplateDialogComponent } from '../create-edit-template-dialo
 })
 export class TemplatesComponent implements OnInit {
 	private readonly _templateService = inject(TemplateService);
-  private readonly _dialog = inject(MatDialog);
-  
+	private readonly _dialog = inject(MatDialog);
+
 	accordion = viewChild.required(MatAccordion);
 	templates: TemplateModel[] = [];
 	searching = true;
 
 	ngOnInit(): void {
-    this.getTemplates();
+	  this.getTemplates();
 	}
 
-  getTemplates() {
-    this._templateService.getTemplates().subscribe({
-      next: (templates: TemplateModel[]) => {
-        this.templates = [...templates];
-      },
-      complete: () => {
-        this.searching = false;
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error(error);
-        this.searching = false;
-      }
-    });
-  }
+	getTemplates() {
+		this._templateService.getTemplates().subscribe({
+			next: (templates: TemplateModel[]) => {
+				this.templates = [...templates];
+			},
+			complete: () => {
+				this.searching = false;
+			},
+			error: (error: HttpErrorResponse) => {
+				console.error(error);
+				this.searching = false;
+			}
+		});
+	}
 
-  openAddTemplateDialog(){
-    const dialogRef = this._dialog.open(CreateEditTemplateDialogComponent, { data: {}});
-      dialogRef.afterClosed().subscribe((result) => {
-        if(result) {
-          this.getTemplates();
-        }
-      });
-  }
+	openAddTemplateDialog() {
+		const dialogRef = this._dialog.open(CreateEditTemplateDialogComponent, { data: {} });
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				this.getTemplates();
+			}
+		});
+	}
 }

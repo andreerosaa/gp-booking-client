@@ -13,7 +13,7 @@ export class DatesService {
 		let daysRange = 0;
 		let startIndex = 0;
 		// Check if logged in
-		if(this._authService.isLoggedIn()) {
+		if(this._authService.isAdmin()) {
 			daysRange = environment.DAYS_RANGE_ADMIN;
 			startIndex = -daysRange -1
 		} else {

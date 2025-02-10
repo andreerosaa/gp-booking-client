@@ -4,6 +4,7 @@ import { ThemeService } from '../../services/theme/theme.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
+import { RoleEnum } from '../../models/user.model';
 
 @Component({
 	selector: 'app-header',
@@ -17,6 +18,7 @@ export class HeaderComponent implements OnInit {
 	
 	readonly authService = inject(AuthService);
 	readonly darkMode = signal(true);
+	readonly RoleEnum = RoleEnum;
 
 	ngOnInit() {
 		const darkModeInLocalStorage = localStorage.getItem('isDarkMode');

@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Reservar sessão</h2>
+<mat-dialog-content class="min-w-96">
+	@if(!loading) {
+	<form class="flex flex-col gap-3" id="adminSessionForm" [formGroup]="adminSessionForm" (ngSubmit)="bookSession()">
+		<div>
+			<p>{{ data.session.date | date : 'EEEE, dd/MM' }}</p>
+			<p>{{ data.session.date | date : 'HH:mm' }}</p>
+		</div>
+		<div>
+			<mat-form-field class="flex w-full">
+				<mat-label>Cliente</mat-label>
+				<input type="text" placeholder="Selecione o cliente" matInput [formControl]="getUserControl" [matAutocomplete]="auto" />
+				<mat-autocomplete #auto="matAutocomplete" [displayWith]="autocompleteDisplay">
+					@for (user of filteredUsers | async; track user.id) {
+					<mat-option [value]="user">{{ user.name + ' ' + user.surname + ' ' + '(' + user.email + ')' }}</mat-option>
+					}
+				</mat-autocomplete>
+				@if (getUserControl.invalid) {
+				<mat-error>Introduza um cliente válido</mat-error>
+				}
+			</mat-form-field>
+		</div>
+	</form>
+	} @else {
+	<div class="flex flex-col py-3 items-center content-center">
+		<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+	</div>
+	}
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-button mat-dialog-close (click)="closeDialog()">Cancelar</button>
+	<button mat-flat-button type="submit" form="adminSessionForm" [disabled]="!adminSessionForm.valid">Reservar</button>
+</mat-dialog-actions>

@@ -23,6 +23,7 @@ export class CreateEditTemplateDialogComponent implements OnInit {
 	private readonly _therapistService = inject(TherapistService);
 	private readonly _templateService = inject(TemplateService);
 	private readonly _snackBarService = inject(SnackBarService);
+	
 	protected readonly data = inject<CreateEditTemplateDialogData>(MAT_DIALOG_DATA);
 	protected readonly maxLength = 50;
 	protected readonly timeInterval = `${environment.TIMEPICKER_INTERVAL_MINUTES}min`;
