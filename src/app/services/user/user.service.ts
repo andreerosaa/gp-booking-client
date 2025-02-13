@@ -37,24 +37,6 @@ export class UserService {
 		return this._http.get<UserModel>(`${this._apiUrl}/code/${userId}`).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
-	// getPatientByEmail(patiendEmail: string): Observable<UserModel> {
-	// 	const request: GetPatientByEmailRequest = { email: patiendEmail };
-
-	// 	return this._http.post<UserModel>(`${this._apiUrl}/email`, request).pipe(takeUntilDestroyed(this._destroyRef));
-	// }
-
-	// createPatient(patiendEmail: string, patientName: string): Observable<PatientModel> {
-	// 	const request: CreatePatientRequest = { email: patiendEmail, name: patientName, verified: false };
-
-	// 	return this._http.post<PatientModel>(`${this._apiUrl}`, request).pipe(takeUntilDestroyed(this._destroyRef));
-	// }
-
-	// updatePatientName(patientId: string, patientEmail: string, patientName: string): Observable<PatientModel> {
-	// 	const request: UpdatePatientNameRequest = { name: patientName, email: patientEmail };
-
-	// 	return this._http.post<PatientModel>(`${this._apiUrl}/name/${patientId}`, request).pipe(takeUntilDestroyed(this._destroyRef));
-	// }
-
 	getUsers(): Observable<UserModel[]> {
 
 		return this._http.get<UserModel[]>(this._apiUrl).pipe(takeUntilDestroyed(this._destroyRef));

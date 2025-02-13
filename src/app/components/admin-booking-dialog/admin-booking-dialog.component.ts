@@ -1,12 +1,10 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AdminBookingForm, SessionBookingDialogData } from '../../models/session.model';
+import { AdminBookingForm, AdminSessionBookingDialogData } from '../../models/session.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
-import { SessionService } from '../../services/session/session.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
-import { PatientService } from '../../services/patient/patient.service';
 import { UserModel } from '../../models/user.model';
 import { IdentificationWithEmail } from '../../models/base.model';
 import { UserService } from '../../services/user/user.service';
@@ -19,21 +17,15 @@ import { UserService } from '../../services/user/user.service';
 })
 export class AdminBookingDialogComponent implements OnInit {
 	private readonly _dialogRef = inject(MatDialogRef<AdminBookingDialogComponent>);
-	private readonly _destroyRef = inject(DestroyRef);
-	private readonly _sessionService = inject(SessionService);
 	private readonly _snackBarService = inject(SnackBarService);
 	private readonly _userService = inject(UserService);
-	private readonly _patientService = inject(PatientService);
 
-	protected readonly data = inject<SessionBookingDialogData>(MAT_DIALOG_DATA);
+	protected readonly data = inject<AdminSessionBookingDialogData>(MAT_DIALOG_DATA);
 	protected readonly maxLength = 50;
 
 	readonly adminSessionForm = new FormGroup<AdminBookingForm>({
 		user: new FormControl(null, [Validators.required, Validators.maxLength(this.maxLength)])
 	});
-
-	// readonly emailErrorMessage = signal('');
-	// readonly nameErrorMessage = signal('');
 
 	users: IdentificationWithEmail[] = [];
 	filteredUsers!: Observable<IdentificationWithEmail[]>;
@@ -80,11 +72,13 @@ export class AdminBookingDialogComponent implements OnInit {
 	filterUsers() {
 		this.filteredUsers = this.getUserControl.valueChanges.pipe(
 			startWith(''),
-			map((filterValue: string | IdentificationWithEmail) => this.users.filter((option) => {
-				const filter = typeof filterValue === 'string' ? filterValue : this.autocompleteDisplay(filterValue);
-				const optionString = this.autocompleteDisplay(option);
-				return optionString.toLowerCase().includes(filter?.toLowerCase() ?? '');
-			}))
+			map((filterValue: string | IdentificationWithEmail) =>
+				this.users.filter((option) => {
+					const filter = typeof filterValue === 'string' ? filterValue : this.autocompleteDisplay(filterValue);
+					const optionString = this.autocompleteDisplay(option);
+					return optionString.toLowerCase().includes(filter?.toLowerCase() ?? '');
+				})
+			)
 		);
 	}
 

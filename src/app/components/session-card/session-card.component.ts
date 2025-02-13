@@ -24,7 +24,7 @@ export class SessionCardComponent {
 	private readonly _dialog = inject(MatDialog);
 	private readonly _sessionService = inject(SessionService);
 	private readonly _snackBarService = inject(SnackBarService);
-  private readonly _router = inject(Router);
+	private readonly _router = inject(Router);
 
 	readonly authService = inject(AuthService);
 	readonly SessionStatusMessages = SessionStatusMessages;
@@ -40,7 +40,6 @@ export class SessionCardComponent {
 				});
 				dialogRef.afterClosed().subscribe((email) => {
 					if (email) {
-						//TODO: handle confirmation with book session method
 						this.bookSession(email);
 					}
 				});
@@ -68,7 +67,6 @@ export class SessionCardComponent {
 				break;
 			}
 			default: {
-        //TODO: use dialog and bookSession if login successful
 				this._router.navigate(['login']);
 				break;
 			}

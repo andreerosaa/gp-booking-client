@@ -55,7 +55,7 @@ export const DayStatusMap = new Map<DayStatusEnum, { dateClass: string, toolTip:
 	[DayStatusEnum.NONE, {dateClass: '', toolTip: ''}]
 ])
 
-export interface SessionBookingDialogData {
+export interface AdminSessionBookingDialogData {
 	session: SessionModel;
 }
 
