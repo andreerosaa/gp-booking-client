@@ -69,10 +69,6 @@ export interface AdminBookingForm {
 	user: FormControl<IdentificationWithEmail | null>;
 }
 
-export interface VerificationForm {
-	code: FormControl<string | null>;
-}
-
 export interface BookSessionRequestModel {
 	email: string;
 }

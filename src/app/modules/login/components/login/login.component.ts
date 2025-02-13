@@ -1,21 +1,22 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, output, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SnackBarService } from '../../../../services/snack-bar/snack-bar.service';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { LoginForm } from '../../../../models/user.model';
+import { LoginForm, LoginUnverifiedUserResponse } from '../../../../models/user.model';
 
 @Component({
 	selector: 'app-login',
 	standalone: false,
-
 	templateUrl: './login.component.html',
 	styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+	verifyEmail = output<LoginUnverifiedUserResponse>();
+	
 	private readonly _destroyRef = inject(DestroyRef);
 	private readonly _authService = inject(AuthService);
 	private readonly _snackBarService = inject(SnackBarService);
@@ -66,7 +67,6 @@ export class LoginComponent {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.loading = false;
-				this.loginForm.reset();
 				console.error(error);
 				switch (error.status) {
 					case HttpStatusCode.BadRequest:
@@ -75,13 +75,20 @@ export class LoginComponent {
 					case HttpStatusCode.UnprocessableEntity:
 						this._snackBarService.openErrorSnackBar('Credenciais inválidas');
 						break;
-					case HttpStatusCode.Unauthorized:
-						this._snackBarService.openErrorSnackBar('Nome de utilizador ou password incorretos');
+					case HttpStatusCode.TooManyRequests:
+						this._snackBarService.openErrorSnackBar('Demasiadas tentativas falhadas, tente novamente dentro de 15 minutos');
+						break;
+					case HttpStatusCode.Forbidden:
+						this._snackBarService.openErrorSnackBar('O seu email ainda não foi verificado');
+						if(error?.error?.userId) {
+							this.verifyEmail.emit({userId: error.error.userId, email: this.getEmailControl.value, password: this.getPasswordControl.value});
+						}
 						break;
 					default:
 						this._snackBarService.openErrorSnackBar('Erro a efetuar login');
 						break;
 				}
+				this.loginForm.reset();
 			}
 		});
 	}

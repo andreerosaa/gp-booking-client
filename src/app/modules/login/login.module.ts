@@ -12,9 +12,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { LoginRegisterComponent } from './components/login-register/login-register.component';
 import { RegisterComponent } from './components/register/register.component';
+import { SharedModule } from '../shared/shared.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { VerifyComponent } from './components/verify/verify.component';
 
 @NgModule({
-	declarations: [LoginComponent, RegisterComponent, LoginRegisterComponent],
-	imports: [CommonModule, LoginRoutingModule, MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatCardModule, MatIconModule, MatTabsModule]
+	declarations: [LoginComponent, RegisterComponent, LoginRegisterComponent, VerifyComponent],
+	imports: [CommonModule, SharedModule, LoginRoutingModule, MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatCheckboxModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatCardModule, MatIconModule, MatTabsModule]
 })
 export class LoginModule {}

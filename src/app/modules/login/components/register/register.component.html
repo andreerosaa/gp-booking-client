@@ -1,9 +1,23 @@
 <mat-card-header class="mb-5">
-<mat-card-title>Iniciar sessão</mat-card-title>
+    <mat-card-title>Novo registo</mat-card-title>
 </mat-card-header>
 <mat-card-content>
     @if(!loading) {
-        <form class="flex flex-col" id="loginForm" [formGroup]="loginForm" (ngSubmit)="login()">
+        <form class="flex flex-col" id="registerForm" [formGroup]="registerForm" (ngSubmit)="register()">
+            <mat-form-field>
+                <mat-label>Nome</mat-label>
+                <input matInput placeholder="João" [focus]="true" [maxlength]="maxLength" [formControl]="getNameControl" />
+                @if (getNameControl.invalid) {
+                    <mat-error>{{ nameErrorMessage() }}</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Apelido</mat-label>
+                <input matInput placeholder="Silva" [maxlength]="maxLength" [formControl]="getSurnameControl" />
+                @if (getSurnameControl.invalid) {
+                    <mat-error>{{ surnameErrorMessage() }}</mat-error>
+                }
+            </mat-form-field>
             <mat-form-field>
                 <mat-label>Email</mat-label>
                 <input matInput placeholder="joao.silva@gmail.com" [maxlength]="maxLength" [formControl]="getEmailControl" />
@@ -21,6 +35,7 @@
                     <mat-error>{{ passwordErrorMessage() }}</mat-error>
                 }
             </mat-form-field>
+            <mat-checkbox [formControl]="getTermsControl">Aceito os <a mat-dialog-close [routerLink]="['terms']">Termos e condições</a></mat-checkbox>
         </form>
     } @else {
         <div class="flex flex-col py-3 items-center content-center">
@@ -29,5 +44,5 @@
     }
 </mat-card-content>
 <mat-card-actions class="justify-end">
-    <button mat-flat-button type="submit" form="loginForm" [disabled]="!loginForm.valid">Entrar</button>
+	<button mat-flat-button type="submit" form="registerForm" [disabled]="!registerForm.valid">Registar</button>
 </mat-card-actions>

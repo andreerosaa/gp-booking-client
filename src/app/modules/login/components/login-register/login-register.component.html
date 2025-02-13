@@ -1,12 +1,26 @@
 <div class="flex flex-col w-full p-6 gap-6 items-center">
-    <mat-card class="min-w-96" appearance="outlined">
-        <mat-tab-group #tabGroup animationDuration="200">
-            <mat-tab label="Entrar">
-                <app-login></app-login>
-            </mat-tab>
-            <mat-tab label="Registar">
-                <app-register></app-register>
-            </mat-tab>
-        </mat-tab-group>
-    </mat-card>
+	<mat-card class="min-w-96" appearance="outlined">
+		<mat-tab-group #loginRegisterTabs animationDuration="200">
+			@if(!loading) {
+                <mat-tab label="Entrar">
+                    @if (!verifyLogin) {
+                        <app-login (verifyEmail)="handleVerifyEmail($event, true)"></app-login>
+                    } @else {
+                        <app-verify [userId]="userId" [email]="email" (goBackEmitter)="handleGoBack()" (verifiedUser)="handleVerifiedUser()"></app-verify>
+                    }
+                </mat-tab>
+                <mat-tab label="Registar">
+                    @if (!verifyRegister) {
+                        <app-register (verifyEmail)="handleVerifyEmail($event)"></app-register>
+                    } @else {
+                        <app-verify [userId]="userId" [email]="email" (goBackEmitter)="handleGoBack()" (verifiedUser)="handleVerifiedUser()"></app-verify>
+                    }
+                </mat-tab>
+			} @else {
+                <div class="flex flex-col py-3 items-center content-center">
+                    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+                </div>
+			}
+		</mat-tab-group>
+	</mat-card>
 </div>

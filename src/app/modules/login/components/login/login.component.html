@@ -1,12 +1,12 @@
 <mat-card-header class="mb-5">
-<mat-card-title>Iniciar sessão</mat-card-title>
+    <mat-card-title>Iniciar sessão</mat-card-title>
 </mat-card-header>
 <mat-card-content>
     @if(!loading) {
         <form class="flex flex-col" id="loginForm" [formGroup]="loginForm" (ngSubmit)="login()">
             <mat-form-field>
                 <mat-label>Email</mat-label>
-                <input matInput placeholder="joao.silva@gmail.com" [maxlength]="maxLength" [formControl]="getEmailControl" />
+                <input matInput placeholder="joao.silva@gmail.com" [focus]="true" [maxlength]="maxLength" [formControl]="getEmailControl" />
                 @if (getEmailControl.invalid) {
                     <mat-error>{{ emailErrorMessage() }}</mat-error>
                 }

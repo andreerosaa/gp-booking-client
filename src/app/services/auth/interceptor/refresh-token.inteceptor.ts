@@ -12,7 +12,7 @@ export function refreshTokenInterceptor(req: HttpRequest<unknown>, next: HttpHan
 
 	return next(req).pipe(
 		catchError((error: HttpErrorResponse) => {
-			if (error.status === HttpStatusCode.Forbidden) {
+			if (error.status === HttpStatusCode.Unauthorized) {
 				return authService.refreshToken().pipe(
 					switchMap((refreshTokenResponse: LoginUserResponse | BaseResponse) => {
 						if ('accessToken' in refreshTokenResponse) {

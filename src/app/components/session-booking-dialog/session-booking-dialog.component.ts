@@ -1,6 +1,6 @@
-import { Component, DestroyRef, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BookSessionResponse, SessionBookingDialogData, SessionBookingForm, VerificationForm } from '../../models/session.model';
+import { SessionBookingDialogData, SessionBookingForm } from '../../models/session.model';
 import { FormControl, FormControlStatus, FormGroup, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -9,6 +9,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 import { PatientService } from '../../services/patient/patient.service';
 import { PatientModel } from '../../models/patient.model';
+import { VerificationForm } from '../../models/user.model';
 
 @Component({
 	selector: 'app-session-booking-dialog',
@@ -17,7 +18,7 @@ import { PatientModel } from '../../models/patient.model';
 	styleUrl: './session-booking-dialog.component.scss'
 })
 export class SessionBookingDialogComponent implements OnInit {
-	@ViewChild('codeInput') codeInput!: ElementRef;
+	codeInput = viewChild<ElementRef>('codeInput');
 
 	private readonly _dialogRef = inject(MatDialogRef<SessionBookingDialogComponent>);
 	private readonly _destroyRef = inject(DestroyRef);
@@ -178,7 +179,7 @@ export class SessionBookingDialogComponent implements OnInit {
 					case HttpStatusCode.Forbidden:
 						this._snackBarService.openErrorSnackBar('Sessão já reservada');
 						break;
-					case HttpStatusCode.Unauthorized:
+					case HttpStatusCode.NotAcceptable:
 						this._snackBarService.openErrorSnackBar('Atingiu o número máximo de sessões reservadas para este dia');
 						break;
 					default:
@@ -194,7 +195,7 @@ export class SessionBookingDialogComponent implements OnInit {
 
 		if(!inputCode) {
 			this.verificationForm.reset();
-			this.codeInput.nativeElement.focus();
+			this.codeInput()?.nativeElement.focus();
 			this._snackBarService.openErrorSnackBar('Código inválido ou expirado');
 			return;
 		}
@@ -229,7 +230,7 @@ export class SessionBookingDialogComponent implements OnInit {
 		this._patientService.getVerificationCode(this.patientId).subscribe({
 			complete: () => {
 				this.gettingNewCode = false;
-				this.codeInput.nativeElement.focus();
+				this.codeInput()?.nativeElement.focus();
 				this.newPatient = true;
 				if(resend) {
 					this._snackBarService.openSuccessSnackBar('Novo código de confirmação enviado');
@@ -237,7 +238,7 @@ export class SessionBookingDialogComponent implements OnInit {
 			},
 			error: (error: HttpErrorResponse) => {
 				this.gettingNewCode = false;
-				this.codeInput.nativeElement.focus();
+				this.codeInput()?.nativeElement.focus();
 				console.error(error);
 				switch (error.status) {
 					case HttpStatusCode.Forbidden:

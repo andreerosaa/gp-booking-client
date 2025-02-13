@@ -1,10 +1,9 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { CreatePatientRequest, GetPatientByEmailRequest, PatientModel, UpdatePatientNameRequest, VerifyPatientRequest } from '../../models/patient.model';
 import { Observable } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UserModel } from '../../models/user.model';
+import { RegisterUserRequest, RegisterUserResponse, UserModel, VerifyUserRequest } from '../../models/user.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -14,8 +13,21 @@ export class UserService {
 	private readonly _http = inject(HttpClient);
 	private readonly _apiUrl = `${environment.API_BASE_URL}/user`;
 
-	verifyPatient(userId: string, verificationCode: number): Observable<UserModel> {
-		const request: VerifyPatientRequest = { verificationCode: verificationCode };
+	register(name: string, surname: string, email: string, password: string): Observable<RegisterUserResponse> {
+		const request: RegisterUserRequest = {
+			name: name,
+			surname: surname,
+			email: email,
+			password: password
+		};
+
+		return this._http.post<RegisterUserResponse>(`${this._apiUrl}/register`, request, { withCredentials: true }).pipe(
+			takeUntilDestroyed(this._destroyRef)
+		);
+	}
+
+	verifyUser(userId: string, verificationCode: number): Observable<UserModel> {
+		const request: VerifyUserRequest = { verificationCode: verificationCode };
 
 		return this._http.post<UserModel>(`${this._apiUrl}/verify/${userId}`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}

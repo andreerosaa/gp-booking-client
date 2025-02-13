@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, effect, inject, OnDestroy, OnInit, Renderer2, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, inject, OnDestroy, OnInit, Renderer2, signal, viewChild } from '@angular/core';
 import { DatesService } from '../../services/dates/dates.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatCalendar } from '@angular/material/datepicker';
@@ -15,9 +15,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 	styleUrl: './date-tabs.component.scss'
 })
 export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
-	@ViewChild('tabGroup') tabGroup!: MatTabGroup;
-	@ViewChild(MatCalendar) calendar!: MatCalendar<Date>;
-	@ViewChild('drawer', { static: true }) drawer!: MatDrawer;
+	tabGroup = viewChild.required<MatTabGroup>('tabGroup');
+	calendar = viewChild.required<MatCalendar<Date>>(MatCalendar);
+	drawer = viewChild.required<MatDrawer>('drawer');
 
 	private readonly _datesService = inject(DatesService);
 	private readonly _sessionService = inject(SessionService);
@@ -43,8 +43,8 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	);
 	effect = effect(() => {
 		this.selectedIndex();
-		if (!this.drawer.opened) {
-			this.drawer.toggle();
+		if (!this.drawer().opened) {
+			this.drawer().toggle();
 		}
 	});
 
@@ -56,10 +56,10 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngAfterViewInit() {
-		this._subscription = this.calendar.stateChanges.subscribe(() => {
-			const currentMonthYearView = [this.calendar.activeDate.getMonth(), this.calendar.activeDate.getFullYear()];
+		this._subscription = this.calendar().stateChanges.subscribe(() => {
+			const currentMonthYearView = [this.calendar().activeDate.getMonth(), this.calendar().activeDate.getFullYear()];
 			if (!this._compareArrays(this.monthYearView, currentMonthYearView)) {
-				this.monthYearView = [this.calendar.activeDate.getMonth(), this.calendar.activeDate.getFullYear()];
+				this.monthYearView = [this.calendar().activeDate.getMonth(), this.calendar().activeDate.getFullYear()];
 				this.getMonthlySessions();
 			}
 		});
@@ -72,14 +72,14 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	resetSelectedTab() {
-		this.tabGroup.selectedIndex = this.dateRange.findIndex(
+		this.tabGroup().selectedIndex = this.dateRange.findIndex(
 			(date) =>
 				date.getDate() === this.selectedDate()?.getDate() &&
 				date.getMonth() === this.selectedDate()?.getMonth() &&
 				date.getFullYear() === this.selectedDate()?.getFullYear()
 		);
 		this.selectedDate.set(this.today);
-		this.calendar._goToDateInView(this.today, 'month');
+		this.calendar()._goToDateInView(this.today, 'month');
 	}
 
 	setSelectedDate(index: number) {

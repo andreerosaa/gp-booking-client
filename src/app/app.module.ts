@@ -24,8 +24,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel } from '@angular/material/snack-bar';
-import { FocusDirective } from './directives/focus/focus.directive';
-import { HidePipe } from './pipes/hide/hide.pipe';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -42,6 +40,7 @@ import { CreateFromTemplateDialogComponent } from './components/create-from-temp
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AdminBookingDialogComponent } from './components/admin-booking-dialog/admin-booking-dialog.component';
+import { SharedModule } from './modules/shared/shared.module';
 
 registerLocaleData(localePt);
 
@@ -56,8 +55,6 @@ registerLocaleData(localePt);
 		SessionBookingDialogComponent,
 		AdminBookingDialogComponent,
 		SnackBarComponent,
-		FocusDirective,
-		HidePipe,
 		ConfirmationDialogComponent,
 		CreateEditSessionDialogComponent,
 		CreateFromTemplateDialogComponent
@@ -65,6 +62,7 @@ registerLocaleData(localePt);
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
+		SharedModule,
 		MatTabsModule,
 		MatProgressSpinnerModule,
 		MatCardModule,

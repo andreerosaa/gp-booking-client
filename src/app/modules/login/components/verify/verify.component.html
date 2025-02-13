@@ -1,0 +1,32 @@
+<mat-card-header class="mb-5">
+    <mat-card-title>Validar email</mat-card-title>
+</mat-card-header>
+<mat-card-content>
+    @if(!loading) {
+        <form class="flex flex-col gap-3" id="verificationForm" [formGroup]="verificationForm" (ngSubmit)="verifyPatient()">
+        <div>
+            <p>Introduza o código de confirmação enviado para o:</p>
+            <p> {{ email() | hide }}</p>
+        </div>
+        <mat-form-field class="flex w-full">
+            <input matInput #codeInput placeholder="****" [maxlength]="4" [formControl]="getCodeControl" [focus]="true"/>
+        </mat-form-field>
+        <div class="flex w-full items-start gap-2">
+            <a class="cursor-pointer" (click)="sendVerificationCode()">Reenviar código</a>
+            @if (gettingNewCode) {
+                <span class="flex">
+                    <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+                </span>
+            }
+        </div>
+    </form>
+    } @else {
+        <div class="flex flex-col py-3 items-center content-center">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
+    }
+</mat-card-content>
+<mat-card-actions class="justify-end">
+    <button mat-button type="button" (click)="goBack()">Voltar</button>
+    <button mat-flat-button type="submit" form="verificationForm" [disabled]="!verificationForm.valid">Verificar</button>
+</mat-card-actions>

@@ -94,7 +94,7 @@ export class SessionCardComponent {
 					case HttpStatusCode.Forbidden:
 						this._snackBarService.openErrorSnackBar('Sessão já reservada');
 						break;
-					case HttpStatusCode.Unauthorized:
+					case HttpStatusCode.NotAcceptable:
 						this._snackBarService.openErrorSnackBar('Atingiu o número máximo de sessões reservadas para este dia');
 						break;
 					default:
