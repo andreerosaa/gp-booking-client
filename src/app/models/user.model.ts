@@ -43,6 +43,7 @@ export interface RegisterUserRequest extends LoginUserRequest {
 }
 
 export interface RegisterForm extends LoginForm {
+	passwordConfirmation: FormControl<string | null>;
 	name: FormControl<string | null>;
 	surname: FormControl<string | null>;
 	terms: FormControl<boolean | null>;

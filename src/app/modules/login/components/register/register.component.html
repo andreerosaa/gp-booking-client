@@ -35,6 +35,16 @@
                     <mat-error>{{ passwordErrorMessage() }}</mat-error>
                 }
             </mat-form-field>
+            <mat-form-field>
+                <mat-label>Confirmar palavra-passe</mat-label>
+                <input matInput [type]="hideConfirmation() ? 'password' : 'text'" [maxlength]="maxLength" [formControl]="getPasswordConfirmationControl" />
+                <button mat-icon-button type="button" matSuffix (click)="togglePasswordVisibility($event, true)">
+                    <mat-icon class="mr-2">{{ hideConfirmation() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                @if (getPasswordConfirmationControl.invalid) {
+                    <mat-error>{{ passwordConfirmationErrorMessage() }}</mat-error>
+                }
+            </mat-form-field>
             <mat-checkbox [formControl]="getTermsControl">Aceito os <a mat-dialog-close [routerLink]="['terms']">Termos e condições</a></mat-checkbox>
         </form>
     } @else {
