@@ -1,33 +1,30 @@
-<mat-card-header class="mb-5">
-    <mat-card-title>Novo registo</mat-card-title>
-</mat-card-header>
 <mat-card-content>
     @if(!loading) {
         <form class="flex flex-col" id="registerForm" [formGroup]="registerForm" (ngSubmit)="register()">
             <mat-form-field>
                 <mat-label>Nome</mat-label>
-                <input matInput placeholder="João" [focus]="true" [maxlength]="maxLength" [formControl]="getNameControl" />
+                <input matInput appNoSpaces placeholder="João" [focus]="true" [maxlength]="maxLength" [formControl]="getNameControl"/>
                 @if (getNameControl.invalid) {
                     <mat-error>{{ nameErrorMessage() }}</mat-error>
                 }
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Apelido</mat-label>
-                <input matInput placeholder="Silva" [maxlength]="maxLength" [formControl]="getSurnameControl" />
+                <input matInput appNoSpaces placeholder="Silva" [maxlength]="maxLength" [formControl]="getSurnameControl"/>
                 @if (getSurnameControl.invalid) {
                     <mat-error>{{ surnameErrorMessage() }}</mat-error>
                 }
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Email</mat-label>
-                <input matInput placeholder="joao.silva@gmail.com" [maxlength]="maxLength" [formControl]="getEmailControl" />
+                <input matInput appNoSpaces placeholder="joao.silva@gmail.com" [maxlength]="maxLength" [formControl]="getEmailControl"/>
                 @if (getEmailControl.invalid) {
                     <mat-error>{{ emailErrorMessage() }}</mat-error>
                 }
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Palavra-passe</mat-label>
-                <input matInput [type]="hide() ? 'password' : 'text'" [maxlength]="maxLength" [formControl]="getPasswordControl" />
+                <input matInput appNoSpaces [type]="hide() ? 'password' : 'text'" [maxlength]="maxLength" [formControl]="getPasswordControl"/>
                 <button mat-icon-button type="button" matSuffix (click)="togglePasswordVisibility($event)">
                     <mat-icon class="mr-2">{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>
@@ -37,7 +34,7 @@
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Confirmar palavra-passe</mat-label>
-                <input matInput [type]="hideConfirmation() ? 'password' : 'text'" [maxlength]="maxLength" [formControl]="getPasswordConfirmationControl" />
+                <input matInput appNoSpaces [type]="hideConfirmation() ? 'password' : 'text'" [maxlength]="maxLength" [formControl]="getPasswordConfirmationControl"/>
                 <button mat-icon-button type="button" matSuffix (click)="togglePasswordVisibility($event, true)">
                     <mat-icon class="mr-2">{{ hideConfirmation() ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>

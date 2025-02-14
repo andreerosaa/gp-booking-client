@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { BaseModel, BaseResponse } from './base.model';
+import { BaseModel } from './base.model';
 
 export interface UserModel extends BaseModel {
 	name: string;

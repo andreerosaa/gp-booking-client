@@ -73,4 +73,18 @@ export class LoginRegisterComponent {
 		this.verifyLogin = false;
 		this.verifyRegister = false;
 	}
+
+	handleTabChange(tabIndex: number) {
+		this.verifyLogin = false;
+		this.verifyRegister = false;
+		this.loading = false;
+		this.userId = '';
+		this.email = '';
+		this.password = '';
+		if(tabIndex === 0) {
+			this.registerComponent().registerForm.reset();
+		} else {
+			this.loginComponent().loginForm.reset();
+		}
+	}
 }

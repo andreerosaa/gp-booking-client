@@ -30,14 +30,17 @@ export class RegisterComponent {
 	readonly passwordErrorMessage = signal('');
 	readonly passwordConfirmationErrorMessage = signal('');
 
-	readonly registerForm = new FormGroup<RegisterForm>({
-		name: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
-		surname: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
-		email: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
-		password: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
-		passwordConfirmation: new FormControl('', [Validators.required, this.matchingValuesValidator(), Validators.maxLength(this.maxLength)]),
-		terms: new FormControl(false, [Validators.requiredTrue])
-	});
+	readonly registerForm = new FormGroup<RegisterForm>(
+		{
+			name: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
+			surname: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
+			email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(this.maxLength)]),
+			password: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
+			passwordConfirmation: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
+			terms: new FormControl(false, [Validators.requiredTrue])
+		},
+		{ validators: matchingValuesValidator }
+	);
 
 	loading = false;
 	userId = '';
@@ -75,20 +78,24 @@ export class RegisterComponent {
 
 		if (this.getEmailControl.hasError('required')) {
 			this.emailErrorMessage.set('Campo obrigatório');
+		} else if (this.getEmailControl.hasError('email')) {
+			this.emailErrorMessage.set('Introduza um email válido');
 		} else {
 			this.emailErrorMessage.set('');
 		}
 
 		if (this.getPasswordControl.hasError('required')) {
 			this.passwordErrorMessage.set('Campo obrigatório');
+		} else if (this.getPasswordControl.hasError('noMatch')) {
+			this.passwordErrorMessage.set('As passwords têm de ser iguais');
 		} else {
 			this.passwordErrorMessage.set('');
 		}
 
-		if (this.getPasswordConfirmationControl.hasError('noMatch')) {
-			this.passwordConfirmationErrorMessage.set('As passwords têm de ser iguais');
-		} else if (this.getPasswordConfirmationControl.hasError('required')) {
+		if (this.getPasswordConfirmationControl.hasError('required')) {
 			this.passwordConfirmationErrorMessage.set('Campo obrigatório');
+		} else if (this.getPasswordConfirmationControl.hasError('noMatch')) {
+			this.passwordConfirmationErrorMessage.set('As passwords têm de ser iguais');
 		} else {
 			this.passwordConfirmationErrorMessage.set('');
 		}
@@ -97,7 +104,12 @@ export class RegisterComponent {
 	register() {
 		this.loading = true;
 		this._userService
-			.register(this.getNameControl.value.trim(), this.getSurnameControl.value.trim(), this.getEmailControl.value.trim(), this.getPasswordControl.value.trim())
+			.register(
+				this.getNameControl.value.trim(),
+				this.getSurnameControl.value.trim(),
+				this.getEmailControl.value.trim(),
+				this.getPasswordControl.value.trim()
+			)
 			.subscribe({
 				next: (registeredUser: RegisterUserResponse) => {
 					this.userId = registeredUser.id;
@@ -137,12 +149,6 @@ export class RegisterComponent {
 		event.stopPropagation();
 	}
 
-	matchingValuesValidator(): ValidatorFn {
-		return (control: AbstractControl): ValidationErrors | null => {
-			return control.value !== this.registerForm?.get('password')?.value ? { noMatch: true } : null;
-		};
-	}
-
 	get getNameControl(): FormControl {
 		return this.registerForm.get('name') as FormControl;
 	}
@@ -162,3 +168,18 @@ export class RegisterComponent {
 		return this.registerForm.get('terms') as FormControl;
 	}
 }
+
+export const matchingValuesValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+	const password = control.get('password');
+	const passwordConfirmation = control.get('passwordConfirmation');
+
+	if (password?.value !== passwordConfirmation?.value) {
+		password?.setErrors({ noMatch: true });
+		passwordConfirmation?.setErrors({ noMatch: true });
+		return { noMatch: true };
+	}
+
+	password?.setErrors(null);
+	passwordConfirmation?.setErrors(null);
+	return null;
+};

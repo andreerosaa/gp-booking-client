@@ -16,7 +16,7 @@ import { LoginForm, LoginUnverifiedUserResponse } from '../../../../models/user.
 })
 export class LoginComponent {
 	verifyEmail = output<LoginUnverifiedUserResponse>();
-	
+
 	private readonly _destroyRef = inject(DestroyRef);
 	private readonly _authService = inject(AuthService);
 	private readonly _snackBarService = inject(SnackBarService);
@@ -29,7 +29,7 @@ export class LoginComponent {
 	readonly passwordErrorMessage = signal('');
 
 	readonly loginForm = new FormGroup<LoginForm>({
-		email: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)]),
+		email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(this.maxLength)]),
 		password: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)])
 	});
 
@@ -47,6 +47,8 @@ export class LoginComponent {
 	updateErrorMessage() {
 		if (this.getEmailControl.hasError('required')) {
 			this.emailErrorMessage.set('Campo obrigatório');
+		} else if (this.getEmailControl.hasError('email')) {
+			this.emailErrorMessage.set('Introduza um email válido');
 		} else {
 			this.emailErrorMessage.set('');
 		}
@@ -80,8 +82,12 @@ export class LoginComponent {
 						break;
 					case HttpStatusCode.Forbidden:
 						this._snackBarService.openErrorSnackBar('O seu email ainda não foi verificado');
-						if(error?.error?.userId) {
-							this.verifyEmail.emit({userId: error.error.userId, email: this.getEmailControl.value, password: this.getPasswordControl.value});
+						if (error?.error?.userId) {
+							this.verifyEmail.emit({
+								userId: error.error.userId,
+								email: this.getEmailControl.value,
+								password: this.getPasswordControl.value
+							});
 						}
 						break;
 					default:
