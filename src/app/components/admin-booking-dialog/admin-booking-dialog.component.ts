@@ -40,7 +40,7 @@ export class AdminBookingDialogComponent implements OnInit {
 	}
 
 	bookSession() {
-		this.closeDialog(this.getUserControl.value.email);
+		this.closeDialog(this.getUserControl.value);
 	}
 
 	searchUsers() {

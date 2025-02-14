@@ -59,18 +59,12 @@ export interface AdminSessionBookingDialogData {
 	session: SessionModel;
 }
 
-export interface SessionBookingForm {
-	name: FormControl<string | null>;
-	email: FormControl<string | null>;
-	terms: FormControl<boolean | null>;
-}
-
 export interface AdminBookingForm {
 	user: FormControl<IdentificationWithEmail | null>;
 }
 
 export interface BookSessionRequestModel {
-	email: string;
+	userId: string;
 }
 
 export interface BookSessionResponse {

@@ -10,6 +10,7 @@ import { CreateEditSessionDialogComponent } from '../create-edit-session-dialog/
 import { RoleEnum } from '../../models/user.model';
 import { Router } from '@angular/router';
 import { AdminBookingDialogComponent } from '../admin-booking-dialog/admin-booking-dialog.component';
+import { IdentificationWithEmail } from '../../models/base.model';
 
 @Component({
 	selector: 'app-session-card',
@@ -38,9 +39,9 @@ export class SessionCardComponent {
 						session: this.session()
 					}
 				});
-				dialogRef.afterClosed().subscribe((email) => {
-					if (email) {
-						this.bookSession(email);
+				dialogRef.afterClosed().subscribe((user: IdentificationWithEmail | null) => {
+					if (user) {
+						this.bookSession(user.id);
 					}
 				});
 				break;
@@ -52,16 +53,16 @@ export class SessionCardComponent {
 						message: 'Tem a certeza de que pretende reservar esta sessão?'
 					}
 				});
-				dialogRef.afterClosed().subscribe((result) => {
+				dialogRef.afterClosed().subscribe((result: boolean) => {
 					if (result) {
-						const email = this.authService.getUserEmail();
+						const userId = this.authService.getUserId();
 
-						if (!email) {
-							console.error('Email not found in token');
+						if (!userId) {
+							console.error('Id not found in token');
 							this._snackBarService.openErrorSnackBar('Erro ao reservar sessão');
 							return;
 						}
-						this.bookSession(email);
+						this.bookSession(userId);
 					}
 				});
 				break;
@@ -73,8 +74,8 @@ export class SessionCardComponent {
 		}
 	}
 
-	bookSession(email: string) {
-		this._sessionService.bookSession(this.session()._id, email).subscribe({
+	bookSession(userId: string) {
+		this._sessionService.bookSession(this.session()._id, userId).subscribe({
 			complete: () => {
 				this.refreshTabEmitter.emit();
 				this._snackBarService.openSuccessSnackBar('Sessão reservada, aguarda confirmação até 24 horas antes');
@@ -112,7 +113,7 @@ export class SessionCardComponent {
 					: 'Tem a certeza de que pretende eliminar esta sessão?'
 			}
 		});
-		dialogRef.afterClosed().subscribe((result) => {
+		dialogRef.afterClosed().subscribe((result: boolean) => {
 			if (result) {
 				this.deleteSession(series);
 			}
@@ -126,7 +127,7 @@ export class SessionCardComponent {
 				session: this.session()
 			}
 		});
-		dialogRef.afterClosed().subscribe((result) => {
+		dialogRef.afterClosed().subscribe((result: boolean) => {
 			if (result) {
 				this.refreshTabEmitter.emit();
 			}

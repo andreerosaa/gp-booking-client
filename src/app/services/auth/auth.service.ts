@@ -54,11 +54,11 @@ export class AuthService {
 		return null;
 	}
 
-	getUserEmail(): string | null {
+	getUserId(): string | null {
 		const token = this.getAccessToken();
 		if (token) {
 			const decodedToken = this.jwtHelper.decodeToken(token);
-			return decodedToken?.email || null;
+			return decodedToken?.sub || null;
 		}
 		return null;
 	}

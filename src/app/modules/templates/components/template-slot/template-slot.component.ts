@@ -49,7 +49,7 @@ export class TemplateSlotComponent implements OnInit {
 				message: 'Tem a certeza de que pretende eliminar este template?'
 			}
 		});
-		dialogRef.afterClosed().subscribe((result) => {
+		dialogRef.afterClosed().subscribe((result: boolean) => {
 			if (result) {
 				this.deleteTemplate();
 			}

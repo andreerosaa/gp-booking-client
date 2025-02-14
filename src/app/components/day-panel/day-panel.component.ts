@@ -28,7 +28,7 @@ export class DayPanelComponent implements OnInit {
 	daySessions: SessionByDateModel[] = [];
 
 	ngOnInit(): void {
-		if(this.authService.isAdmin()) {
+		if (this.authService.isAdmin()) {
 			this.getDaySessionsDetailed();
 		} else {
 			this.getDaySessions();
@@ -65,66 +65,66 @@ export class DayPanelComponent implements OnInit {
 		});
 	}
 
-	openAddSessionDialog(){
+	openAddSessionDialog() {
 		const dialogRef = this._dialog.open(CreateEditSessionDialogComponent, {
-			data:{
-			  date: this.date()
+			data: {
+				date: this.date()
 			}
-		  });
-		  dialogRef.afterClosed().subscribe((result) => {
-			if(result) {
-			  this.getDaySessionsDetailed();
+		});
+		dialogRef.afterClosed().subscribe((result: boolean) => {
+			if (result) {
+				this.getDaySessionsDetailed();
 			}
-		  });
+		});
 	}
 
 	openCreateFromTemplateDialog() {
 		const dialogRef = this._dialog.open(CreateFromTemplateDialogComponent, {
-			data:{
-			  date: this.date()
+			data: {
+				date: this.date()
 			}
-		  });
-		  dialogRef.afterClosed().subscribe((result) => {
-			if(result) {
-			  this.getDaySessionsDetailed();
+		});
+		dialogRef.afterClosed().subscribe((result: boolean) => {
+			if (result) {
+				this.getDaySessionsDetailed();
 			}
-		  });
+		});
 	}
 
 	openClearDayDialog() {
 		const dialogRef = this._dialog.open(ConfirmationDialogComponent, {
-			data:{
-			title: 'Limpar sessões deste dia',
-			message: 'Tem a certeza de que pretende eliminar todas as sessões a decorrer neste dia?'
+			data: {
+				title: 'Limpar sessões deste dia',
+				message: 'Tem a certeza de que pretende eliminar todas as sessões a decorrer neste dia?'
 			}
 		});
-		dialogRef.afterClosed().subscribe((result) => {
-			if(result) {
-			this.clearDaySessions();
+		dialogRef.afterClosed().subscribe((result: boolean) => {
+			if (result) {
+				this.clearDaySessions();
 			}
 		});
 	}
 
-	clearDaySessions(){
+	clearDaySessions() {
 		this._sessionService.clearDaySessions(this.date()).subscribe({
-		complete: () => {
-			this._snackBarService.openSuccessSnackBar('Sessões eliminadas');
-			this.getDaySessionsDetailed();
-		},
-		error: (error: HttpErrorResponse) => {
-			console.error(error);
-			switch(error.status) {
-			case HttpStatusCode.Forbidden:
-				this._snackBarService.openErrorSnackBar('Sem permissões para eliminar sessões');
-				break;
-			case HttpStatusCode.NotFound:
-				this._snackBarService.openErrorSnackBar('Sessão não encontrada');
-				break;
-			default:
-				this._snackBarService.openErrorSnackBar('Erro ao eliminar sessões');
-				break;
+			complete: () => {
+				this._snackBarService.openSuccessSnackBar('Sessões eliminadas');
+				this.getDaySessionsDetailed();
+			},
+			error: (error: HttpErrorResponse) => {
+				console.error(error);
+				switch (error.status) {
+					case HttpStatusCode.Forbidden:
+						this._snackBarService.openErrorSnackBar('Sem permissões para eliminar sessões');
+						break;
+					case HttpStatusCode.NotFound:
+						this._snackBarService.openErrorSnackBar('Sessão não encontrada');
+						break;
+					default:
+						this._snackBarService.openErrorSnackBar('Erro ao eliminar sessões');
+						break;
+				}
 			}
-		}
 		});
-	  }
+	}
 }

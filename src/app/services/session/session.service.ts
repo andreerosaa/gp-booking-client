@@ -41,8 +41,8 @@ export class SessionService {
 		return this._http.post<SessionByDateModel[]>(`${this._apiUrl}/date-detailed`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}
 
-	bookSession(sessionId: string, email: string): Observable<BookSessionResponse> {
-		const request: BookSessionRequestModel = { email: email };
+	bookSession(sessionId: string, userId: string): Observable<BookSessionResponse> {
+		const request: BookSessionRequestModel = { userId: userId };
 
 		return this._http.post<BookSessionResponse>(`${this._apiUrl}/book/${sessionId}`, request).pipe(takeUntilDestroyed(this._destroyRef));
 	}

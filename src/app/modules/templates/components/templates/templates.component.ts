@@ -41,7 +41,7 @@ export class TemplatesComponent implements OnInit {
 
 	openAddTemplateDialog() {
 		const dialogRef = this._dialog.open(CreateEditTemplateDialogComponent, { data: {} });
-		dialogRef.afterClosed().subscribe((result) => {
+		dialogRef.afterClosed().subscribe((result: boolean) => {
 			if (result) {
 				this.getTemplates();
 			}
