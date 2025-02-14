@@ -41,4 +41,9 @@ export class UserService {
 
 		return this._http.get<UserModel[]>(this._apiUrl).pipe(takeUntilDestroyed(this._destroyRef));
 	}
+
+	getPersonalDataById(userId: string): Observable<UserModel> {
+
+		return this._http.get<UserModel>(`${this._apiUrl}/me/${userId}`).pipe(takeUntilDestroyed(this._destroyRef));
+	}
 }
