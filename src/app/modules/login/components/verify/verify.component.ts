@@ -12,6 +12,7 @@ import { UserService } from '../../../../services/user/user.service';
 	styleUrl: './verify.component.scss'
 })
 export class VerifyComponent implements OnInit {
+	fromLogin = input(false);
 	userId = input('');
 	email = input('');
 	goBackEmitter = output();
@@ -32,7 +33,10 @@ export class VerifyComponent implements OnInit {
 	gettingNewCode = false;
 
 	ngOnInit() {
-		this.sendVerificationCode();
+		//TODO: take logic to backend
+		if(this.fromLogin()) {
+			this.sendVerificationCode();
+		}
 	}
 
 	verifyPatient() {

@@ -28,7 +28,7 @@
 			@if (!authService.isLoggedIn()) {
 				<button mat-menu-item [routerLink]="['login']">
 					<mat-icon class="material-symbols-outlined">shield_person</mat-icon>
-					<span>Login</span>
+					<span>Entrar/Registar</span>
 				</button>
 			} @else {
 				@switch (authService.getUserRole()) {

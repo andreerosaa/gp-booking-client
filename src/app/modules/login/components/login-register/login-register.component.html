@@ -6,7 +6,7 @@
                     @if (!verifyLogin) {
                         <app-login (verifyEmail)="handleVerifyEmail($event, true)"></app-login>
                     } @else {
-                        <app-verify [userId]="userId" [email]="email" (goBackEmitter)="handleGoBack()" (verifiedUser)="handleVerifiedUser()"></app-verify>
+                        <app-verify [fromLogin]="true" [userId]="userId" [email]="email" (goBackEmitter)="handleGoBack()" (verifiedUser)="handleVerifiedUser()"></app-verify>
                     }
                 </mat-tab>
                 <mat-tab label="Registar">

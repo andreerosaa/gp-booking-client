@@ -1,5 +1,7 @@
 import { Route } from '@angular/router';
 import { MainComponent } from './components/main/main.component';
+import { authGuard } from './guards/auth/auth.guard';
+import { RoleEnum } from './models/user.model';
 
 export const appRoutes: Route[] = [
 	{
@@ -34,6 +36,8 @@ export const appRoutes: Route[] = [
 	{
 		path: 'templates',
 		pathMatch: 'full',
+		canActivate: [authGuard],
+		data: { role: RoleEnum.ADMIN },
 		loadChildren: () => import('./modules/templates/templates.module').then((m) => m.TemplatesModule)
 	},
 	{
