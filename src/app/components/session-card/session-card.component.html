@@ -34,7 +34,7 @@
 					<mat-icon>delete</mat-icon>
 				</button>
 				}
-				<button mat-icon-button matTooltip="Editar" (click)="openEditSessionDialog()">
+				<button mat-icon-button matTooltip="Editar" [disabled]="session().status === SessionStatusEnum.COMPLETED" (click)="openEditSessionDialog()">
 					<mat-icon>edit</mat-icon>
 				</button>
 			</div>
