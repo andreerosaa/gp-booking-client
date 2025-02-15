@@ -45,6 +45,7 @@ export enum DayStatusEnum {
 	AVAILABLE,
 	PENDING,
 	FULL,
+	COMPLETED,
 	NONE
 }
 
@@ -52,6 +53,7 @@ export const DayStatusMap = new Map<DayStatusEnum, { dateClass: string, toolTip:
 	[DayStatusEnum.AVAILABLE, {dateClass: 'day-available', toolTip: 'Pelo menos 1 sessão disponível'}],
 	[DayStatusEnum.PENDING, {dateClass: 'day-pending', toolTip: 'Pelo menos 1 sessão a aguardar confirmação'}],
 	[DayStatusEnum.FULL, {dateClass: 'day-full', toolTip: 'Sem sessões disponíveis'}],
+	[DayStatusEnum.COMPLETED, {dateClass: 'day-completed', toolTip: 'Todas as sessões terminadas'}],
 	[DayStatusEnum.NONE, {dateClass: '', toolTip: ''}]
 ])
 
@@ -140,6 +142,7 @@ export interface DayStatusByMonth {
 	available: Date[]; //at least one available
 	pending: Date[]; //at least one pending
 	full: Date[]; //none available
+	completed: Date[]; //all sessions completed
 }
 
 export enum SessionRecurrenceEnum {

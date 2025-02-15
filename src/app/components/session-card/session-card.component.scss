@@ -98,6 +98,37 @@
 	}
 }
 
+.grey {
+	background-color: grey;
+	box-shadow: 0 0 8px grey;
+	-webkit-animation: pulse-grey 3s linear 2s infinite;
+	animation: pulse-grey 3s linear 2s infinite;
+}
+
+@-webkit-keyframes pulse-grey {
+	0% {
+		box-shadow: 0 0 8px grey;
+	}
+	50% {
+		box-shadow: 0 0 16px grey;
+	}
+	100% {
+		box-shadow: 0 0 8px grey;
+	}
+}
+
+@keyframes pulse-grey {
+	0% {
+		box-shadow: 0 0 8px grey;
+	}
+	50% {
+		box-shadow: 0 0 16px grey;
+	}
+	100% {
+		box-shadow: 0 0 8px grey;
+	}
+}
+
 // .mat-mdc-card-title-group,
 .mat-mdc-card-title  {
     display: flex;

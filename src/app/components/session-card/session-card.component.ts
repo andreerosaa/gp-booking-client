@@ -210,6 +210,9 @@ export class SessionCardComponent {
 			case SessionStatusEnum.CONFIRMED:
 				colorClass = 'red';
 				break;
+			default:
+				colorClass = 'grey';
+				break;
 		}
 
 		return colorClass;

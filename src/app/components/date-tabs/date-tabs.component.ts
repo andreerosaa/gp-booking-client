@@ -140,6 +140,12 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 			return DayStatusEnum.FULL
 		}
 
+		const isCompleted = this._findDates(date, this.dayDates.completed);
+
+		if (isCompleted !== undefined) {
+			return DayStatusEnum.COMPLETED
+		}
+
 		return DayStatusEnum.NONE;
 	}
 

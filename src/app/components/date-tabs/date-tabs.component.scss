@@ -22,7 +22,7 @@
 	height: 10px;
 	aspect-ratio: 1/1;
 	border-radius: 50%;
-    margin-top: 40px;
+	margin-top: 40px;
 }
 
 .day-available {
@@ -44,6 +44,13 @@
 	box-shadow: 0 0 8px red;
 	-webkit-animation: pulse-red 3s linear 2s infinite;
 	animation: pulse-red 3s linear 2s infinite;
+}
+
+.day-completed {
+	background-color: grey;
+	box-shadow: 0 0 8px grey;
+	-webkit-animation: pulse-grey 3s linear 2s infinite;
+	animation: pulse-grey 3s linear 2s infinite;
 }
 
 @-webkit-keyframes pulse-green {
@@ -115,6 +122,30 @@
 	}
 	100% {
 		box-shadow: 0 0 8px red;
+	}
+}
+
+@-webkit-keyframes pulse-grey {
+	0% {
+		box-shadow: 0 0 8px grey;
+	}
+	50% {
+		box-shadow: 0 0 16px grey;
+	}
+	100% {
+		box-shadow: 0 0 8px grey;
+	}
+}
+
+@keyframes pulse-grey {
+	0% {
+		box-shadow: 0 0 8px grey;
+	}
+	50% {
+		box-shadow: 0 0 16px grey;
+	}
+	100% {
+		box-shadow: 0 0 8px grey;
 	}
 }
 
