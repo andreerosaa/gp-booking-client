@@ -1,20 +1,22 @@
 <mat-card-content>
     @if(!loading) {
         <form class="flex flex-col" id="registerForm" [formGroup]="registerForm" (ngSubmit)="register()">
-            <mat-form-field>
-                <mat-label>Nome</mat-label>
-                <input matInput appNoSpaces placeholder="João" [focus]="true" [maxlength]="maxLength" [formControl]="getNameControl"/>
-                @if (getNameControl.invalid) {
-                    <mat-error>{{ nameErrorMessage() }}</mat-error>
-                }
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Apelido</mat-label>
-                <input matInput appNoSpaces placeholder="Silva" [maxlength]="maxLength" [formControl]="getSurnameControl"/>
-                @if (getSurnameControl.invalid) {
-                    <mat-error>{{ surnameErrorMessage() }}</mat-error>
-                }
-            </mat-form-field>
+            <div class="flex w-full gap-5">
+                <mat-form-field>
+                    <mat-label>Nome</mat-label>
+                    <input matInput appNoSpaces placeholder="João" [focus]="true" [maxlength]="maxLength" [formControl]="getNameControl"/>
+                    @if (getNameControl.invalid) {
+                        <mat-error>{{ nameErrorMessage() }}</mat-error>
+                    }
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Apelido</mat-label>
+                    <input matInput appNoSpaces placeholder="Silva" [maxlength]="maxLength" [formControl]="getSurnameControl"/>
+                    @if (getSurnameControl.invalid) {
+                        <mat-error>{{ surnameErrorMessage() }}</mat-error>
+                    }
+                </mat-form-field>
+            </div>
             <mat-form-field>
                 <mat-label>Email</mat-label>
                 <input matInput appNoSpaces placeholder="joao.silva@gmail.com" [maxlength]="maxLength" [formControl]="getEmailControl"/>
