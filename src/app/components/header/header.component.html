@@ -53,6 +53,10 @@
 						</button>
 					}
 				}
+				<button mat-menu-item [routerLink]="['profile']">
+					<mat-icon class="material-symbols-outlined">person</mat-icon>
+					<span>O meu perfil</span>
+				</button>
 				<button mat-menu-item (click)="logout()">
 					<mat-icon class="material-symbols-outlined">logout</mat-icon>
 					<span>Sair</span>

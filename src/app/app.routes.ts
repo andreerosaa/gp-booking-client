@@ -37,8 +37,15 @@ export const appRoutes: Route[] = [
 		path: 'templates',
 		pathMatch: 'full',
 		canActivate: [authGuard],
-		data: { role: RoleEnum.ADMIN },
+		data: { roles: [RoleEnum.ADMIN] },
 		loadChildren: () => import('./modules/templates/templates.module').then((m) => m.TemplatesModule)
+	},
+	{
+		path: 'profile',
+		pathMatch: 'full',
+		canActivate: [authGuard],
+		data: { roles: [RoleEnum.ADMIN, RoleEnum.PATIENT] },
+		loadChildren: () => import('./modules/profile/profile.module').then((m) => m.ProfileModule)
 	},
 	{
 		path: '**',
