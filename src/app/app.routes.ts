@@ -40,13 +40,13 @@ export const appRoutes: Route[] = [
 		data: { roles: [RoleEnum.ADMIN] },
 		loadChildren: () => import('./modules/templates/templates.module').then((m) => m.TemplatesModule)
 	},
-	{
-		path: 'profile',
-		pathMatch: 'full',
-		canActivate: [authGuard],
-		data: { roles: [RoleEnum.ADMIN, RoleEnum.PATIENT] },
-		loadChildren: () => import('./modules/profile/profile.module').then((m) => m.ProfileModule)
-	},
+	// {
+	// 	path: 'profile',
+	// 	pathMatch: 'full',
+	// 	canActivate: [authGuard],
+	// 	data: { roles: [RoleEnum.ADMIN, RoleEnum.PATIENT] },
+	// 	loadChildren: () => import('./modules/profile/profile.module').then((m) => m.ProfileModule)
+	// },
 	{
 		path: '**',
 		loadChildren: () => import('./modules/not-found/not-found.module').then((m) => m.NotFoundModule)
