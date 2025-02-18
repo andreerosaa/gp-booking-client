@@ -3,7 +3,7 @@ import { DatesService } from '../../services/dates/dates.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatCalendar } from '@angular/material/datepicker';
 import { MatDrawer } from '@angular/material/sidenav';
-import { Subscription } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
 import { SessionService } from '../../services/session/session.service';
 import { DayStatusByMonth, DayStatusEnum, DayStatusMap } from '../../models/session.model';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -56,7 +56,7 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngAfterViewInit() {
-		this._subscription = this.calendar().stateChanges.subscribe(() => {
+		this._subscription = this.calendar().stateChanges.pipe(debounceTime(200)).subscribe(() => {
 			const currentMonthYearView = [this.calendar().activeDate.getMonth(), this.calendar().activeDate.getFullYear()];
 			if (!this._compareArrays(this.monthYearView, currentMonthYearView)) {
 				this.monthYearView = [this.calendar().activeDate.getMonth(), this.calendar().activeDate.getFullYear()];
