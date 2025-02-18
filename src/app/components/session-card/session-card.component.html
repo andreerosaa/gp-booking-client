@@ -5,7 +5,7 @@
 					{{ session().date | date : 'HH:mm' }} - {{ computeEndTime | date : 'HH:mm'
 					}}<span
 						[matTooltip]="SessionStatusMessages[session().status]"
-            matTooltipPosition="after"
+						matTooltipPosition="after"
 						class="ml-3 ball cursor-pointer"
 						[ngClass]="statusColor"
 					></span>
@@ -49,7 +49,7 @@
 		@if(authService.isAdmin() && (session().status === SessionStatusEnum.PENDING || session().status === SessionStatusEnum.CONFIRMED)) {
 		<p>
 			Cliente:
-			<a [routerLink]="['patient/', session().user?.id]" matTooltip="Abrir detalhes do cliente" matTooltipPosition="after">{{
+			<a [routerLink]="['users/', session().user?.id]" matTooltip="Abrir detalhes do cliente" matTooltipPosition="after">{{
 				session().user?.name + ' ' + session().user?.surname
 			}}</a>
 		</p>

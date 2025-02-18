@@ -41,11 +41,9 @@ export const appRoutes: Route[] = [
 		loadChildren: () => import('./modules/templates/templates.module').then((m) => m.TemplatesModule)
 	},
 	// {
-	// 	path: 'profile',
+	// 	path: 'users',
 	// 	pathMatch: 'full',
-	// 	canActivate: [authGuard],
-	// 	data: { roles: [RoleEnum.ADMIN, RoleEnum.PATIENT] },
-	// 	loadChildren: () => import('./modules/profile/profile.module').then((m) => m.ProfileModule)
+	// 	loadChildren: () => import('./modules/users/users.module').then((m) => m.UsersModule)
 	// },
 	{
 		path: '**',

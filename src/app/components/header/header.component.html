@@ -33,7 +33,7 @@
 			} @else {
 				@switch (authService.getUserRole()) {
 					@case (RoleEnum.ADMIN) {
-						<button mat-menu-item [routerLink]="['patients']">
+						<button mat-menu-item [routerLink]="['users']">
 							<mat-icon class="material-symbols-outlined">person</mat-icon>
 							<span>Clientes</span>
 						</button>
@@ -53,7 +53,7 @@
 						</button>
 					}
 				}
-				<button mat-menu-item [routerLink]="['profile']">
+				<button mat-menu-item [routerLink]="['users/', authService.getUserId()]">
 					<mat-icon class="material-symbols-outlined">person</mat-icon>
 					<span>O meu perfil</span>
 				</button>
