@@ -3,24 +3,16 @@
 		<mat-icon>today</mat-icon>
 		Hoje
 	</button>
-	@if (drawer.opened) {
-	<button type="button" mat-icon-button matTooltip="Fechar" disabled="true" (click)="drawer.toggle()">
-		<mat-icon>arrow_right</mat-icon>
-	</button>
-	} @else {
-	<button type="button" mat-icon-button matTooltip="Expandir" disabled="true" (click)="drawer.toggle()">
-		<mat-icon>arrow_left</mat-icon>
-	</button>
-	}
 </div>
-<mat-drawer-container>
-	<mat-drawer-content class="flex w-1/2 p-2">
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+	<div class="col-span-1">
 		<mat-card>
 			<mat-calendar [minDate]="minDate" [maxDate]="maxDate" [(selected)]="selectedDate"></mat-calendar>
 		</mat-card>
-	</mat-drawer-content>
+	</div>
 
-	<mat-drawer #drawer mode="side" position="end" opened="true">
+	<div class="col-span-1">
 		<mat-tab-group #tabGroup [selectedIndex]="selectedIndex()" (selectedIndexChange)="setSelectedDate($event)" animationDuration="200">
 			@for (date of dateRange; track date) {
 			<mat-tab>
@@ -31,5 +23,5 @@
 			</mat-tab>
 			}
 		</mat-tab-group>
-	</mat-drawer>
-</mat-drawer-container>
+	</div>
+</div>

@@ -35,7 +35,6 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { CreateFromTemplateDialogComponent } from './components/create-from-template-dialog/create-from-template-dialog.component';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AdminBookingDialogComponent } from './components/admin-booking-dialog/admin-booking-dialog.component';
 import { SharedModule } from './modules/shared/shared.module';
@@ -83,7 +82,6 @@ registerLocaleData(localePt);
 		MatTimepickerModule,
 		MatAutocompleteModule,
 		MatSelectModule,
-		MatSidenavModule,
 		MatDatepickerModule
 	],
 	providers: [

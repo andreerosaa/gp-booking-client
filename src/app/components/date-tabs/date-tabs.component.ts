@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, computed, effect, inject, OnDestroy, OnInit, Renderer2, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, OnDestroy, OnInit, Renderer2, signal, viewChild } from '@angular/core';
 import { DatesService } from '../../services/dates/dates.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatCalendar } from '@angular/material/datepicker';
-import { MatDrawer } from '@angular/material/sidenav';
 import { debounceTime, Subscription } from 'rxjs';
 import { SessionService } from '../../services/session/session.service';
 import { DayStatusByMonth, DayStatusEnum, DayStatusMap } from '../../models/session.model';
@@ -17,7 +16,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	tabGroup = viewChild.required<MatTabGroup>('tabGroup');
 	calendar = viewChild.required<MatCalendar<Date>>(MatCalendar);
-	drawer = viewChild.required<MatDrawer>('drawer');
 
 	private readonly _datesService = inject(DatesService);
 	private readonly _sessionService = inject(SessionService);
@@ -41,12 +39,6 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 				date.getFullYear() === this.selectedDate()?.getFullYear()
 		)
 	);
-	effect = effect(() => {
-		this.selectedIndex();
-		if (!this.drawer().opened) {
-			this.drawer().toggle();
-		}
-	});
 
 	ngOnInit(): void {
 		this.dateRange = this._datesService.getDateRange();
