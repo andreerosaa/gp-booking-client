@@ -40,11 +40,10 @@ export const appRoutes: Route[] = [
 		data: { roles: [RoleEnum.ADMIN] },
 		loadChildren: () => import('./modules/templates/templates.module').then((m) => m.TemplatesModule)
 	},
-	// {
-	// 	path: 'users',
-	// 	pathMatch: 'full',
-	// 	loadChildren: () => import('./modules/users/users.module').then((m) => m.UsersModule)
-	// },
+	{
+		path: 'users',
+		loadChildren: () => import('./modules/users/users.module').then((m) => m.UsersModule)
+	},
 	{
 		path: '**',
 		loadChildren: () => import('./modules/not-found/not-found.module').then((m) => m.NotFoundModule)
