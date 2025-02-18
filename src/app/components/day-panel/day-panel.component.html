@@ -23,7 +23,7 @@
 			</div>
         }
 		@for (session of daySessions; track session._id) {
-			<app-session-card (refreshTabEmitter)="authService.isAdmin() ? getDaySessionsDetailed() : getDaySessions()" [session]="session"></app-session-card>
+			<app-session-card class="max-xs:flex max-xs:w-full" (refreshTabEmitter)="authService.isAdmin() ? getDaySessionsDetailed() : getDaySessions()" [session]="session"></app-session-card>
 		} @empty {
 			<img src="assets/gp-logo.png" alt="gym logo" class="mt-10 opacity-15 w-60" />
 		}
