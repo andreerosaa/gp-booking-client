@@ -47,7 +47,7 @@
 						</button>
 					}
 					@case (RoleEnum.PATIENT) {
-						<button mat-menu-item [routerLink]="['sessions']">
+						<button mat-menu-item [routerLink]="['users/', authService.getUserId(), 'sessions']">
 							<mat-icon class="material-symbols-outlined">bookmark</mat-icon>
 							<span>As minhas sessões</span>
 						</button>
