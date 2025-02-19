@@ -18,14 +18,14 @@ export const usersRoutes: Route[] = [
 		pathMatch: 'full',
 		canActivate: [authGuard],
 		data: { roles: [RoleEnum.ADMIN, RoleEnum.PATIENT] },
-		component: UserDetailsComponent,
+		component: UserDetailsComponent
 	},
 	{
 		path: ':id/sessions',
 		pathMatch: 'full',
 		canActivate: [authGuard],
-		data: { roles: [RoleEnum.PATIENT] },
-		component: UserSessionsComponent,
+		data: { roles: [RoleEnum.ADMIN, RoleEnum.PATIENT] },
+		component: UserSessionsComponent
 	},
 	{
 		path: '**',

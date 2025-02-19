@@ -2,7 +2,7 @@
 	<a [routerLink]="['']" matTooltip="Voltar à página inicial" matTooltipPosition="left">
 		<img src="assets/gp-logo.png" alt="gym logo" class="w-10" />
 	</a>
-	<div class="flex w-full justify-end items-center gap-6">
+	<div class="flex w-full justify-end items-center gap-2">
 		<mat-slide-toggle
 			[matTooltip]="darkMode() ? 'Desligar modo noturno' : 'Ligar modo noturno'"
 			[checked]="darkMode()"
@@ -11,6 +11,27 @@
 				<mat-icon>{{ darkMode() ? 'bedtime' : 'wb_sunny' }}</mat-icon>
 			</div>
 		</mat-slide-toggle>
+		@if(authService.getUserRole() === RoleEnum.ADMIN) {
+			<button mat-icon-button [matMenuTriggerFor]="configMenu" aria-label="configMenu" matTooltip="Abrir configurações">
+				<div class="flex flex-col">
+					<mat-icon>settings</mat-icon>
+				</div>
+			</button>
+			<mat-menu #configMenu="matMenu" xPosition="before">	
+				<button mat-menu-item [routerLink]="['users']">
+					<mat-icon class="material-symbols-outlined">person</mat-icon>
+					<span>Clientes</span>
+				</button>
+				<button mat-menu-item [routerLink]="['therapists']">
+					<mat-icon class="material-symbols-outlined">spa</mat-icon>
+					<span>Terapeutas</span>
+				</button>
+				<button mat-menu-item [routerLink]="['templates']">
+					<mat-icon class="material-symbols-outlined">edit_calendar</mat-icon>
+					<span>Templates</span>
+				</button>
+			</mat-menu>
+		}
 		<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu" matTooltip="Abrir menu">
 			<div class="flex flex-col">
 				<mat-icon>menu</mat-icon>
@@ -31,28 +52,10 @@
 					<span>Entrar/Registar</span>
 				</button>
 			} @else {
-				@switch (authService.getUserRole()) {
-					@case (RoleEnum.ADMIN) {
-						<button mat-menu-item [routerLink]="['users']">
-							<mat-icon class="material-symbols-outlined">person</mat-icon>
-							<span>Clientes</span>
-						</button>
-						<button mat-menu-item [routerLink]="['therapists']">
-							<mat-icon class="material-symbols-outlined">spa</mat-icon>
-							<span>Terapeutas</span>
-						</button>
-						<button mat-menu-item [routerLink]="['templates']">
-							<mat-icon class="material-symbols-outlined">edit_calendar</mat-icon>
-							<span>Templates</span>
-						</button>
-					}
-					@case (RoleEnum.PATIENT) {
-						<button mat-menu-item [routerLink]="['users/', authService.getUserId(), 'sessions']">
-							<mat-icon class="material-symbols-outlined">bookmark</mat-icon>
-							<span>As minhas sessões</span>
-						</button>
-					}
-				}
+				<button mat-menu-item [routerLink]="['users/', authService.getUserId(), 'sessions']">
+					<mat-icon class="material-symbols-outlined">bookmark</mat-icon>
+					<span>As minhas sessões</span>
+				</button>
 				<button mat-menu-item [routerLink]="['users/', authService.getUserId()]">
 					<mat-icon class="material-symbols-outlined">person</mat-icon>
 					<span>O meu perfil</span>

@@ -34,6 +34,7 @@ export class LoginComponent {
 	});
 
 	loading = false;
+	gettingNewPassword = false;
 
 	constructor() {
 		merge(this.getEmailControl.statusChanges, this.getEmailControl.valueChanges)
@@ -102,6 +103,10 @@ export class LoginComponent {
 	togglePasswordVisibility(event: MouseEvent) {
 		this.hide.set(!this.hide());
 		event.stopPropagation();
+	}
+
+	sendNewPassword() {
+		//TODO: open confirmation dialog with instructions
 	}
 
 	get getEmailControl(): FormControl {

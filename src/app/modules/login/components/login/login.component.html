@@ -18,6 +18,14 @@
                     <mat-error>{{ passwordErrorMessage() }}</mat-error>
                 }
             </mat-form-field>
+            <div class="flex w-full items-start gap-2">
+                <a class="cursor-pointer" (click)="sendNewPassword()">Esqueci-me da palavra-passe</a>
+                @if (gettingNewPassword) {
+                    <span class="flex">
+                        <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+                    </span>
+                }
+            </div>
         </form>
     } @else {
         <div class="flex flex-col py-3 items-center content-center">
