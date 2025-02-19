@@ -29,7 +29,11 @@ export class LoginComponent {
 	readonly passwordErrorMessage = signal('');
 
 	readonly loginForm = new FormGroup<LoginForm>({
-		email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(this.maxLength)]),
+		email: new FormControl(localStorage.getItem('loginEmail') ?? '', [
+			Validators.required,
+			Validators.email,
+			Validators.maxLength(this.maxLength)
+		]),
 		password: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)])
 	});
 
@@ -65,6 +69,7 @@ export class LoginComponent {
 		this.loading = true;
 		this._authService.login(this.getEmailControl.value, this.getPasswordControl.value).subscribe({
 			complete: () => {
+				localStorage.setItem('loginEmail', this.getEmailControl.value);
 				this.loading = false;
 				this._router.navigate(['/']);
 			},
