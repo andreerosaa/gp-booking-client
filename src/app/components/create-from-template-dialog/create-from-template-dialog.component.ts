@@ -91,7 +91,7 @@ export class CreateFromTemplateDialogComponent implements OnInit {
 		});
 	}
 
-	closeDialog(refresh?: boolean): void {
+	closeDialog(refresh?: boolean) {
 		this._dialogRef.close(refresh);
 	}
 

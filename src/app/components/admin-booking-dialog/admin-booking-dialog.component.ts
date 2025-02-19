@@ -35,7 +35,7 @@ export class AdminBookingDialogComponent implements OnInit {
 		this.searchUsers();
 	}
 
-	closeDialog(user?: IdentificationWithEmail | null): void {
+	closeDialog(user?: IdentificationWithEmail | null) {
 		this._dialogRef.close(user);
 	}
 

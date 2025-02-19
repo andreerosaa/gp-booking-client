@@ -13,11 +13,11 @@ export class ConfirmationDialogComponent {
 	
 	protected readonly data = inject<ConfirmationDialogData>(MAT_DIALOG_DATA);
 
-	onCancelClick(): void {
+	onCancelClick() {
 		this._dialogRef.close(false);
 	}
 
-	onConfirmClick(): void {
+	onConfirmClick() {
 		this._dialogRef.close(true);
 	}
 }

@@ -26,7 +26,7 @@ export class TemplateSlotComponent implements OnInit {
 
 	therapistName = '';
 
-	ngOnInit(): void {
+	ngOnInit() {
 		this.getTherapistData();
 	}
 

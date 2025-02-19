@@ -27,7 +27,7 @@ export class DayPanelComponent implements OnInit {
 	searching = true;
 	daySessions: SessionByDateModel[] = [];
 
-	ngOnInit(): void {
+	ngOnInit() {
 		if (this.authService.isAdmin()) {
 			this.getDaySessionsDetailed();
 		} else {

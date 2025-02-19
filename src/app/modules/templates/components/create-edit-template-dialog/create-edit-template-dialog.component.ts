@@ -105,11 +105,11 @@ export class CreateEditTemplateDialogComponent implements OnInit {
 		});
 	}
 
-	closeDialog(refresh?: boolean): void {
+	closeDialog(refresh?: boolean) {
 		this._dialogRef.close(refresh);
 	}
 
-	add(event: MatChipInputEvent): void {
+	add(event: MatChipInputEvent) {
 		const now = new Date();
 		const value = (event.value || '').trim();
 		const [hours, minutes] = value.split(':').map(Number);
@@ -122,7 +122,7 @@ export class CreateEditTemplateDialogComponent implements OnInit {
 		event.chipInput.clear();
 	}
 
-	remove(time: Date): void {
+	remove(time: Date) {
 		const index = this.getStartTimesControl.value.indexOf(time);
 		if (index < 0) {
 			return;

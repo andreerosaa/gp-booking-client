@@ -20,7 +20,7 @@ export class TemplatesComponent implements OnInit {
 	templates: TemplateModel[] = [];
 	searching = true;
 
-	ngOnInit(): void {
+	ngOnInit() {
 	  this.getTemplates();
 	}
 

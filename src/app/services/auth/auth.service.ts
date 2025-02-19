@@ -37,7 +37,7 @@ export class AuthService {
 		);
 	}
 
-	setAccessToken(token: string): void {
+	setAccessToken(token: string) {
 		localStorage.setItem('accessToken', token);
 	}
 
