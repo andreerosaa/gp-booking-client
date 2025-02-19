@@ -84,7 +84,7 @@ export class LoginRegisterComponent {
 		if(tabIndex === 0) {
 			this.registerComponent().registerForm.reset();
 		} else {
-			this.loginComponent().loginForm.reset();
+			this.loginComponent().loginForm.reset({email: this.loginComponent().emailInitialValue});
 		}
 	}
 }

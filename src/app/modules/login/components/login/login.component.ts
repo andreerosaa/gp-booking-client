@@ -28,15 +28,11 @@ export class LoginComponent {
 	readonly emailErrorMessage = signal('');
 	readonly passwordErrorMessage = signal('');
 
-	readonly loginForm = new FormGroup<LoginForm>({
-		email: new FormControl(localStorage.getItem('loginEmail') ?? '', [
-			Validators.required,
-			Validators.email,
-			Validators.maxLength(this.maxLength)
-		]),
+	emailInitialValue = localStorage.getItem('loginEmail') ?? '';
+	loginForm = new FormGroup<LoginForm>({
+		email: new FormControl(this.emailInitialValue, [Validators.required, Validators.email, Validators.maxLength(this.maxLength)]),
 		password: new FormControl('', [Validators.required, Validators.maxLength(this.maxLength)])
 	});
-
 	loading = false;
 	gettingNewPassword = false;
 
@@ -74,6 +70,8 @@ export class LoginComponent {
 				this._router.navigate(['/']);
 			},
 			error: (error: HttpErrorResponse) => {
+				this.emailInitialValue = '';
+				localStorage.removeItem('loginEmail');
 				this.loading = false;
 				console.error(error);
 				switch (error.status) {
