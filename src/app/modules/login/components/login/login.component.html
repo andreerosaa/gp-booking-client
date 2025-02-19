@@ -3,14 +3,14 @@
         <form class="flex flex-col" id="loginForm" [formGroup]="loginForm" (ngSubmit)="login()">
             <mat-form-field>
                 <mat-label>Email</mat-label>
-                <input matInput appNoSpaces placeholder="joao.silva@gmail.com" [focus]="true" [maxlength]="maxLength" [formControl]="getEmailControl"/>
+                <input matInput appNoSpaces placeholder="joao.silva@gmail.com" [focus]="!!!emailInitialValue" [maxlength]="maxLength" [formControl]="getEmailControl"/>
                 @if (getEmailControl.invalid) {
                     <mat-error>{{ emailErrorMessage() }}</mat-error>
                 }
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Palavra-passe</mat-label>
-                <input matInput appNoSpaces [type]="hide() ? 'password' : 'text'" [maxlength]="maxLength" [formControl]="getPasswordControl"/>
+                <input matInput appNoSpaces [type]="hide() ? 'password' : 'text'" [focus]="!!emailInitialValue" [maxlength]="maxLength" [formControl]="getPasswordControl"/>
                 <button mat-icon-button type="button" matSuffix (click)="togglePasswordVisibility($event)">
                     <mat-icon class="mr-2">{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>
