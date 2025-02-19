@@ -11,7 +11,6 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 @Component({
 	selector: 'app-login-register',
 	standalone: false,
-
 	templateUrl: './login-register.component.html',
 	styleUrl: './login-register.component.scss'
 })

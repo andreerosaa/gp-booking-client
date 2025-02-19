@@ -11,7 +11,6 @@ import { TherapistModel } from '../../../../models/therapist.model';
 @Component({
 	selector: 'app-template-slot',
 	standalone: false,
-
 	templateUrl: './template-slot.component.html',
 	styleUrl: './template-slot.component.scss'
 })

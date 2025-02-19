@@ -5,7 +5,6 @@ import { SnackBarData } from '../../models/snack-bar.model';
 @Component({
   selector: 'app-snack-bar',
   standalone: false,
-  
   templateUrl: './snack-bar.component.html',
   styleUrl: './snack-bar.component.scss'
 })
