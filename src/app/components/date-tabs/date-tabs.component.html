@@ -16,7 +16,7 @@
 		<mat-tab-group #tabGroup (selectedIndexChange)="setSelectedDate($event)" animationDuration="200">
 			@for (date of dateRange(); track date) {
 			<mat-tab>
-				<ng-template mat-tab-label>{{ date | date : 'EEEE, dd/MM/yyyy' }}</ng-template>
+				<ng-template mat-tab-label>{{ date | date : 'EEEE, dd/MM' }}</ng-template>
 				<ng-template matTabContent>
 					<app-day-panel [date]="date"></app-day-panel>
 				</ng-template>
