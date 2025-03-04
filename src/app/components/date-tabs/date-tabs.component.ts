@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, inject, OnDestroy, OnInit, Renderer2, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, inject, OnDestroy, OnInit, Renderer2, signal, viewChild } from '@angular/core';
 import { DatesService } from '../../services/dates/dates.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatCalendar } from '@angular/material/datepicker';
@@ -20,41 +20,47 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	private readonly _datesService = inject(DatesService);
 	private readonly _sessionService = inject(SessionService);
 	private readonly _renderer = inject(Renderer2);
-	
+
 	private _subscription!: Subscription;
 
-	dateRange: Date[] = [];
 	today = new Date();
 	minDate = new Date();
 	maxDate = new Date();
 	monthYearView: number[] = [this.today.getMonth(), this.today.getFullYear()];
 	dayDates!: DayStatusByMonth;
 
-	selectedDate = signal<Date | null>(this.today);
-	selectedIndex = computed<number>(() =>
-		this.dateRange.findIndex(
-			(date) =>
-				date.getDate() === this.selectedDate()?.getDate() &&
-				date.getMonth() === this.selectedDate()?.getMonth() &&
-				date.getFullYear() === this.selectedDate()?.getFullYear()
-		)
-	);
+	selectedDate = signal<Date>(this.today);
+	dateRange = computed<Date[]>(() => {
+		const dates: Date[] = [];
+		for (let i = 0; i <= 6; i++) {
+			let newDay = new Date(this.selectedDate());
+			newDay.setDate(newDay.getDate() + i);
 
-	ngOnInit(): void {
-		this.dateRange = this._datesService.getDateRange();
-		this.minDate = this.dateRange[0];
-		this.maxDate = this.dateRange[this.dateRange.length - 1];
+			dates.push(newDay);
+		}
+		return dates;
+	});
+	selectedIndex = effect(() => {
+		this.tabGroup().selectedIndex = this.dateRange().findIndex((date) => date.getTime() === this.selectedDate().getTime());
+	});
+
+	ngOnInit() {
+		const dateInterval = this._datesService.getDateRange();
+		this.minDate = dateInterval.startDate;
+		this.maxDate = dateInterval.endDate;
 		this.getMonthlySessions();
 	}
 
 	ngAfterViewInit() {
-		this._subscription = this.calendar().stateChanges.pipe(debounceTime(200)).subscribe(() => {
-			const currentMonthYearView = [this.calendar().activeDate.getMonth(), this.calendar().activeDate.getFullYear()];
-			if (!this._compareArrays(this.monthYearView, currentMonthYearView)) {
-				this.monthYearView = [this.calendar().activeDate.getMonth(), this.calendar().activeDate.getFullYear()];
-				this.getMonthlySessions();
-			}
-		});
+		this._subscription = this.calendar()
+			.stateChanges.pipe(debounceTime(200))
+			.subscribe(() => {
+				const currentMonthYearView = [this.calendar().activeDate.getMonth(), this.calendar().activeDate.getFullYear()];
+				if (!this._compareArrays(this.monthYearView, currentMonthYearView)) {
+					this.monthYearView = [this.calendar().activeDate.getMonth(), this.calendar().activeDate.getFullYear()];
+					this.getMonthlySessions();
+				}
+			});
 	}
 
 	ngOnDestroy() {
@@ -64,18 +70,12 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	resetSelectedTab() {
-		this.tabGroup().selectedIndex = this.dateRange.findIndex(
-			(date) =>
-				date.getDate() === this.selectedDate()?.getDate() &&
-				date.getMonth() === this.selectedDate()?.getMonth() &&
-				date.getFullYear() === this.selectedDate()?.getFullYear()
-		);
 		this.selectedDate.set(this.today);
 		this.calendar()._goToDateInView(this.today, 'month');
 	}
 
 	setSelectedDate(index: number) {
-		this.selectedDate.set(this.dateRange[index]);
+		this.selectedDate.set(this.dateRange()[index]);
 	}
 
 	getMonthlySessions() {
@@ -95,10 +95,7 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 							const ball = this._renderer.createElement('span');
 							this._renderer.addClass(ball, 'ball');
 							this._renderer.addClass(ball, dateClass);
-							// this._renderer.setAttribute(spanDate.parentElement, 'matTooltip', dateTooltip);
-							// this._renderer.addClass(spanDate.parentElement, 'mat-mdc-tooltip-trigger');
 							this._renderer.appendChild(spanDate.parentElement, ball);
-							// this._renderer.addClass(spanDate.parentElement, dateClass);
 						}
 					});
 				}
@@ -117,25 +114,25 @@ export class DateTabsComponent implements OnInit, AfterViewInit, OnDestroy {
 		const isAvailable = this._findDates(date, this.dayDates.available);
 
 		if (isAvailable !== undefined) {
-			return DayStatusEnum.AVAILABLE
+			return DayStatusEnum.AVAILABLE;
 		}
 
 		const isPending = this._findDates(date, this.dayDates.pending);
 
 		if (isPending !== undefined) {
-			return DayStatusEnum.PENDING
+			return DayStatusEnum.PENDING;
 		}
 
 		const isFull = this._findDates(date, this.dayDates.full);
 
 		if (isFull !== undefined) {
-			return DayStatusEnum.FULL
+			return DayStatusEnum.FULL;
 		}
 
 		const isCompleted = this._findDates(date, this.dayDates.completed);
 
 		if (isCompleted !== undefined) {
-			return DayStatusEnum.COMPLETED
+			return DayStatusEnum.COMPLETED;
 		}
 
 		return DayStatusEnum.NONE;
